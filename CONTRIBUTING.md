@@ -16,12 +16,29 @@ apply too.
 3. **Set up.** Open in Codespaces, or locally install Node.js 22+, pnpm and
    [just](https://just.systems), then run `just setup`.
 4. **Change spec first, code second.** Edit `spec/`, add test vectors, run `just codegen`,
-   then change code until `just test` passes.
-5. **Open the PR.** Link the issue, cite a source for any data, and add a changeset
+   then change code until `just test` passes. Work on a branch named `<type>/<short-name>`
+   from `dev`, e.g. `feat/ariary-format` or `fix/phone-dots`.
+5. **Open the PR against `dev`.** Link the issue, cite a source for any data, and add a changeset
    (`pnpm changeset`) if users are affected.
 6. **Review and merge.** CODEOWNERS requests the reviewer. PRs are squash-merged with a
    [Conventional Commit](https://www.conventionalcommits.org/) title, e.g.
    `fix(phone): accept dots as separators`.
+
+## Branches and releases
+
+```text
+feat/… fix/… docs/… chore/…  ──squash──▶  dev  ──merge──▶  main  ──▶ npm
+```
+
+- **`dev`** is the default branch. Every change reaches it through a squash-merged PR from a
+  `<type>/<short-name>` branch, where `<type>` is a Conventional Commit type.
+- **`main`** only receives merge commits from `dev`. Nobody commits to `main` or `dev`
+  directly; rulesets and the `branch-flow` check enforce both.
+- **Releasing:** Changesets keeps a `chore: release packages` PR open against `dev`. Merge
+  it, then open a PR from `dev` to `main` and merge it. That merge publishes to npm.
+- **Every commit is signed** (GitHub shows "Verified"). Set up
+  [commit signing](https://docs.github.com/authentication/managing-commit-signature-verification)
+  before your first PR.
 
 ## Commands
 

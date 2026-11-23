@@ -1,6 +1,6 @@
 ## What and why
 
-<!-- One concern per PR, under about 300 changed lines. -->
+<!-- Target dev (main only takes merges from dev). One concern per PR, under about 300 changed lines. -->
 
 Closes #
 
