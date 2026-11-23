@@ -1,0 +1,24 @@
+# Format and lint staged files before each commit. Install with `just setup`.
+pre-commit:
+  parallel: true
+  commands:
+    prettier:
+      glob: '*.{ts,js,json,md,yaml,yml}'
+      run: pnpm exec prettier --write {staged_files}
+      stage_fixed: true
+    eslint:
+      glob: '*.{ts,js}'
+      run: pnpm exec eslint --fix {staged_files}
+      stage_fixed: true
+    yamllint:
+      glob: '*.{yaml,yml}'
+      run: yamllint -c .yamllint.yaml {staged_files} || echo "yamllint not installed; CI will check YAML"
+    spec:
+      glob: 'spec/**'
+      run: pnpm validate && pnpm codegen && git add js/packages/*/src/generated
+commit-msg:
+  commands:
+    conventional:
+      run: >-
+        grep -Eq '^(feat|fix|docs|chore|refactor|test|perf|ci|build|revert)(\([a-z0-9-]+\))?!?: .+' {1}
+        || (echo "Commit title must follow Conventional Commits, e.g. feat(phone): add prefix 37" && exit 1)

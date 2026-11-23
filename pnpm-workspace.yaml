@@ -1,0 +1,6 @@
+packages:
+  - js/packages/*
+  - js/test-runner
+onlyBuiltDependencies:
+  - esbuild
+  - lefthook

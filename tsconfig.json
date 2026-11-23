@@ -1,0 +1,11 @@
+{
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "types": ["node"],
+    "paths": {
+      "@madagascar-oss/*": ["./js/packages/*/src/index.ts"]
+    }
+  },
+  "include": ["js/**/*.ts", "tools/**/*.ts", "*.ts", "*.js"],
+  "exclude": ["**/dist/**", "**/node_modules/**"]
+}
