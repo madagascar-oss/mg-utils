@@ -9,6 +9,7 @@ default:
 setup:
     command -v pnpm >/dev/null || npm install --global pnpm@10
     pnpm install --frozen-lockfile
+    composer install --working-dir=php
     pnpm hooks
 
 # Regenerate native code from spec/ (never edit generated files by hand)
@@ -19,23 +20,27 @@ codegen:
 check:
     pnpm validate
     pnpm codegen
-    git diff --exit-code -- 'js/packages/*/src/generated' || (echo "Generated code is out of date: run 'just codegen' and commit." && exit 1)
+    git diff --exit-code -- 'js/packages/*/src/generated' php/src || (echo "Generated code is out of date: run 'just codegen' and commit." && exit 1)
 
 # Format, lint, typecheck and look for dead code
 lint:
     pnpm lint
+    composer --working-dir=php lint
 
 # Fix formatting and auto-fixable lint errors
 format:
     pnpm format
+    composer --working-dir=php cs-fix
 
-# Run spec vectors and language tests with 100% coverage
+# Run spec vectors and language tests (JS + PHP) with 100% coverage
 test:
     pnpm test
+    composer --working-dir=php test
 
 # Run benchmarks for hot paths
 bench:
     pnpm bench
+    composer --working-dir=php bench
 
 # Build every package (ESM + CommonJS + types)
 build:

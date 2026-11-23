@@ -7,6 +7,7 @@ import addFormats from 'ajv-formats';
 import {
   MODULE_FILES,
   SPEC_DIR,
+  isoDate,
   listModules,
   moduleFile,
   readErrors,
@@ -16,7 +17,7 @@ import {
 } from '../lib/spec.ts';
 
 const SHARED_SCHEMAS = ['source', 'tests', 'errors'] as const;
-const today = new Date().toISOString().slice(0, 10);
+const today = isoDate();
 const problems: string[] = [];
 
 const ajv = new Ajv2020({ allErrors: true, strict: true, strictRequired: false });

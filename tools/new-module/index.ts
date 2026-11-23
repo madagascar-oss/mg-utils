@@ -2,7 +2,14 @@
 // Usage: just new-module <name>   (lower-case, e.g. ariary)
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
-import { PACKAGES_DIR, ROOT_DIR, SPEC_DIR, readSpecVersion } from '../lib/spec.ts';
+import {
+  JSON_INDENT,
+  PACKAGES_DIR,
+  ROOT_DIR,
+  SPEC_DIR,
+  isoDate,
+  readSpecVersion,
+} from '../lib/spec.ts';
 
 const MODULE_NAME = /^[a-z][a-z0-9]*$/;
 const name = process.argv[2] ?? '';
@@ -19,7 +26,7 @@ if (existsSync(specDir) || existsSync(packageDir)) {
 
 const pascal = name.charAt(0).toUpperCase() + name.slice(1);
 const fnName = `check${pascal}Input`;
-const today = new Date().toISOString().slice(0, 10);
+const today = isoDate();
 
 function write(path: string, content: string): void {
   mkdirSync(join(path, '..'), { recursive: true });
@@ -81,7 +88,7 @@ write(
       },
     },
     null,
-    2,
+    JSON_INDENT,
   )}\n`,
 );
 
@@ -106,7 +113,7 @@ const manifest = JSON.stringify(
     keywords: ['madagascar', 'malagasy', name],
   },
   null,
-  2,
+  JSON_INDENT,
 ).replaceAll('js/packages/words', `js/packages/${name}`);
 write(join(packageDir, 'package.json'), `${manifest}\n`);
 for (const file of ['tsup.config.ts', 'api-extractor.json', 'LICENSE']) {
@@ -166,9 +173,50 @@ export function ${fnName}(input: unknown): string {
 
 write(join(packageDir, 'etc', '.gitkeep'), '');
 
+const phpDir = join(ROOT_DIR, 'php');
+write(
+  join(phpDir, 'src', pascal, `${pascal}.php`),
+  `<?php
+
+declare(strict_types=1);
+
+namespace Madagascar\\MgUtils\\${pascal};
+
+/**
+ * TODO: describe ${name}.
+ */
+final class ${pascal}
+{
+    /**
+     * Placeholder: replace with the module's real function, spec first.
+     *
+     * Example: \`${pascal}::checkInput('example')\` returns \`'example'\`.
+     */
+    public static function checkInput(string $input): string
+    {
+        return $input;
+    }
+}
+`,
+);
+write(
+  join(phpDir, 'tests', 'spec-functions', `${name}.php`),
+  `<?php
+
+declare(strict_types=1);
+
+use Madagascar\\MgUtils\\${pascal}\\${pascal};
+
+return [
+    // @phpstan-ignore argument.type
+    '${fnName}' => static fn(mixed $input): string => ${pascal}::checkInput($input),
+];
+`,
+);
+
 const defaultsPath = join(ROOT_DIR, 'js', 'test-runner', 'default-functions.json');
 const defaults = JSON.parse(readFileSync(defaultsPath, 'utf8')) as Record<string, string>;
 const sorted = Object.fromEntries(Object.entries({ ...defaults, [name]: fnName }).sort());
-writeFileSync(defaultsPath, `${JSON.stringify(sorted, null, 2)}\n`);
+writeFileSync(defaultsPath, `${JSON.stringify(sorted, null, JSON_INDENT)}\n`);
 console.log(`registered ${name} → ${fnName} in js/test-runner/default-functions.json`);
 console.log('Next: edit spec/ first, then run `just codegen` and `just test`.');

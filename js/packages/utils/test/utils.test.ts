@@ -1,8 +1,11 @@
 import { expect, test } from 'vitest';
 import { MgError, formatPhoneNumber, numberToWords } from '../src/index.ts';
 
+const TWENTY_ONE = 21;
+const TWENTY_ONE_IN_WORDS = 'iraika amby roapolo';
+
 test('re-exports number words', () => {
-  expect(numberToWords(21)).toBe('iraika amby roapolo');
+  expect(numberToWords(TWENTY_ONE)).toBe(TWENTY_ONE_IN_WORDS);
 });
 
 test('re-exports phone formatting', () => {

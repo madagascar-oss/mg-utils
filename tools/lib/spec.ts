@@ -6,6 +6,16 @@ import { parse } from 'yaml';
 export const ROOT_DIR = fileURLToPath(new URL('../..', import.meta.url));
 export const SPEC_DIR = join(ROOT_DIR, 'spec');
 export const PACKAGES_DIR = join(ROOT_DIR, 'js', 'packages');
+/** Length of an ISO 8601 calendar date such as 2026-11-24. */
+const ISO_DATE_LENGTH = 10;
+/** Indentation of JSON files written by tools, matching Prettier. */
+export const JSON_INDENT = 2;
+
+/** Today's date as YYYY-MM-DD (tools only; library code never reads the clock). */
+export function isoDate(date: Date = new Date()): string {
+  return date.toISOString().slice(0, ISO_DATE_LENGTH);
+}
+
 export const MODULE_FILES = ['README.md', 'data.yaml', 'schema.json', 'tests.yaml'] as const;
 
 export function listModules(): string[] {

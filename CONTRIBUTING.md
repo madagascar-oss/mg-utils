@@ -13,7 +13,7 @@ apply too.
    test vectors), or open one from a template.
 2. **Claim it.** Comment "I'll take this"; a maintainer assigns it. After 14 days without
    activity it goes back to the pool.
-3. **Set up.** Open in Codespaces, or locally install Node.js 22+, pnpm and
+3. **Set up.** Open in Codespaces, or locally install Node.js 22+, pnpm, PHP 8.3+ with Composer and
    [just](https://just.systems), then run `just setup`.
 4. **Change spec first, code second.** Edit `spec/`, add test vectors, run `just codegen`,
    then change code until `just test` passes. Work on a branch named `<type>/<short-name>`
@@ -87,7 +87,7 @@ Each package README states the spec version it implements; CI fails if it does n
 ## Language versions
 
 Supported means still maintained upstream: Node.js maintained LTS lines (22, 24, 26 as of
-November 2026), PHP versions under active or security support, Python versions not past end
+November 2026), PHP versions under active or security support (8.3, 8.4, 8.5), Python versions not past end
 of life. Dropping a version is a major release.
 
 ## Review rules
