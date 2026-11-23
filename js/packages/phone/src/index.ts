@@ -1,0 +1,15 @@
+/**
+ * Madagascar (+261) mobile phone numbers. Part of mg-utils by Madagascar OSS.
+ *
+ * @packageDocumentation
+ */
+export { formatPhoneNumber, type PhoneNumberFormat } from './format.ts';
+export {
+  isValidPhoneNumber,
+  parsePhoneNumber,
+  safeParsePhoneNumber,
+  type PhoneNumber,
+} from './phone-number.ts';
+export type { SafeParseResult } from './result.ts';
+export { OPERATOR_NAMES, type OperatorId } from './generated/data.ts';
+export { MgError, SPEC_VERSION, type ErrorCode } from './generated/errors.ts';
