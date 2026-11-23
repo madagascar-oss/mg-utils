@@ -14,7 +14,7 @@ Spec version: **0.1.0** · [Live demo](https://madagascar-oss.github.io/mg-utils
 | Module                        | What it does                                     | JavaScript                                   | PHP                                            |
 | ----------------------------- | ------------------------------------------------ | -------------------------------------------- | ---------------------------------------------- |
 | [words](spec/words/README.md) | `21` → `iraika amby roapolo`                     | [`@madagascar-oss/words`](js/packages/words) | [`NumberWords`](php/src/Words/NumberWords.php) |
-| [phone](spec/phone/README.md) | Parse, validate and format `+261` mobile numbers | [`@madagascar-oss/phone`](js/packages/phone) | planned                                        |
+| [phone](spec/phone/README.md) | Parse, validate and format `+261` mobile numbers | [`@madagascar-oss/phone`](js/packages/phone) | [`PhoneNumber`](php/src/Phone/PhoneNumber.php) |
 | ariary                        | Format Ariary amounts                            | planned                                      | planned                                        |
 | date                          | Malagasy month and day names                     | planned                                      | planned                                        |
 
