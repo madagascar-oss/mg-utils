@@ -4,3 +4,6 @@ packages:
 onlyBuiltDependencies:
   - esbuild
   - lefthook
+overrides:
+  # GHSA-g3hv-75wg-m249 (ReDoS-style DoS) in dev-only transitive deps of api-extractor and typescript-eslint.
+  minimatch@>=7.0.0 <11.0.1: ^11.0.1
