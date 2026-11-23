@@ -166,6 +166,47 @@ export function ${fnName}(input: unknown): string {
 
 write(join(packageDir, 'etc', '.gitkeep'), '');
 
+const phpDir = join(ROOT_DIR, 'php');
+write(
+  join(phpDir, 'src', pascal, `${pascal}.php`),
+  `<?php
+
+declare(strict_types=1);
+
+namespace Madagascar\\MgUtils\\${pascal};
+
+/**
+ * TODO: describe ${name}.
+ */
+final class ${pascal}
+{
+    /**
+     * Placeholder: replace with the module's real function, spec first.
+     *
+     * Example: \`${pascal}::checkInput('example')\` returns \`'example'\`.
+     */
+    public static function checkInput(string $input): string
+    {
+        return $input;
+    }
+}
+`,
+);
+write(
+  join(phpDir, 'tests', 'spec-functions', `${name}.php`),
+  `<?php
+
+declare(strict_types=1);
+
+use Madagascar\\MgUtils\\${pascal}\\${pascal};
+
+return [
+    // @phpstan-ignore argument.type
+    '${fnName}' => static fn(mixed $input): string => ${pascal}::checkInput($input),
+];
+`,
+);
+
 const defaultsPath = join(ROOT_DIR, 'js', 'test-runner', 'default-functions.json');
 const defaults = JSON.parse(readFileSync(defaultsPath, 'utf8')) as Record<string, string>;
 const sorted = Object.fromEntries(Object.entries({ ...defaults, [name]: fnName }).sort());
