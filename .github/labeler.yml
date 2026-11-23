@@ -1,0 +1,27 @@
+spec:
+  - changed-files:
+      - any-glob-to-any-file: spec/**
+js:
+  - changed-files:
+      - any-glob-to-any-file: js/**
+php:
+  - changed-files:
+      - any-glob-to-any-file: php/**
+python:
+  - changed-files:
+      - any-glob-to-any-file: python/**
+ci:
+  - changed-files:
+      - any-glob-to-any-file: [.github/**, justfile, lefthook.yml, renovate.json]
+docs:
+  - changed-files:
+      - any-glob-to-any-file: [docs/**, '**/*.md']
+data:
+  - changed-files:
+      - any-glob-to-any-file: spec/*/data.yaml
+phone:
+  - changed-files:
+      - any-glob-to-any-file: ['spec/phone/**', 'js/packages/phone/**', 'php/src/Phone/**']
+words:
+  - changed-files:
+      - any-glob-to-any-file: ['spec/words/**', 'js/packages/words/**', 'php/src/Words/**']
