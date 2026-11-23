@@ -90,7 +90,8 @@ function phone(data: PhoneData, source: string): PhpOutput[] {
             name: 'OPERATOR_BY_PREFIX',
             type: 'array',
             value: Object.fromEntries(tables.operatorByPrefix),
-            varDoc: 'array<string, string>',
+            // PHP stores numeric-string keys such as '34' as integers.
+            varDoc: 'array<int|string, string>',
           },
           { name: 'OPERATOR_PREFIX_LENGTH', type: 'int', value: tables.operatorPrefixLength },
         ],
