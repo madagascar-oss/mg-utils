@@ -18,6 +18,10 @@
       "matchDepTypes": ["devDependencies"]
     },
     {
+      "groupName": "PHP dev dependencies",
+      "matchManagers": ["composer"]
+    },
+    {
       "groupName": "GitHub Actions",
       "matchManagers": ["github-actions"]
     },

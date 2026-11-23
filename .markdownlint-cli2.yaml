@@ -5,3 +5,5 @@ ignores:
   - '**/etc/*.api.md'
   - '**/CHANGELOG.md'
   - '**/dist/**'
+  - 'php/vendor/**'
+  - 'php/build/**'
