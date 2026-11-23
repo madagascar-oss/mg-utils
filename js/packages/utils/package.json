@@ -1,6 +1,6 @@
 {
   "name": "@madagascar-oss/utils",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "All mg-utils modules in one package: Malagasy number words and phone numbers.",
   "license": "MIT",
   "author": "Madagascar OSS contributors",
