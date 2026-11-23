@@ -6,6 +6,12 @@ import tsdoc from 'eslint-plugin-tsdoc';
 import tseslint from 'typescript-eslint';
 
 const MIN_NODE_VERSION = '>=22.18.0';
+// Coding rule 2 limits (docs/CODING.md)
+const MAX_COMPLEXITY = 10;
+const MAX_PARAMS = 3;
+const MAX_DEPTH = 3;
+const MAX_FUNCTION_LINES = 20;
+const MIN_IDENTIFIER_LENGTH = 2;
 const LIBRARY_SOURCES = ['js/packages/*/src/**/*.ts'];
 const GENERATED_SOURCES = ['js/packages/*/src/generated/**'];
 const TEST_FILES = ['**/*.test.ts', '**/*.bench.ts', 'js/test-runner/**'];
@@ -44,11 +50,11 @@ export default tseslint.config(
     rules: {
       // Rule 1 — names carry the meaning
       '@typescript-eslint/naming-convention': ['error', ...namingRules],
-      'id-length': ['error', { min: 2, exceptions: ['i', 'n', '_'] }],
+      'id-length': ['error', { min: MIN_IDENTIFIER_LENGTH, exceptions: ['i', 'n', '_'] }],
       // Rule 2 — one function, one job
-      complexity: ['error', 10],
-      'max-params': ['error', 3],
-      'max-depth': ['error', 3],
+      complexity: ['error', MAX_COMPLEXITY],
+      'max-params': ['error', MAX_PARAMS],
+      'max-depth': ['error', MAX_DEPTH],
       // Rule 4 — immutable data
       'prefer-const': 'error',
       'no-param-reassign': ['error', { props: true }],
@@ -56,6 +62,20 @@ export default tseslint.config(
       // Rule 5 — strict types
       '@typescript-eslint/no-explicit-any': 'error',
       '@typescript-eslint/explicit-module-boundary-types': 'error',
+      // Rule 6 — no magic values anywhere (library, tools, tests): name every literal
+      '@typescript-eslint/no-magic-numbers': [
+        'error',
+        {
+          ignore: [0, 1, -1],
+          ignoreArrayIndexes: true,
+          enforceConst: true,
+          ignoreDefaultValues: true,
+          ignoreEnums: true,
+          detectObjects: true,
+          ignoreNumericLiteralTypes: true,
+          ignoreReadonlyClassProperties: true,
+        },
+      ],
       // Performance — regexes built once
       'prefer-regex-literals': ['error', { disallowRedundantWrapping: true }],
     },
@@ -70,7 +90,10 @@ export default tseslint.config(
       'n/no-unsupported-features/es-builtins': 'error',
       'n/no-unsupported-features/node-builtins': 'error',
       // Rule 2 — about 20 lines max, no flag arguments
-      'max-lines-per-function': ['error', { max: 20, skipBlankLines: true, skipComments: true }],
+      'max-lines-per-function': [
+        'error',
+        { max: MAX_FUNCTION_LINES, skipBlankLines: true, skipComments: true },
+      ],
       'no-restricted-syntax': [
         'error',
         {
@@ -102,17 +125,6 @@ export default tseslint.config(
         { object: 'Math', property: 'random', message: 'Library code is deterministic.' },
       ],
       // Rule 6 — no magic values: Malagasy values come from generated constants
-      '@typescript-eslint/no-magic-numbers': [
-        'error',
-        {
-          ignore: [0, 1, -1],
-          ignoreArrayIndexes: true,
-          enforceConst: true,
-          ignoreDefaultValues: true,
-          ignoreNumericLiteralTypes: true,
-          ignoreReadonlyClassProperties: true,
-        },
-      ],
       // Public API docs are required, with one example
       'jsdoc/require-jsdoc': [
         'error',
@@ -148,7 +160,6 @@ export default tseslint.config(
     files: TEST_FILES,
     rules: {
       'max-lines-per-function': 'off',
-      '@typescript-eslint/no-magic-numbers': 'off',
       '@typescript-eslint/no-non-null-assertion': 'off',
     },
   },

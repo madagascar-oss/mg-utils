@@ -10,6 +10,10 @@ import {
   type PhoneNumberFormat,
 } from '../src/index.ts';
 
+// Fuzzing: input sizes well past the 32-character limit, and enough runs to hit edge cases.
+const FUZZ_MAX_INPUT_LENGTH = 64;
+const FUZZ_RUNS = 2000;
+
 const validNationalNumber = fc
   .tuple(fc.constantFrom('32', '33', '34', '37', '38', '39'), fc.stringMatching(/^\d{7}$/))
   .map(([prefix, rest]) => `${prefix}${rest}`);
@@ -17,11 +21,11 @@ const validNationalNumber = fc
 describe('parsePhoneNumber fuzzing', () => {
   test('throws only MgError for any string input', () => {
     fc.assert(
-      fc.property(fc.string({ maxLength: 64 }), (input) => {
+      fc.property(fc.string({ maxLength: FUZZ_MAX_INPUT_LENGTH }), (input) => {
         const result = safeParsePhoneNumber(input);
         expect(result.success || result.error instanceof MgError).toBe(true);
       }),
-      { numRuns: 2000 },
+      { numRuns: FUZZ_RUNS },
     );
   });
 

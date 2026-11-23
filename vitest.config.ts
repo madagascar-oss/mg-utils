@@ -10,6 +10,9 @@ const packageAliases = Object.fromEntries(
   ]),
 );
 
+// Handbook: 100% coverage on library code; CI fails below it.
+const FULL_COVERAGE = 100;
+
 export default defineConfig({
   resolve: { alias: packageAliases },
   test: {
@@ -19,7 +22,12 @@ export default defineConfig({
       include: ['js/packages/*/src/**/*.ts'],
       exclude: ['js/packages/utils/src/**', 'js/packages/*/src/generated/data.ts'],
       reporter: ['text', 'lcov'],
-      thresholds: { branches: 100, functions: 100, lines: 100, statements: 100 },
+      thresholds: {
+        branches: FULL_COVERAGE,
+        functions: FULL_COVERAGE,
+        lines: FULL_COVERAGE,
+        statements: FULL_COVERAGE,
+      },
     },
   },
 });
