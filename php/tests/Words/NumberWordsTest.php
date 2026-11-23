@@ -11,11 +11,16 @@ use PHPUnit\Framework\TestCase;
 
 final class NumberWordsTest extends TestCase
 {
+    private const int RANDOM_SEED = 2026;
+    private const int FUZZ_RUNS = 2000;
+    // Largest supported input (spec/words/data.yaml limits.max).
+    private const int LARGEST_SUPPORTED_NUMBER = 999_999_999_999;
+
     public function testReturnsLowercaseWordsForRandomSupportedIntegers(): void
     {
-        mt_srand(2026);
-        for ($run = 0; $run < 2000; ++$run) {
-            $words = NumberWords::fromInt(mt_rand(0, 999_999_999_999));
+        mt_srand(self::RANDOM_SEED);
+        for ($run = 0; $run < self::FUZZ_RUNS; ++$run) {
+            $words = NumberWords::fromInt(mt_rand(0, self::LARGEST_SUPPORTED_NUMBER));
 
             self::assertMatchesRegularExpression("/^[a-z' ]+$/", $words);
             self::assertDoesNotMatchRegularExpression('/ {2}|^ | $/', $words);

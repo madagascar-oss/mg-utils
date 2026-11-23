@@ -1,11 +1,11 @@
 // Lists spec data entries whose `checked:` date is older than 12 months.
 // Prints a Markdown issue body; the monthly workflow opens or updates an issue with it.
-import { listModules, moduleFile, readYaml } from '../lib/spec.ts';
+import { isoDate, listModules, moduleFile, readYaml } from '../lib/spec.ts';
 
 const MAX_AGE_MONTHS = 12;
 const cutoff = new Date();
 cutoff.setMonth(cutoff.getMonth() - MAX_AGE_MONTHS);
-const cutoffDate = cutoff.toISOString().slice(0, 10);
+const cutoffDate = isoDate(cutoff);
 
 interface StaleEntry {
   readonly path: string;

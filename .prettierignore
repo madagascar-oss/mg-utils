@@ -5,3 +5,4 @@ CHANGELOG.md
 **/etc/*.api.md
 php/vendor/
 php/build/
+php/composer.json

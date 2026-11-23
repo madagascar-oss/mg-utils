@@ -64,6 +64,11 @@ export interface PhoneTables {
   readonly operatorPrefixLength: number;
 }
 
+// Place values of the digits each word table covers.
+const UNIT_STEP = 1;
+const TEN_STEP = 10;
+const HUNDRED_STEP = 100;
+
 /** Words indexed by digit (index 0 is ''), checked for gaps against the spec values. */
 function indexedWords(entries: readonly Valued[], step: number): string[] {
   return ['', ...entries.map((entry) => entry.word)].map((word, digit) => {
@@ -77,10 +82,10 @@ function indexedWords(entries: readonly Valued[], step: number): string[] {
 export function wordsTables(data: WordsData): WordsTables {
   return {
     zeroWord: data.zero.word,
-    unitWords: indexedWords(data.units, 1),
+    unitWords: indexedWords(data.units, UNIT_STEP),
     unitOneInCompound: data.unitOneInCompound.word,
-    tenWords: indexedWords(data.tens, 10),
-    hundredWords: indexedWords(data.hundreds, 100),
+    tenWords: indexedWords(data.tens, TEN_STEP),
+    hundredWords: indexedWords(data.hundreds, HUNDRED_STEP),
     scales: [...data.scales]
       .sort((left, right) => left.value - right.value)
       .map(({ value, word, maxCount }) => ({ value, word, maxCount })),
