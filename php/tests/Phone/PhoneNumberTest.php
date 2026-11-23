@@ -14,6 +14,12 @@ use PHPUnit\Framework\TestCase;
 
 final class PhoneNumberTest extends TestCase
 {
+    private const int RANDOM_SEED = 2026;
+    private const int FUZZ_RUNS = 2000;
+    // Longer than most phone spellings, short enough to stay under the 32-character limit often.
+    private const int FUZZ_MAX_INPUT_LENGTH = 20;
+    private const string TELMA_NUMBER_WITH_NEW_PREFIX = '0381234567';
+
     public function testTryParseReturnsThePhoneNumberForValidInput(): void
     {
         self::assertSame(Operator::Telma, PhoneNumber::tryParse('034 12 345 67')?->operator);
@@ -33,13 +39,13 @@ final class PhoneNumberTest extends TestCase
 
     public function testNeverThrowsAnythingButMgUtilsExceptionForRandomStrings(): void
     {
-        mt_srand(2026);
+        mt_srand(self::RANDOM_SEED);
         $alphabet = "0123456789 +-.()_ab\u{a0}\u{ff10}";
         $characters = preg_split('//u', $alphabet, -1, \PREG_SPLIT_NO_EMPTY);
         self::assertIsArray($characters);
-        for ($run = 0; $run < 2000; ++$run) {
+        for ($run = 0; $run < self::FUZZ_RUNS; ++$run) {
             $input = '';
-            for ($index = mt_rand(0, 20); $index > 0; --$index) {
+            for ($index = mt_rand(0, self::FUZZ_MAX_INPUT_LENGTH); $index > 0; --$index) {
                 $input .= $characters[mt_rand(0, \count($characters) - 1)];
             }
             $phone = PhoneNumber::tryParse($input);
@@ -61,7 +67,7 @@ final class PhoneNumberTest extends TestCase
     #[DataProvider('formats')]
     public function testReadsBackEveryFormatItWrites(PhoneNumberFormat $format): void
     {
-        $phone = PhoneNumber::parse('0381234567');
+        $phone = PhoneNumber::parse(self::TELMA_NUMBER_WITH_NEW_PREFIX);
 
         self::assertEquals($phone, PhoneNumber::parse($phone->format($format)));
     }
