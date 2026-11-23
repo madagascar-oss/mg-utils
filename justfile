@@ -7,7 +7,7 @@ default:
 
 # Install dependencies and git hooks (target: under 5 minutes)
 setup:
-    corepack enable
+    command -v pnpm >/dev/null || npm install --global pnpm@10
     pnpm install --frozen-lockfile
     pnpm hooks
 
