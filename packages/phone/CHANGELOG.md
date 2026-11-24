@@ -1,5 +1,11 @@
 # @madagascar-oss/phone
 
+## 0.2.1
+
+### Patch Changes
+
+- Version aligned with the other `@madagascar-oss` packages, which now share one version number. No code change since 0.1.1.
+
 ## 0.1.1
 
 ### Patch Changes

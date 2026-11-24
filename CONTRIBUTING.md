@@ -67,7 +67,9 @@ a reviewer does.
 
 ## Versioning
 
-The spec and each package follow Semantic Versioning separately. Spec bumps follow the
+The spec and the packages follow Semantic Versioning separately. All `@madagascar-oss/*`
+packages share **one version number** (Changesets `fixed` group): a release bumps them
+together, so `words` 0.3.0 always goes with `utils` 0.3.0. Spec bumps follow the
 [spec rules](https://github.com/madagascar-oss/mg-utils-spec/blob/dev/CONTRIBUTING.md#versioning).
 
 | Change                               | Spec  | Package                                |
