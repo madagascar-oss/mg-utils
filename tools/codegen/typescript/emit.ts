@@ -2,8 +2,17 @@ import type { ErrorDefinition } from '../../lib/spec.ts';
 
 export const GENERATED_HEADER = '// GENERATED — edit spec/ instead. Run `just codegen` to refresh.';
 
+const NON_ASCII = /[^\x20-\x7e]/g;
+const HEX = 16;
+const UNICODE_ESCAPE_WIDTH = 4;
+
+/** JSON literal with non-ASCII characters escaped, so invisible spaces stay visible in code. */
 export function literal(value: unknown): string {
-  return JSON.stringify(value);
+  return JSON.stringify(value).replace(
+    NON_ASCII,
+    (character) =>
+      `\\u${character.charCodeAt(0).toString(HEX).padStart(UNICODE_ESCAPE_WIDTH, '0')}`,
+  );
 }
 
 export function constant(name: string, value: unknown, doc = ''): string {
@@ -29,6 +38,20 @@ export const SPEC_VERSION = ${literal(specVersion)};
 ${docs}
  */
 export type ErrorCode = ${codeUnion};
+
+/**
+ * Outcome of a \`safeParse…\` function: the value, or the error that would have been thrown.
+ *
+ * @example
+ * \`\`\`ts
+ * const result = safeParsePhoneNumber(input);
+ * if (result.success) console.log(result.data);
+ * else console.log(result.error.code);
+ * \`\`\`
+ */
+export type SafeParseResult<T> =
+  | { readonly success: true; readonly data: T }
+  | { readonly success: false; readonly error: MgError };
 
 /**
  * Error thrown by mg-utils functions. Check \`code\`, which is the same in every language.

@@ -10,6 +10,5 @@ export {
   safeParsePhoneNumber,
   type PhoneNumber,
 } from './phone-number.ts';
-export type { SafeParseResult } from './result.ts';
 export { OPERATOR_NAMES, type OperatorId } from './generated/data.ts';
-export { MgError, SPEC_VERSION, type ErrorCode } from './generated/errors.ts';
+export { MgError, SPEC_VERSION, type ErrorCode, type SafeParseResult } from './generated/errors.ts';

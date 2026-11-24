@@ -75,6 +75,12 @@ importers:
         specifier: ^2.9.1
         version: 2.9.1
 
+  js/packages/ariary:
+    dependencies:
+      '@madagascar-oss/words':
+        specifier: workspace:^
+        version: link:../words
+
   js/packages/phone: {}
 
   js/packages/utils:

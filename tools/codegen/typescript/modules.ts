@@ -1,6 +1,13 @@
 // One emitter per module turns the shared tables into TypeScript constants.
 // Modules without an emitter get the generic `DATA` constant.
-import { phoneTables, wordsTables, type PhoneData, type WordsData } from '../shared/tables.ts';
+import {
+  ariaryTables,
+  phoneTables,
+  wordsTables,
+  type AriaryData,
+  type PhoneData,
+  type WordsData,
+} from '../shared/tables.ts';
 import { GENERATED_HEADER, constant, literal, publicConstant } from './emit.ts';
 
 function words(data: WordsData): string[] {
@@ -52,7 +59,27 @@ function phone(data: PhoneData): string[] {
   ];
 }
 
-const EMITTERS: Readonly<Record<string, (data: never) => string[]>> = { words, phone };
+function ariary(data: AriaryData): string[] {
+  const tables = ariaryTables(data);
+  const groupingUnion = tables.groupSeparators.map(([id]) => literal(id)).join(' | ');
+  return [
+    constant('CURRENCY_SYMBOL', tables.currencySymbol),
+    constant('CURRENCY_WORD', tables.currencyWord),
+    constant('SYMBOL_SEPARATOR', tables.symbolSeparator),
+    constant('GROUP_SIZE', tables.groupSize),
+    `/** Thousand separator used by {@link formatAriary}: \`space\` (default) or \`dot\`. */\nexport type AriaryGrouping = ${groupingUnion};`,
+    `/** @internal Grouping option → separator character; the first entry is the default. */\nexport const GROUP_SEPARATORS: ReadonlyMap<AriaryGrouping, string> = new Map<AriaryGrouping, string>(${literal(tables.groupSeparators)});`,
+    constant('DEFAULT_GROUPING', tables.groupSeparators[0]?.[0] ?? ''),
+    constant('READABLE_SEPARATORS', tables.readableSeparators),
+    constant('CURRENCY_TOKENS', tables.currencyTokens, 'Lower-cased, longest first.'),
+    constant('FRANC_SYMBOL', tables.francSymbol),
+    constant('FRANCS_PER_ARIARY', tables.francsPerAriary),
+    constant('MIN_AMOUNT', tables.minAmount),
+    constant('MAX_AMOUNT', tables.maxAmount),
+  ];
+}
+
+const EMITTERS: Readonly<Record<string, (data: never) => string[]>> = { words, phone, ariary };
 
 export function dataFile(module: string, data: unknown, specVersion: string): string {
   const emit = EMITTERS[module];

@@ -14,6 +14,20 @@ export const SPEC_VERSION = '0.1.0';
 export type ErrorCode = 'INVALID_TYPE' | 'OUT_OF_RANGE' | 'INVALID_FORMAT' | 'UNKNOWN_OPERATOR';
 
 /**
+ * Outcome of a `safeParse…` function: the value, or the error that would have been thrown.
+ *
+ * @example
+ * ```ts
+ * const result = safeParsePhoneNumber(input);
+ * if (result.success) console.log(result.data);
+ * else console.log(result.error.code);
+ * ```
+ */
+export type SafeParseResult<T> =
+  | { readonly success: true; readonly data: T }
+  | { readonly success: false; readonly error: MgError };
+
+/**
  * Error thrown by mg-utils functions. Check `code`, which is the same in every language.
  *
  * @example

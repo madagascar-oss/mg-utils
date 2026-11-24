@@ -6,8 +6,25 @@ export const GENERATED_HEADER = '// GENERATED — edit spec/ instead. Run `just 
 export const ROOT_NAMESPACE = 'Madagascar\\MgUtils';
 const INDENT = '    ';
 
+const NON_ASCII = /[^\x20-\x7e]/g;
+const HEX = 16;
+const UNICODE_ESCAPE_WIDTH = 4;
+
+/** Single-quoted PHP string, or double-quoted with \\u{…} escapes when it holds non-ASCII. */
 function phpString(value: string): string {
-  return `'${value.replaceAll('\\', '\\\\').replaceAll("'", "\\'")}'`;
+  if (!/[^\x20-\x7e]/.test(value)) {
+    return `'${value.replaceAll('\\', '\\\\').replaceAll("'", "\\'")}'`;
+  }
+  const escaped = value
+    .replaceAll('\\', '\\\\')
+    .replaceAll('"', '\\"')
+    .replaceAll('$', '\\$')
+    .replace(
+      NON_ASCII,
+      (character) =>
+        `\\u{${character.charCodeAt(0).toString(HEX).padStart(UNICODE_ESCAPE_WIDTH, '0')}}`,
+    );
+  return `"${escaped}"`;
 }
 
 function isList(value: readonly unknown[] | object): value is readonly unknown[] {

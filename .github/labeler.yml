@@ -25,3 +25,6 @@ phone:
 words:
   - changed-files:
       - any-glob-to-any-file: ['spec/words/**', 'js/packages/words/**', 'php/src/Words/**']
+ariary:
+  - changed-files:
+      - any-glob-to-any-file: ['spec/ariary/**', 'js/packages/ariary/**', 'php/src/Ariary/**']
