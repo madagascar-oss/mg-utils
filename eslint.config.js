@@ -50,7 +50,10 @@ export default tseslint.config(
     rules: {
       // Rule 1 — names carry the meaning
       '@typescript-eslint/naming-convention': ['error', ...namingRules],
-      'id-length': ['error', { min: MIN_IDENTIFIER_LENGTH, exceptions: ['i', 'n', '_'] }],
+      'id-length': [
+        'error',
+        { min: MIN_IDENTIFIER_LENGTH, exceptions: ['i', 'n', '_'], properties: 'never' },
+      ],
       // Rule 2 — one function, one job
       complexity: ['error', MAX_COMPLEXITY],
       'max-params': ['error', MAX_PARAMS],
