@@ -11,12 +11,12 @@ Spec version: **0.1.0** · [Live demo](https://madagascar-oss.github.io/mg-utils
 
 ## Modules
 
-| Module                          | What it does                                     | JavaScript                                     | PHP                                            |
-| ------------------------------- | ------------------------------------------------ | ---------------------------------------------- | ---------------------------------------------- |
-| [words](spec/words/README.md)   | `21` → `iraika amby roapolo`                     | [`@madagascar-oss/words`](js/packages/words)   | [`NumberWords`](php/src/Words/NumberWords.php) |
-| [phone](spec/phone/README.md)   | Parse, validate and format `+261` mobile numbers | [`@madagascar-oss/phone`](js/packages/phone)   | [`PhoneNumber`](php/src/Phone/PhoneNumber.php) |
-| [ariary](spec/ariary/README.md) | `1500` → `Ar 1 500`, parse, words, FMG           | [`@madagascar-oss/ariary`](js/packages/ariary) | [`Ariary`](php/src/Ariary/Ariary.php)          |
-| date                            | Malagasy month and day names                     | planned                                        | planned                                        |
+| Module                          | What it does                                                           | JavaScript                                     | PHP                                             |
+| ------------------------------- | ---------------------------------------------------------------------- | ---------------------------------------------- | ----------------------------------------------- |
+| [words](spec/words/README.md)   | `21` → `iraika amby roapolo`                                           | [`@madagascar-oss/words`](js/packages/words)   | [`NumberWords`](php/src/Words/NumberWords.php)  |
+| [phone](spec/phone/README.md)   | Parse, validate and format `+261` mobile numbers                       | [`@madagascar-oss/phone`](js/packages/phone)   | [`PhoneNumber`](php/src/Phone/PhoneNumber.php)  |
+| [ariary](spec/ariary/README.md) | `1500` → `Ar 1 500`, parse, words, FMG                                 | [`@madagascar-oss/ariary`](js/packages/ariary) | [`Ariary`](php/src/Ariary/Ariary.php)           |
+| [date](spec/date/README.md)     | `2026-11-23` → `Alatsinainy 23 Novambra 2026`, month and weekday names | [`@madagascar-oss/date`](js/packages/date)     | [`MalagasyDate`](php/src/Date/MalagasyDate.php) |
 
 `@madagascar-oss/utils` bundles every JavaScript module.
 
