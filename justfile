@@ -1,4 +1,4 @@
-# mg-utils — every command in one place. Run `just` to list them.
+# mg-utils-js — every command in one place. Run `just` to list them.
 set shell := ["bash", "-euo", "pipefail", "-c"]
 
 # List commands
@@ -8,39 +8,34 @@ default:
 # Install dependencies and git hooks (target: under 5 minutes)
 setup:
     command -v pnpm >/dev/null || npm install --global pnpm@10
+    git submodule update --init
     pnpm install --frozen-lockfile
-    composer install --working-dir=php
     pnpm hooks
 
 # Regenerate native code from spec/ (never edit generated files by hand)
 codegen:
     pnpm codegen
 
-# Validate spec/ files and fail if generated code drifted from the spec
+# Fail if generated code drifted from the spec
 check:
-    pnpm validate
     pnpm codegen
-    git diff --exit-code -- 'js/packages/*/src/generated' php/src || (echo "Generated code is out of date: run 'just codegen' and commit." && exit 1)
+    git diff --exit-code -- 'js/packages/*/src/generated' || (echo "Generated code is out of date: run 'just codegen' and commit." && exit 1)
 
 # Format, lint, typecheck and look for dead code
 lint:
     pnpm lint
-    composer --working-dir=php lint
 
 # Fix formatting and auto-fixable lint errors
 format:
     pnpm format
-    composer --working-dir=php cs-fix
 
-# Run spec vectors and language tests (JS + PHP) with 100% coverage
+# Run spec vectors and language tests with 100% coverage
 test:
     pnpm test
-    composer --working-dir=php test
 
 # Run benchmarks for hot paths
 bench:
     pnpm bench
-    composer --working-dir=php bench
 
 # Build every package (ESM + CommonJS + types)
 build:
@@ -55,11 +50,7 @@ ci: check lint test build
     pnpm -r --filter "./js/packages/*" exec api-extractor run
     pnpm spec-claim
 
-# List data entries whose `checked:` date is older than 12 months
-stale-data:
-    pnpm stale-data
-
-# Scaffold a new module in spec/ and every language
+# Scaffold the JS package for a module that exists in spec/
 new-module name:
     pnpm new-module {{name}}
     pnpm install

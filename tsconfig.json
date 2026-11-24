@@ -7,5 +7,5 @@
     }
   },
   "include": ["js/**/*.ts", "tools/**/*.ts", "*.ts", "*.js"],
-  "exclude": ["**/dist/**", "**/node_modules/**"]
+  "exclude": ["**/dist/**", "**/node_modules/**", "spec/**"]
 }

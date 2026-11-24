@@ -4,13 +4,13 @@
   "description": "Parse, validate and format Madagascar (+261) mobile phone numbers.",
   "license": "MIT",
   "author": "Madagascar OSS contributors",
-  "homepage": "https://github.com/madagascar-oss/mg-utils/tree/main/js/packages/phone#readme",
+  "homepage": "https://github.com/madagascar-oss/mg-utils-js/tree/main/js/packages/phone#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/madagascar-oss/mg-utils.git",
+    "url": "git+https://github.com/madagascar-oss/mg-utils-js.git",
     "directory": "js/packages/phone"
   },
-  "bugs": "https://github.com/madagascar-oss/mg-utils/issues",
+  "bugs": "https://github.com/madagascar-oss/mg-utils-js/issues",
   "keywords": [
     "madagascar",
     "malagasy",

@@ -33,4 +33,4 @@ ariaryToFmg(1500); // 7500
 formatFmg(7500); // 'Fmg 7 500'
 ```
 
-Rules, sources and recorded decisions: [spec/ariary](../../../spec/ariary/README.md).
+Rules, sources and recorded decisions: [spec/ariary](https://github.com/madagascar-oss/mg-utils-spec/blob/dev/ariary/README.md).

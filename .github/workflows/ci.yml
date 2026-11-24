@@ -24,23 +24,24 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
+          submodules: true
       - uses: ./.github/actions/setup
       - run: pnpm lint
       - name: Public API unchanged (run `just api` and commit etc/ if intended)
         run: pnpm build && pnpm -r --filter "./js/packages/*" exec api-extractor run
 
   spec:
-    name: Spec schema + codegen drift
+    name: Codegen drift
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
+          submodules: true
       - uses: ./.github/actions/setup
-      - run: pnpm validate
       - run: pnpm codegen
       - name: Generated code matches spec/
-        run: git diff --exit-code -- 'js/packages/*/src/generated' php/src || (echo "::error::Generated code is out of date. Run 'just codegen' and commit." && exit 1)
+        run: git diff --exit-code -- 'js/packages/*/src/generated' || (echo "::error::Generated code is out of date. Run 'just codegen' and commit." && exit 1)
 
   test-js:
     name: Spec vectors (Node ${{ matrix.node }})
@@ -54,38 +55,10 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
+          submodules: true
       - uses: ./.github/actions/setup
         with:
           node-version: ${{ matrix.node }}
       - run: pnpm test
       - run: pnpm build
       - run: pnpm spec-claim
-
-  php-lint:
-    name: PHP lint
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with:
-          persist-credentials: false
-      - uses: ./.github/actions/setup-php
-      - run: composer lint
-        working-directory: php
-
-  test-php:
-    name: Spec vectors (PHP ${{ matrix.php }})
-    runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        # Versions under active or security support: https://www.php.net/supported-versions.php
-        php: ['8.3', '8.4', '8.5']
-    steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with:
-          persist-credentials: false
-      - uses: ./.github/actions/setup-php
-        with:
-          php-version: ${{ matrix.php }}
-      - run: composer test
-        working-directory: php

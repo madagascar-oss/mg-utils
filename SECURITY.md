@@ -1,7 +1,7 @@
 # Security policy
 
 Report vulnerabilities privately through
-[GitHub private vulnerability reporting](https://github.com/madagascar-oss/mg-utils/security/advisories/new).
+[GitHub private vulnerability reporting](https://github.com/madagascar-oss/mg-utils-js/security/advisories/new).
 Never use public issues. We reply within 72 hours.
 
 Only the latest minor release of each package receives security fixes.

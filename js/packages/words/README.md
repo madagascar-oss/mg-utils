@@ -19,4 +19,4 @@ numberToWords(280_000); // 'valo alina sy roa hetsy'
 Supports integers from 0 to 999 999 999 999. Other input throws `MgError` with code
 `INVALID_TYPE` or `OUT_OF_RANGE`.
 
-Rules, sources and recorded disagreements: [spec/words](../../../spec/words/README.md).
+Rules, sources and recorded disagreements: [spec/words](https://github.com/madagascar-oss/mg-utils-spec/blob/dev/words/README.md).
