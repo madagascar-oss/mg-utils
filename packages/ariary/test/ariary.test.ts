@@ -5,6 +5,7 @@ import {
   formatAriary,
   parseAriary,
   safeParseAriary,
+  tryParseAriary,
   type AriaryFormatOptions,
 } from '../src/index.ts';
 
@@ -48,6 +49,28 @@ describe('formatAriary and parseAriary', () => {
   test('throws INVALID_TYPE when options is not an object', () => {
     expect(() => formatAriary(SAMPLE_AMOUNT, null as unknown as AriaryFormatOptions)).toThrow(
       expect.objectContaining({ code: 'INVALID_TYPE' }),
+    );
+  });
+});
+
+describe('tryParseAriary', () => {
+  test('returns the amount for valid text', () => {
+    expect(tryParseAriary('1.500 Ar')).toBe(SAMPLE_AMOUNT);
+  });
+
+  test('returns undefined instead of throwing', () => {
+    expect(tryParseAriary('1,500')).toBeUndefined();
+  });
+
+  test('agrees with safeParseAriary for any input', () => {
+    fc.assert(
+      fc.property(
+        fc.oneof(fc.string({ maxLength: FUZZ_MAX_INPUT_LENGTH }), fc.anything()),
+        (text) => {
+          const result = safeParseAriary(text);
+          expect(tryParseAriary(text)).toBe(result.success ? result.data : undefined);
+        },
+      ),
     );
   });
 });

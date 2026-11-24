@@ -7,6 +7,7 @@ import {
   isValidPhoneNumber,
   parsePhoneNumber,
   safeParsePhoneNumber,
+  tryParsePhoneNumber,
   type PhoneNumberFormat,
 } from '../src/index.ts';
 
@@ -46,6 +47,25 @@ describe('parsePhoneNumber fuzzing', () => {
     fc.assert(
       fc.property(fc.oneof(fc.string(), validNationalNumber, fc.anything()), (input) => {
         expect(isValidPhoneNumber(input)).toBe(safeParsePhoneNumber(input).success);
+      }),
+    );
+  });
+});
+
+describe('tryParsePhoneNumber', () => {
+  test('returns the parsed number for valid input', () => {
+    expect(tryParsePhoneNumber('034 12 345 67')?.operator).toBe('telma');
+  });
+
+  test('returns undefined instead of throwing', () => {
+    expect(tryParsePhoneNumber('035 12 345 67')).toBeUndefined();
+  });
+
+  test('agrees with safeParsePhoneNumber for any input', () => {
+    fc.assert(
+      fc.property(fc.oneof(fc.string(), validNationalNumber, fc.anything()), (input) => {
+        const result = safeParsePhoneNumber(input);
+        expect(tryParsePhoneNumber(input)).toEqual(result.success ? result.data : undefined);
       }),
     );
   });

@@ -60,6 +60,9 @@ export type SafeParseResult<T> = {
 // @public
 export const SPEC_VERSION = "0.2.0";
 
+// @public
+export function tryParseAriary(text: unknown): number | undefined;
+
 // (No @packageDocumentation comment for this package)
 
 ```

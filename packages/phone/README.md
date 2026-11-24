@@ -16,6 +16,7 @@ import {
   isValidPhoneNumber,
   parsePhoneNumber,
   safeParsePhoneNumber,
+  tryParsePhoneNumber,
 } from '@madagascar-oss/phone';
 
 parsePhoneNumber('034 12 345 67');
@@ -23,6 +24,7 @@ parsePhoneNumber('034 12 345 67');
 
 formatPhoneNumber('+261341234567', 'national'); // '034 12 345 67'
 isValidPhoneNumber('035 12 345 67'); // false
+tryParsePhoneNumber('035 12 345 67'); // undefined (never throws)
 
 const result = safeParsePhoneNumber(userInput);
 if (!result.success) console.log(result.error.code); // 'INVALID_FORMAT' | 'UNKNOWN_OPERATOR' | …

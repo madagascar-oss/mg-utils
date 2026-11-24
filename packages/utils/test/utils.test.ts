@@ -5,6 +5,8 @@ import {
   formatDate,
   formatPhoneNumber,
   numberToWords,
+  tryParseAriary,
+  tryParsePhoneNumber,
 } from '../src/index.ts';
 
 const TWENTY_ONE = 21;
@@ -33,4 +35,9 @@ test('recognises errors from every module with one MgError', () => {
   expect(() => formatPhoneNumber('x', 'e164')).toThrow(MgError);
   expect(() => formatAriary(-1)).toThrow(MgError);
   expect(() => formatDate('2026-02-30')).toThrow(MgError);
+});
+
+test('re-exports the non-throwing parsers', () => {
+  expect(tryParsePhoneNumber('034 12 345 67')?.e164).toBe('+261341234567');
+  expect(tryParseAriary('Ar 1 500')).toBe(SAMPLE_AMOUNT);
 });

@@ -33,6 +33,8 @@ import { safeParseAriary } from '@madagascar-oss/ariary';
 import { safeParsePhoneNumber } from '@madagascar-oss/phone';
 import { SafeParseResult } from '@madagascar-oss/phone';
 import { SPEC_VERSION } from '@madagascar-oss/phone';
+import { tryParseAriary } from '@madagascar-oss/ariary';
+import { tryParsePhoneNumber } from '@madagascar-oss/phone';
 
 export { AriaryFormatOptions }
 
@@ -91,6 +93,10 @@ export { safeParsePhoneNumber }
 export { SafeParseResult }
 
 export { SPEC_VERSION }
+
+export { tryParseAriary }
+
+export { tryParsePhoneNumber }
 
 // (No @packageDocumentation comment for this package)
 

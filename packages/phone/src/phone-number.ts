@@ -122,6 +122,25 @@ export function parsePhoneNumber(input: string): PhoneNumber {
 }
 
 /**
+ * Reads a Malagasy mobile number, or gives `undefined` instead of throwing.
+ *
+ * Use {@link safeParsePhoneNumber} when you need to know why the input was rejected.
+ *
+ * @param input - The number as typed by a user, in any accepted spelling.
+ * @returns The {@link PhoneNumber}, or `undefined` when {@link parsePhoneNumber} would throw.
+ *
+ * @example
+ * ```ts
+ * tryParsePhoneNumber('034 12 345 67')?.operator; // 'telma'
+ * tryParsePhoneNumber('035 12 345 67'); // undefined
+ * ```
+ */
+export function tryParsePhoneNumber(input: unknown): PhoneNumber | undefined {
+  const result = safeParsePhoneNumber(input);
+  return result.success ? result.data : undefined;
+}
+
+/**
  * Tells whether the input is a valid Malagasy mobile number. Never throws.
  *
  * @param input - Any value.

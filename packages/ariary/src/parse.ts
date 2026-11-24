@@ -88,3 +88,22 @@ export function parseAriary(text: string): number {
   if (!result.success) throw result.error;
   return result.data;
 }
+
+/**
+ * Reads an Ariary amount, or gives `undefined` instead of throwing.
+ *
+ * Use {@link safeParseAriary} when you need to know why the text was rejected.
+ *
+ * @param text - An amount such as `Ar 1 500`, `1.500 Ar`, `MGA 1500` or `1 500`.
+ * @returns The amount in whole ariary, or `undefined` when {@link parseAriary} would throw.
+ *
+ * @example
+ * ```ts
+ * tryParseAriary('1.500 Ar'); // 1500
+ * tryParseAriary('1,500'); // undefined
+ * ```
+ */
+export function tryParseAriary(text: unknown): number | undefined {
+  const result = safeParseAriary(text);
+  return result.success ? result.data : undefined;
+}
