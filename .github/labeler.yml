@@ -3,7 +3,7 @@ spec:
       - any-glob-to-any-file: spec
 js:
   - changed-files:
-      - any-glob-to-any-file: js/**
+      - any-glob-to-any-file: [packages/**, conformance/**]
 ci:
   - changed-files:
       - any-glob-to-any-file: [.github/**, justfile, lefthook.yml, renovate.json]
@@ -12,13 +12,13 @@ docs:
       - any-glob-to-any-file: [docs/**, '**/*.md']
 phone:
   - changed-files:
-      - any-glob-to-any-file: js/packages/phone/**
+      - any-glob-to-any-file: packages/phone/**
 words:
   - changed-files:
-      - any-glob-to-any-file: js/packages/words/**
+      - any-glob-to-any-file: packages/words/**
 ariary:
   - changed-files:
-      - any-glob-to-any-file: js/packages/ariary/**
+      - any-glob-to-any-file: packages/ariary/**
 date:
   - changed-files:
-      - any-glob-to-any-file: js/packages/date/**
+      - any-glob-to-any-file: packages/date/**

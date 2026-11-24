@@ -69,17 +69,19 @@ importers:
         specifier: ^2.9.1
         version: 2.9.1
 
-  js/packages/ariary:
+  conformance: {}
+
+  packages/ariary:
     dependencies:
       '@madagascar-oss/words':
         specifier: workspace:^
         version: link:../words
 
-  js/packages/date: {}
+  packages/date: {}
 
-  js/packages/phone: {}
+  packages/phone: {}
 
-  js/packages/utils:
+  packages/utils:
     dependencies:
       '@madagascar-oss/ariary':
         specifier: workspace:^
@@ -94,9 +96,7 @@ importers:
         specifier: workspace:^
         version: link:../words
 
-  js/packages/words: {}
-
-  js/test-runner: {}
+  packages/words: {}
 
 packages:
 

@@ -3,17 +3,17 @@
   "workspaces": {
     ".": {
       "entry": ["tools/*/index.ts"],
-      "project": ["tools/**/*.ts"]
+      "project": ["tools/**/*.ts", "demo/**/*.ts"]
     },
-    "js/packages/*": {
+    "packages/*": {
       "entry": ["test/**/*.{test,bench}.ts"],
       "project": ["src/**/*.ts", "test/**/*.ts"]
     },
-    "js/test-runner": {
+    "conformance": {
       "entry": ["*.test.ts"],
       "project": ["**/*.ts"]
     }
   },
   "ignoreExportsUsedInFile": true,
-  "ignore": ["js/packages/*/src/generated/**"]
+  "ignore": ["packages/*/src/generated/**"]
 }

@@ -19,7 +19,7 @@ codegen:
 # Fail if generated code drifted from the spec
 check:
     pnpm codegen
-    git diff --exit-code -- 'js/packages/*/src/generated' || (echo "Generated code is out of date: run 'just codegen' and commit." && exit 1)
+    git diff --exit-code -- 'packages/*/src/generated' || (echo "Generated code is out of date: run 'just codegen' and commit." && exit 1)
 
 # Format, lint, typecheck and look for dead code
 lint:
@@ -47,7 +47,7 @@ api: build
 
 # Everything CI runs
 ci: check lint test build
-    pnpm -r --filter "./js/packages/*" exec api-extractor run
+    pnpm -r --filter "./packages/*" exec api-extractor run
     pnpm spec-claim
 
 # Scaffold the JS package for a module that exists in spec/

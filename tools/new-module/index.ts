@@ -2,7 +2,7 @@
 // Usage: just new-module <name>   (lower-case, e.g. ariary)
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
-import { JSON_INDENT, PACKAGES_DIR, ROOT_DIR, SPEC_DIR, readSpecVersion } from '../lib/spec.ts';
+import { JSON_INDENT, MODULES_DIR, PACKAGES_DIR, ROOT_DIR, readSpecVersion } from '../lib/spec.ts';
 
 const MODULE_NAME = /^[a-z][a-z0-9]*$/;
 const name = process.argv[2] ?? '';
@@ -10,7 +10,7 @@ if (!MODULE_NAME.test(name)) {
   console.error('Usage: just new-module <name>  (lower-case letters and digits, e.g. ariary)');
   process.exit(1);
 }
-if (!existsSync(join(SPEC_DIR, name, 'data.yaml'))) {
+if (!existsSync(join(MODULES_DIR, name, 'data.yaml'))) {
   console.error(
     `Module "${name}" is not in spec/. Add it to mg-utils-spec and bump the submodule first.`,
   );
@@ -43,7 +43,7 @@ const manifest = JSON.stringify(
   },
   null,
   JSON_INDENT,
-).replaceAll('js/packages/words', `js/packages/${name}`);
+).replaceAll('packages/words', `packages/${name}`);
 write(join(packageDir, 'package.json'), `${manifest}\n`);
 for (const file of ['tsup.config.ts', 'api-extractor.json', 'LICENSE']) {
   write(join(packageDir, file), readFileSync(join(PACKAGES_DIR, 'words', file), 'utf8'));
@@ -61,7 +61,7 @@ Implements spec ${readSpecVersion()}.
 npm install @madagascar-oss/${name}
 \`\`\`
 
-Rules and sources: [spec/${name}](https://github.com/madagascar-oss/mg-utils-spec/blob/dev/${name}/README.md).
+Rules and sources: [spec/${name}](https://github.com/madagascar-oss/mg-utils-spec/blob/dev/modules/${name}/README.md).
 `,
 );
 
@@ -102,9 +102,9 @@ export function ${fnName}(input: unknown): string {
 
 write(join(packageDir, 'etc', '.gitkeep'), '');
 
-const defaultsPath = join(ROOT_DIR, 'js', 'test-runner', 'default-functions.json');
+const defaultsPath = join(ROOT_DIR, 'conformance', 'functions.json');
 const defaults = JSON.parse(readFileSync(defaultsPath, 'utf8')) as Record<string, string>;
 const sorted = Object.fromEntries(Object.entries({ ...defaults, [name]: fnName }).sort());
 writeFileSync(defaultsPath, `${JSON.stringify(sorted, null, JSON_INDENT)}\n`);
-console.log(`registered ${name} → ${fnName} in js/test-runner/default-functions.json`);
+console.log(`registered ${name} → ${fnName} in conformance/functions.json`);
 console.log('Next: run `just codegen` and `just test`.');

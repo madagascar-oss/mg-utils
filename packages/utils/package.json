@@ -1,0 +1,61 @@
+{
+  "name": "@madagascar-oss/utils",
+  "version": "0.2.0",
+  "description": "Every mg-utils module in one package: Malagasy number words, phone numbers, Ariary amounts and dates.",
+  "license": "MIT",
+  "author": "Madagascar OSS contributors",
+  "homepage": "https://github.com/madagascar-oss/mg-utils-js/tree/main/packages/utils#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/madagascar-oss/mg-utils-js.git",
+    "directory": "packages/utils"
+  },
+  "bugs": "https://github.com/madagascar-oss/mg-utils-js/issues",
+  "keywords": [
+    "madagascar",
+    "malagasy",
+    "utils",
+    "ariary",
+    "date",
+    "phone",
+    "words"
+  ],
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      }
+    },
+    "./package.json": "./package.json"
+  },
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "engines": {
+    "node": ">=22.18.0"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
+  "scripts": {
+    "build": "tsup",
+    "api": "api-extractor run --local"
+  },
+  "dependencies": {
+    "@madagascar-oss/ariary": "workspace:^",
+    "@madagascar-oss/date": "workspace:^",
+    "@madagascar-oss/phone": "workspace:^",
+    "@madagascar-oss/words": "workspace:^"
+  }
+}
