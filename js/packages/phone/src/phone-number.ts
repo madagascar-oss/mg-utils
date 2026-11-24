@@ -7,8 +7,7 @@ import {
   TRUNK_PREFIX,
   type OperatorId,
 } from './generated/data.ts';
-import { MgError, type ErrorCode } from './generated/errors.ts';
-import type { SafeParseResult } from './result.ts';
+import { MgError, type ErrorCode, type SafeParseResult } from './generated/errors.ts';
 
 declare const phoneNumberBrand: unique symbol;
 
