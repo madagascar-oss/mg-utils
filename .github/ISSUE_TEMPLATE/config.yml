@@ -1,5 +1,8 @@
 blank_issues_enabled: false
 contact_links:
+  - name: Wrong data, new helper, new module or new language
+    url: https://github.com/madagascar-oss/mg-utils-spec/issues/new/choose
+    about: Data and behaviour are decided in the spec first.
   - name: Question or idea
     url: https://github.com/madagascar-oss/mg-utils-js/discussions
     about: Ask questions and discuss ideas in Discussions, so issues stay for actionable work.
