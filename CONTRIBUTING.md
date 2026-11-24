@@ -53,7 +53,6 @@ feat/… fix/… docs/… chore/…  ──squash──▶  dev  ──merge─�
 | `just new-module <name>` | Scaffold the JS package for a module in `spec/`              |
 | `just api`               | Refresh API reports after an intended public API change      |
 | `just bench`             | Benchmarks for hot paths                                     |
-| `just demo`              | Serve the live demo locally                                  |
 | `just ci`                | Everything CI runs                                           |
 
 ## Data rules

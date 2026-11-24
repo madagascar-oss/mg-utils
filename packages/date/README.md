@@ -23,3 +23,5 @@ getWeekdayName(1); // 'Alatsinainy' (ISO 8601: Monday is 1)
 ```
 
 Rules, sources and recorded decisions: [spec/date](https://github.com/madagascar-oss/mg-utils-spec/blob/dev/modules/date/README.md).
+
+Docs, API reference and a live playground: [madagascar-oss.github.io/mg-utils-docs/docs/date/](https://madagascar-oss.github.io/mg-utils-docs/docs/date/).

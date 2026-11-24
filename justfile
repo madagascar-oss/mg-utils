@@ -55,7 +55,3 @@ new-module name:
     pnpm new-module {{name}}
     pnpm install
     pnpm codegen
-
-# Build and serve the live demo on http://localhost:8080
-demo: build
-    pnpm demo

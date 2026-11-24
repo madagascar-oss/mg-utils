@@ -20,3 +20,5 @@ Supports integers from 0 to 999 999 999 999. Other input throws `MgError` with c
 `INVALID_TYPE` or `OUT_OF_RANGE`.
 
 Rules, sources and recorded disagreements: [spec/words](https://github.com/madagascar-oss/mg-utils-spec/blob/dev/modules/words/README.md).
+
+Docs, API reference and a live playground: [madagascar-oss.github.io/mg-utils-docs/docs/words/](https://madagascar-oss.github.io/mg-utils-docs/docs/words/).

@@ -38,3 +38,5 @@ formatFmg(7500); // 'Fmg 7 500'
 ```
 
 Rules, sources and recorded decisions: [spec/ariary](https://github.com/madagascar-oss/mg-utils-spec/blob/dev/modules/ariary/README.md).
+
+Docs, API reference and a live playground: [madagascar-oss.github.io/mg-utils-docs/docs/ariary/](https://madagascar-oss.github.io/mg-utils-docs/docs/ariary/).

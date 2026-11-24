@@ -20,3 +20,5 @@ formatDate('2026-11-23', 'full'); // 'Alatsinainy 23 Novambra 2026'
 
 Prefer the single-module packages (`@madagascar-oss/words`, `phone`, `ariary`, `date`) when
 you need only one.
+
+Docs, API reference and a live playground: [madagascar-oss.github.io/mg-utils-docs/docs/installation/using-utils-bundle/](https://madagascar-oss.github.io/mg-utils-docs/docs/installation/using-utils-bundle/).
