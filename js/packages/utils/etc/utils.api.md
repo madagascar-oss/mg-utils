@@ -4,27 +4,71 @@
 
 ```ts
 
+import { AriaryFormatOptions } from '@madagascar-oss/ariary';
+import { AriaryGrouping } from '@madagascar-oss/ariary';
+import { AriarySymbolPosition } from '@madagascar-oss/ariary';
+import { ariaryToFmg } from '@madagascar-oss/ariary';
+import { ariaryToWords } from '@madagascar-oss/ariary';
+import { CalendarDate } from '@madagascar-oss/date';
+import { DateStyle } from '@madagascar-oss/date';
 import { ErrorCode } from '@madagascar-oss/phone';
+import { fmgToAriary } from '@madagascar-oss/ariary';
+import { formatAriary } from '@madagascar-oss/ariary';
+import { formatDate } from '@madagascar-oss/date';
+import { formatFmg } from '@madagascar-oss/ariary';
 import { formatPhoneNumber } from '@madagascar-oss/phone';
+import { getMonthName } from '@madagascar-oss/date';
+import { getWeekdayName } from '@madagascar-oss/date';
 import { isValidPhoneNumber } from '@madagascar-oss/phone';
 import { MgError } from '@madagascar-oss/phone';
+import { NameWidth } from '@madagascar-oss/date';
 import { numberToWords } from '@madagascar-oss/words';
 import { OPERATOR_NAMES } from '@madagascar-oss/phone';
 import { OperatorId } from '@madagascar-oss/phone';
+import { parseAriary } from '@madagascar-oss/ariary';
 import { parsePhoneNumber } from '@madagascar-oss/phone';
 import { PhoneNumber } from '@madagascar-oss/phone';
 import { PhoneNumberFormat } from '@madagascar-oss/phone';
+import { safeParseAriary } from '@madagascar-oss/ariary';
 import { safeParsePhoneNumber } from '@madagascar-oss/phone';
 import { SafeParseResult } from '@madagascar-oss/phone';
 import { SPEC_VERSION } from '@madagascar-oss/phone';
 
+export { AriaryFormatOptions }
+
+export { AriaryGrouping }
+
+export { AriarySymbolPosition }
+
+export { ariaryToFmg }
+
+export { ariaryToWords }
+
+export { CalendarDate }
+
+export { DateStyle }
+
 export { ErrorCode }
 
+export { fmgToAriary }
+
+export { formatAriary }
+
+export { formatDate }
+
+export { formatFmg }
+
 export { formatPhoneNumber }
+
+export { getMonthName }
+
+export { getWeekdayName }
 
 export { isValidPhoneNumber }
 
 export { MgError }
+
+export { NameWidth }
 
 export { numberToWords }
 
@@ -32,11 +76,15 @@ export { OPERATOR_NAMES }
 
 export { OperatorId }
 
+export { parseAriary }
+
 export { parsePhoneNumber }
 
 export { PhoneNumber }
 
 export { PhoneNumberFormat }
+
+export { safeParseAriary }
 
 export { safeParsePhoneNumber }
 

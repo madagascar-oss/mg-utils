@@ -13,6 +13,25 @@ export {
   type OperatorId,
   type PhoneNumber,
   type PhoneNumberFormat,
-  type SafeParseResult,
 } from '@madagascar-oss/phone';
-export { MgError, SPEC_VERSION, type ErrorCode } from '@madagascar-oss/phone';
+export {
+  ariaryToFmg,
+  ariaryToWords,
+  fmgToAriary,
+  formatAriary,
+  formatFmg,
+  parseAriary,
+  safeParseAriary,
+  type AriaryFormatOptions,
+  type AriaryGrouping,
+  type AriarySymbolPosition,
+} from '@madagascar-oss/ariary';
+export {
+  formatDate,
+  getMonthName,
+  getWeekdayName,
+  type CalendarDate,
+  type DateStyle,
+  type NameWidth,
+} from '@madagascar-oss/date';
+export { MgError, SPEC_VERSION, type ErrorCode, type SafeParseResult } from '@madagascar-oss/phone';

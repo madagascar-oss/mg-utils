@@ -116,12 +116,16 @@
         color: var(--accent);
       }
     </style>
+    <!-- The ariary package imports the words package by name; map it to the local copy. -->
+    <script type="importmap">
+      { "imports": { "@madagascar-oss/words": "./lib/words.js" } }
+    </script>
   </head>
   <body>
     <main>
       <h1>mg-utils</h1>
       <p class="lead">
-        Malagasy number words and Madagascar phone numbers, running the published packages in your
+        Malagasy number words, phone numbers, Ariary amounts and dates, running the packages in your
         browser.
       </p>
 
@@ -149,9 +153,44 @@
         </dl>
       </section>
 
+      <section>
+        <h2>Ariary amount</h2>
+        <label for="amount">An amount, typed any way (Ar 1 500, 1.500 Ar, 1500…)</label>
+        <input id="amount" inputmode="numeric" autocomplete="off" value="Ar 2 026 000" />
+        <output id="amount-error" for="amount" class="error" aria-live="polite"></output>
+        <dl id="amount-result" hidden>
+          <dt>Default</dt>
+          <dd><code id="amount-default"></code></dd>
+          <dt>Dot grouping</dt>
+          <dd><code id="amount-dot"></code></dd>
+          <dt>Symbol after</dt>
+          <dd><code id="amount-after"></code></dd>
+          <dt>In words</dt>
+          <dd id="amount-words"></dd>
+          <dt>Old francs</dt>
+          <dd><code id="amount-fmg"></code></dd>
+        </dl>
+      </section>
+
+      <section>
+        <h2>Date</h2>
+        <label for="date">A date</label>
+        <input id="date" type="date" value="1960-06-26" min="0001-01-01" max="9999-12-31" />
+        <dl id="date-result">
+          <dt>full</dt>
+          <dd id="date-full"></dd>
+          <dt>long</dt>
+          <dd id="date-long"></dd>
+          <dt>short (CLDR)</dt>
+          <dd><code id="date-short"></code></dd>
+          <dt>numeric</dt>
+          <dd><code id="date-numeric"></code></dd>
+        </dl>
+      </section>
+
       <footer>
         <p>
-          <code>npm install @madagascar-oss/words @madagascar-oss/phone</code> ·
+          <code>npm install @madagascar-oss/utils</code> ·
           <a href="https://github.com/madagascar-oss/mg-utils">Source, rules and data sources</a>
         </p>
       </footer>
@@ -160,12 +199,30 @@
     <script type="module">
       import { numberToWords } from './lib/words.js';
       import { OPERATOR_NAMES, formatPhoneNumber, safeParsePhoneNumber } from './lib/phone.js';
+      import {
+        ariaryToFmg,
+        ariaryToWords,
+        formatAriary,
+        formatFmg,
+        safeParseAriary,
+      } from './lib/ariary.js';
+      import { formatDate } from './lib/date.js';
 
       const numberInput = document.getElementById('number');
       const wordsOutput = document.getElementById('words');
       const phoneInput = document.getElementById('phone');
       const phoneError = document.getElementById('phone-error');
       const phoneResult = document.getElementById('phone-result');
+
+      const amountInput = document.getElementById('amount');
+      const amountError = document.getElementById('amount-error');
+      const amountResult = document.getElementById('amount-result');
+      const dateInput = document.getElementById('date');
+      const DATE_STYLES = ['full', 'long', 'short', 'numeric'];
+      const AMOUNT_MESSAGES = {
+        INVALID_FORMAT: 'Not an amount. Use spaces or dots between thousands, never commas.',
+        OUT_OF_RANGE: 'Use an amount up to 999 999 999 999 Ar.',
+      };
 
       const MESSAGES = {
         INVALID_TYPE: 'Type a whole number.',
@@ -205,6 +262,37 @@
         document.getElementById('e164').textContent = result.data.e164;
       }
 
+      function showAmount() {
+        const result = safeParseAriary(amountInput.value);
+        amountResult.hidden = !result.success;
+        amountError.textContent =
+          result.success || amountInput.value.trim() === ''
+            ? ''
+            : AMOUNT_MESSAGES[result.error.code];
+        if (!result.success) return;
+        const amount = result.data;
+        document.getElementById('amount-default').textContent = formatAriary(amount);
+        document.getElementById('amount-dot').textContent = formatAriary(amount, {
+          grouping: 'dot',
+        });
+        document.getElementById('amount-after').textContent = formatAriary(amount, {
+          symbolPosition: 'after',
+        });
+        document.getElementById('amount-words').textContent = ariaryToWords(amount);
+        document.getElementById('amount-fmg').textContent = formatFmg(ariaryToFmg(amount));
+      }
+
+      function showDate() {
+        if (dateInput.value === '') return;
+        for (const style of DATE_STYLES) {
+          document.getElementById(`date-${style}`).textContent = formatDate(dateInput.value, style);
+        }
+      }
+
+      amountInput.addEventListener('input', showAmount);
+      dateInput.addEventListener('input', showDate);
+      showAmount();
+      showDate();
       numberInput.addEventListener('input', showWords);
       phoneInput.addEventListener('input', showPhone);
       showWords();
