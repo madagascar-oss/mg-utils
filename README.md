@@ -17,7 +17,8 @@ Implements [spec](https://github.com/madagascar-oss/mg-utils-spec) **0.2.0** · 
 | [ariary](https://github.com/madagascar-oss/mg-utils-spec/blob/dev/modules/ariary/README.md) | `1500` → `Ar 1 500`, parse, words, FMG                                 | [`@madagascar-oss/ariary`](packages/ariary) |
 | [date](https://github.com/madagascar-oss/mg-utils-spec/blob/dev/modules/date/README.md)     | `2026-11-23` → `Alatsinainy 23 Novambra 2026`, month and weekday names | [`@madagascar-oss/date`](packages/date)     |
 
-`@madagascar-oss/utils` bundles every JavaScript module.
+`@madagascar-oss/utils` bundles every JavaScript module. Each package keeps its own
+`CHANGELOG.md`, written by Changesets on release.
 
 ```ts
 import { formatPhoneNumber, numberToWords } from '@madagascar-oss/utils';
