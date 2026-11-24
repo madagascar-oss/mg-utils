@@ -2,9 +2,11 @@
 // Modules without an emitter get a generic `Data::DATA` constant.
 import {
   ariaryTables,
+  dateTables,
   phoneTables,
   wordsTables,
   type AriaryData,
+  type DateData,
   type PhoneData,
   type WordsData,
 } from '../shared/tables.ts';
@@ -176,10 +178,78 @@ function ariary(data: AriaryData, source: string): PhpOutput[] {
   ];
 }
 
+function dateStyleEnum(styles: readonly (readonly [string, string])[]): string {
+  const cases = styles.map(([id]) => `    case ${pascalCase(id)} = ${phpLiteral(id)};`).join('\n');
+  const patterns = styles
+    .map(([id, pattern]) => `            self::${pascalCase(id)} => ${phpLiteral(pattern)},`)
+    .join('\n');
+  return phpFile(
+    `${ROOT_NAMESPACE}\\Date`,
+    `/**
+ * How \`MalagasyDate::format()\` writes a date. The first case is the default.
+ *
+ * Example: \`MalagasyDate::fromString('2026-11-23')->format(DateStyle::Full)\` returns
+ * \`'Alatsinainy 23 Novambra 2026'\`.
+ */
+enum DateStyle: string
+{
+${cases}
+
+    /**
+     * The CLDR pattern of this style, e.g. \`d MMMM y\` for \`DateStyle::Long\`.
+     */
+    public function pattern(): string
+    {
+        return match ($this) {
+${patterns}
+        };
+    }
+}`,
+  );
+}
+
+function date(data: DateData, source: string): PhpOutput[] {
+  const tables = dateTables(data);
+  return [
+    {
+      path: 'Date/Generated/Data.php',
+      source: dataClass(
+        `${ROOT_NAMESPACE}\\Date\\Generated`,
+        [
+          { name: 'MONTH_NAMES', type: 'array', value: tables.monthNames, varDoc: 'list<string>' },
+          {
+            name: 'MONTH_ABBREVIATIONS',
+            type: 'array',
+            value: tables.monthAbbreviations,
+            varDoc: 'list<string>',
+          },
+          {
+            name: 'WEEKDAY_NAMES',
+            type: 'array',
+            value: tables.weekdayNames,
+            varDoc: 'list<string>',
+          },
+          {
+            name: 'WEEKDAY_ABBREVIATIONS',
+            type: 'array',
+            value: tables.weekdayAbbreviations,
+            varDoc: 'list<string>',
+          },
+          { name: 'MIN_YEAR', type: 'int', value: tables.minYear },
+          { name: 'MAX_YEAR', type: 'int', value: tables.maxYear },
+        ],
+        source,
+      ),
+    },
+    { path: 'Date/DateStyle.php', source: dateStyleEnum(tables.styles) },
+  ];
+}
+
 const EMITTERS: Readonly<Record<string, (data: never, source: string) => PhpOutput[]>> = {
   words,
   phone,
   ariary,
+  date,
 };
 
 export function moduleFiles(module: string, data: unknown, specVersion: string): PhpOutput[] {
