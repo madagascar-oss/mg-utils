@@ -1,4 +1,5 @@
 {
+  "ariary": "formatAriary",
   "phone": "parsePhoneNumber",
   "words": "numberToWords"
 }
