@@ -87,6 +87,12 @@ importers:
 
   js/packages/utils:
     dependencies:
+      '@madagascar-oss/ariary':
+        specifier: workspace:^
+        version: link:../ariary
+      '@madagascar-oss/date':
+        specifier: workspace:^
+        version: link:../date
       '@madagascar-oss/phone':
         specifier: workspace:^
         version: link:../phone

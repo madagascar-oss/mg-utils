@@ -1,7 +1,7 @@
 {
   "name": "@madagascar-oss/utils",
   "version": "0.1.0",
-  "description": "All mg-utils modules in one package: Malagasy number words and phone numbers.",
+  "description": "Every mg-utils module in one package: Malagasy number words, phone numbers, Ariary amounts and dates.",
   "license": "MIT",
   "author": "Madagascar OSS contributors",
   "homepage": "https://github.com/madagascar-oss/mg-utils/tree/main/js/packages/utils#readme",
@@ -14,7 +14,11 @@
   "keywords": [
     "madagascar",
     "malagasy",
-    "utils"
+    "utils",
+    "ariary",
+    "date",
+    "phone",
+    "words"
   ],
   "type": "module",
   "sideEffects": false,
@@ -49,6 +53,8 @@
     "api": "api-extractor run --local"
   },
   "dependencies": {
+    "@madagascar-oss/ariary": "workspace:^",
+    "@madagascar-oss/date": "workspace:^",
     "@madagascar-oss/phone": "workspace:^",
     "@madagascar-oss/words": "workspace:^"
   }
