@@ -20,8 +20,7 @@
     "changeset": "changeset",
     "version-packages": "changeset version",
     "release": "pnpm build && changeset publish",
-    "spec-claim": "node tools/spec-claim/index.ts",
-    "demo": "node demo/build.ts && python3 -m http.server 8080 --directory demo"
+    "spec-claim": "node tools/spec-claim/index.ts"
   },
   "devDependencies": {
     "@changesets/changelog-github": "^1.0.1",

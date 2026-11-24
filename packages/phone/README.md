@@ -33,3 +33,5 @@ OPERATOR_NAMES.telma; // 'Telma'
 ```
 
 Rules, operator prefixes and sources: [spec/phone](https://github.com/madagascar-oss/mg-utils-spec/blob/dev/modules/phone/README.md).
+
+Docs, API reference and a live playground: [madagascar-oss.github.io/mg-utils-docs/docs/phone/](https://madagascar-oss.github.io/mg-utils-docs/docs/phone/).
