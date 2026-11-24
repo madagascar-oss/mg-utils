@@ -14,8 +14,8 @@ import {
   readYaml,
   stripProvenance,
 } from '../lib/spec.ts';
-import { errorsFile } from './typescript/emit.ts';
-import { dataFile } from './typescript/modules.ts';
+import { errorsFile } from './emit.ts';
+import { dataFile } from './modules.ts';
 
 const specVersion = readSpecVersion();
 const errors = readErrors();

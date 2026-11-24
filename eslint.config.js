@@ -12,9 +12,9 @@ const MAX_PARAMS = 3;
 const MAX_DEPTH = 3;
 const MAX_FUNCTION_LINES = 20;
 const MIN_IDENTIFIER_LENGTH = 2;
-const LIBRARY_SOURCES = ['js/packages/*/src/**/*.ts'];
-const GENERATED_SOURCES = ['js/packages/*/src/generated/**'];
-const TEST_FILES = ['**/*.test.ts', '**/*.bench.ts', 'js/test-runner/**'];
+const LIBRARY_SOURCES = ['packages/*/src/**/*.ts'];
+const GENERATED_SOURCES = ['packages/*/src/generated/**'];
+const TEST_FILES = ['**/*.test.ts', '**/*.bench.ts', 'conformance/**'];
 
 const namingRules = [
   { selector: 'default', format: ['camelCase'], leadingUnderscore: 'forbid' },
@@ -39,7 +39,7 @@ const namingRules = [
 ];
 
 export default tseslint.config(
-  { ignores: ['**/dist/**', '**/node_modules/**', 'spec/**', 'coverage/**', 'docs/site/lib/**'] },
+  { ignores: ['**/dist/**', '**/node_modules/**', 'spec/**', 'coverage/**', 'demo/lib/**'] },
   eslint.configs.recommended,
   tseslint.configs.strictTypeChecked,
   tseslint.configs.stylisticTypeChecked,

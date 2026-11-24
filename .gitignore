@@ -19,4 +19,4 @@ __pycache__/
 coverage/
 *.tsbuildinfo
 temp/
-docs/site/lib/
+demo/lib/

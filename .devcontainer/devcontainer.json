@@ -21,9 +21,9 @@
         "editor.formatOnSave": true,
         "editor.defaultFormatter": "esbenp.prettier-vscode",
         "yaml.schemas": {
-          "spec/_schemas/tests.schema.json": "spec/*/tests.yaml",
-          "spec/phone/schema.json": "spec/phone/data.yaml",
-          "spec/words/schema.json": "spec/words/data.yaml"
+          "spec/schemas/tests.schema.json": "spec/modules/*/tests.yaml",
+          "spec/modules/phone/schema.json": "spec/modules/phone/data.yaml",
+          "spec/modules/words/schema.json": "spec/modules/words/data.yaml"
         }
       }
     }

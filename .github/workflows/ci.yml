@@ -28,7 +28,7 @@ jobs:
       - uses: ./.github/actions/setup
       - run: pnpm lint
       - name: Public API unchanged (run `just api` and commit etc/ if intended)
-        run: pnpm build && pnpm -r --filter "./js/packages/*" exec api-extractor run
+        run: pnpm build && pnpm -r --filter "./packages/*" exec api-extractor run
 
   spec:
     name: Codegen drift
@@ -41,7 +41,7 @@ jobs:
       - uses: ./.github/actions/setup
       - run: pnpm codegen
       - name: Generated code matches spec/
-        run: git diff --exit-code -- 'js/packages/*/src/generated' || (echo "::error::Generated code is out of date. Run 'just codegen' and commit." && exit 1)
+        run: git diff --exit-code -- 'packages/*/src/generated' || (echo "::error::Generated code is out of date. Run 'just codegen' and commit." && exit 1)
 
   test-js:
     name: Spec vectors (Node ${{ matrix.node }})

@@ -1,6 +1,6 @@
 packages:
-  - js/packages/*
-  - js/test-runner
+  - packages/*
+  - conformance
 onlyBuiltDependencies:
   - esbuild
   - lefthook

@@ -7,5 +7,5 @@
   "access": "public",
   "baseBranch": "main",
   "updateInternalDependencies": "patch",
-  "ignore": ["@madagascar-oss/test-runner"]
+  "ignore": ["@madagascar-oss/conformance"]
 }
