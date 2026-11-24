@@ -28,20 +28,24 @@ function isNotEmpty(word: string): boolean {
   return word !== '';
 }
 
-// Malagasy reads upwards: units, then tens, then hundreds. "iray" becomes "iraika" when
-// something follows it, and only 11–19 use "ambin' ny" (https://malagasyword.org/bins/teny2/amby).
+// Malagasy reads upwards: units, then tens, then hundreds. 11–19 join with "ambin'ny", other
+// units onto tens with "amby"; "iraika" replaces "iray" only right before those words.
+function belowHundredWords(unitWord: string, units: Digit, tens: Digit): string {
+  if (tens === 1 && units > 0) return `${unitWord} ${JOINER_UNITS_BEFORE_TEN} ${TEN_WORDS[1]}`;
+  return [unitWord, TEN_WORDS[tens]].filter(isNotEmpty).join(` ${JOINER_BELOW_THOUSAND} `);
+}
+
+// The smaller part joins exactly 100 with "amby" ("dimy amby zato") and 200–900 with "sy"
+// ("dimy sy roanjato"), at every size of number.
 function belowThousandWords(value: number): string {
   const units = digitAt(value, 1);
   const tens = digitAt(value, BASE);
   const hundreds = digitAt(value, HUNDRED);
-  const unitWord = units === 1 && value > 1 ? UNIT_ONE_IN_COMPOUND : UNIT_WORDS[units];
-  const lowerWords =
-    tens === 1 && units > 0
-      ? [`${unitWord} ${JOINER_UNITS_BEFORE_TEN} ${TEN_WORDS[1]}`]
-      : [unitWord, TEN_WORDS[tens]];
-  return [...lowerWords, HUNDRED_WORDS[hundreds]]
-    .filter(isNotEmpty)
-    .join(` ${JOINER_BELOW_THOUSAND} `);
+  const isOneBeforeAmby = units === 1 && (tens > 0 || hundreds === 1);
+  const unitWord = isOneBeforeAmby ? UNIT_ONE_IN_COMPOUND : UNIT_WORDS[units];
+  const belowHundred = belowHundredWords(unitWord, units, tens);
+  const joiner = hundreds === 1 ? JOINER_BELOW_THOUSAND : JOINER_BETWEEN_GROUPS;
+  return [belowHundred, HUNDRED_WORDS[hundreds]].filter(isNotEmpty).join(` ${joiner} `);
 }
 
 // A count of one is the bare group word: "arivo", not "iray arivo".

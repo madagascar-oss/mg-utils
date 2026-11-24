@@ -1,6 +1,6 @@
 // GENERATED — edit spec/ instead. Run `just codegen` to refresh.
 
-// From spec/modules/ariary/data.yaml, spec 0.2.0.
+// From spec/modules/ariary/data.yaml, spec 0.3.0.
 
 /** @internal */
 export const CURRENCY_SYMBOL = 'Ar' as const;

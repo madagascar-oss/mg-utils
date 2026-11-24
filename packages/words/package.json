@@ -1,7 +1,7 @@
 {
   "name": "@madagascar-oss/words",
   "version": "0.3.0",
-  "description": "Malagasy number words: 1234 → efatra amby telopolo amby roanjato sy arivo.",
+  "description": "Malagasy number words: 1234 → efatra amby telopolo sy roanjato sy arivo.",
   "license": "MIT",
   "author": "Madagascar OSS contributors",
   "homepage": "https://github.com/madagascar-oss/mg-utils-js/tree/main/packages/words#readme",

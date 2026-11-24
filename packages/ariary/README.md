@@ -4,7 +4,7 @@ Malagasy Ariary amounts: format the Malagasy way (`Ar 1 500`, never a comma), re
 typed by users, write them in words, and convert old francs (FMG). Zero third-party
 dependencies, ESM + CommonJS + types.
 
-Implements spec 0.2.0.
+Implements spec 0.3.0.
 
 ```sh
 npm install @madagascar-oss/ariary
