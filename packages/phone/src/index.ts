@@ -8,6 +8,7 @@ export {
   isValidPhoneNumber,
   parsePhoneNumber,
   safeParsePhoneNumber,
+  tryParsePhoneNumber,
   type PhoneNumber,
 } from './phone-number.ts';
 export { OPERATOR_NAMES, type OperatorId } from './generated/data.ts';

@@ -18,6 +18,8 @@ import {
   formatAriary,
   formatFmg,
   parseAriary,
+  safeParseAriary,
+  tryParseAriary,
 } from '@madagascar-oss/ariary';
 
 formatAriary(1500); // 'Ar 1 500' (no-break spaces)
@@ -26,6 +28,8 @@ formatAriary(1500, { symbolPosition: 'after' }); // '1 500 Ar'
 
 parseAriary('1.500 Ar'); // 1500
 parseAriary('1,500'); // throws MgError INVALID_FORMAT: commas are not thousand separators
+tryParseAriary('1,500'); // undefined (never throws)
+safeParseAriary('1,500'); // { success: false, error: MgError INVALID_FORMAT }
 
 ariaryToWords(1500); // 'dimanjato sy arivo ariary'
 fmgToAriary(7500); // 1500
