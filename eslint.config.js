@@ -39,7 +39,7 @@ const namingRules = [
 ];
 
 export default tseslint.config(
-  { ignores: ['**/dist/**', '**/node_modules/**', 'php/**', 'coverage/**', 'docs/site/lib/**'] },
+  { ignores: ['**/dist/**', '**/node_modules/**', 'spec/**', 'coverage/**', 'docs/site/lib/**'] },
   eslint.configs.recommended,
   tseslint.configs.strictTypeChecked,
   tseslint.configs.stylisticTypeChecked,

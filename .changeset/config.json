@@ -1,6 +1,6 @@
 {
   "$schema": "https://unpkg.com/@changesets/config@3/schema.json",
-  "changelog": ["@changesets/changelog-github", { "repo": "madagascar-oss/mg-utils" }],
+  "changelog": ["@changesets/changelog-github", { "repo": "madagascar-oss/mg-utils-js" }],
   "commit": false,
   "fixed": [],
   "linked": [],

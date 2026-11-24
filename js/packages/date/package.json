@@ -4,13 +4,13 @@
   "description": "Malagasy dates: 'Alatsinainy 23 Novambra 2026', month and weekday names, from CLDR.",
   "license": "MIT",
   "author": "Madagascar OSS contributors",
-  "homepage": "https://github.com/madagascar-oss/mg-utils/tree/main/js/packages/date#readme",
+  "homepage": "https://github.com/madagascar-oss/mg-utils-js/tree/main/js/packages/date#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/madagascar-oss/mg-utils.git",
+    "url": "git+https://github.com/madagascar-oss/mg-utils-js.git",
     "directory": "js/packages/date"
   },
-  "bugs": "https://github.com/madagascar-oss/mg-utils/issues",
+  "bugs": "https://github.com/madagascar-oss/mg-utils-js/issues",
   "keywords": [
     "madagascar",
     "malagasy",

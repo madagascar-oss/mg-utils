@@ -10,16 +10,12 @@ pre-commit:
       glob: '*.{ts,js}'
       run: pnpm exec eslint --fix {staged_files}
       stage_fixed: true
-    php-cs-fixer:
-      glob: 'php/**/*.php'
-      run: php/vendor/bin/php-cs-fixer fix --config=php/.php-cs-fixer.dist.php {staged_files}
-      stage_fixed: true
     yamllint:
       glob: '*.{yaml,yml}'
       run: yamllint -c .yamllint.yaml {staged_files} || echo "yamllint not installed; CI will check YAML"
     spec:
-      glob: 'spec/**'
-      run: pnpm validate && pnpm codegen && git add js/packages/*/src/generated php/src
+      glob: 'spec'
+      run: pnpm codegen && git add js/packages/*/src/generated
 commit-msg:
   commands:
     conventional:

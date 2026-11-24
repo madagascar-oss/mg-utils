@@ -1,11 +1,7 @@
 {
-  "name": "mg-utils",
+  "name": "mg-utils-js",
   "image": "mcr.microsoft.com/devcontainers/javascript-node:1-22-bookworm",
   "features": {
-    "ghcr.io/devcontainers/features/php:1": {
-      "version": "8.3",
-      "installComposer": true
-    },
     "ghcr.io/guiyomh/features/just:0": {},
     "ghcr.io/devcontainers/features/python:1": {
       "version": "3.12"
@@ -19,8 +15,7 @@
         "esbenp.prettier-vscode",
         "redhat.vscode-yaml",
         "nefrob.vscode-just-syntax",
-        "vitest.explorer",
-        "bmewburn.vscode-intelephense-client"
+        "vitest.explorer"
       ],
       "settings": {
         "editor.formatOnSave": true,

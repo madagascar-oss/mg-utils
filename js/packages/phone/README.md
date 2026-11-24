@@ -30,4 +30,4 @@ if (!result.success) console.log(result.error.code); // 'INVALID_FORMAT' | 'UNKN
 OPERATOR_NAMES.telma; // 'Telma'
 ```
 
-Rules, operator prefixes and sources: [spec/phone](../../../spec/phone/README.md).
+Rules, operator prefixes and sources: [spec/phone](https://github.com/madagascar-oss/mg-utils-spec/blob/dev/phone/README.md).

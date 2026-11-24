@@ -15,5 +15,5 @@
     }
   },
   "ignoreExportsUsedInFile": true,
-  "ignore": ["js/packages/*/src/generated/**", "php/**"]
+  "ignore": ["js/packages/*/src/generated/**"]
 }

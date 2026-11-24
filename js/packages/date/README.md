@@ -22,4 +22,4 @@ getMonthName(6); // 'Jona'
 getWeekdayName(1); // 'Alatsinainy' (ISO 8601: Monday is 1)
 ```
 
-Rules, sources and recorded decisions: [spec/date](../../../spec/date/README.md).
+Rules, sources and recorded decisions: [spec/date](https://github.com/madagascar-oss/mg-utils-spec/blob/dev/date/README.md).

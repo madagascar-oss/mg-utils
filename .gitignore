@@ -20,4 +20,3 @@ coverage/
 *.tsbuildinfo
 temp/
 docs/site/lib/
-.php-cs-fixer.cache
