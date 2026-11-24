@@ -1,0 +1,73 @@
+// GENERATED — edit spec/ instead. Run `just codegen` to refresh.
+
+/** Version of the shared spec this code was generated from. */
+export const SPEC_VERSION = '0.1.0';
+
+/**
+ * Error code shared by every mg-utils language port.
+ *
+ * - `INVALID_TYPE`: The input is not of the accepted type (for example a string or a non-integer where an integer is expected).
+ * - `OUT_OF_RANGE`: The input has the right type but lies outside the supported range.
+ * - `INVALID_FORMAT`: The input text cannot be read as a value of this module (wrong characters or wrong length).
+ * - `UNKNOWN_OPERATOR`: The phone number is well formed but its operator code is not assigned to a mobile operator.
+ */
+export type ErrorCode = 'INVALID_TYPE' | 'OUT_OF_RANGE' | 'INVALID_FORMAT' | 'UNKNOWN_OPERATOR';
+
+/**
+ * Outcome of a `safeParse…` function: the value, or the error that would have been thrown.
+ *
+ * @example
+ * ```ts
+ * const result = safeParsePhoneNumber(input);
+ * if (result.success) console.log(result.data);
+ * else console.log(result.error.code);
+ * ```
+ */
+export type SafeParseResult<T> =
+  | { readonly success: true; readonly data: T }
+  | { readonly success: false; readonly error: MgError };
+
+/**
+ * Error thrown by mg-utils functions. Check `code`, which is the same in every language.
+ *
+ * @example
+ * ```ts
+ * try {
+ *   numberToWords(-1);
+ * } catch (error) {
+ *   if (error instanceof MgError && error.code === 'OUT_OF_RANGE') {
+ *     // handle it
+ *   }
+ * }
+ * ```
+ */
+export class MgError extends Error {
+  /** Always `'MgError'`. */
+  override readonly name = 'MgError';
+  /** Why the call failed; the same code in every language. */
+  readonly code: ErrorCode;
+
+  /**
+   * Creates an error with a shared spec code.
+   *
+   * @param code - Shared spec error code.
+   * @param message - Human-readable explanation, in English.
+   */
+  constructor(code: ErrorCode, message: string) {
+    super(message);
+    this.code = code;
+  }
+
+  /**
+   * Makes `instanceof MgError` true for errors from any mg-utils package or build.
+   *
+   * @remarks Each package, and its ESM and CommonJS builds, has its own copy of this class,
+   * so the check looks at the error's shape instead of its prototype chain.
+   *
+   * @param value - Any value, usually a caught error.
+   * @returns `true` when `value` is an mg-utils error.
+   */
+  static override [Symbol.hasInstance](value: unknown): boolean {
+    return value instanceof Error && value.name === 'MgError' && 'code' in value;
+  }
+}

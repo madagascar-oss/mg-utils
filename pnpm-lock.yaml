@@ -81,6 +81,8 @@ importers:
         specifier: workspace:^
         version: link:../words
 
+  js/packages/date: {}
+
   js/packages/phone: {}
 
   js/packages/utils:

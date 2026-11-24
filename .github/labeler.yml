@@ -28,3 +28,6 @@ words:
 ariary:
   - changed-files:
       - any-glob-to-any-file: ['spec/ariary/**', 'js/packages/ariary/**', 'php/src/Ariary/**']
+date:
+  - changed-files:
+      - any-glob-to-any-file: ['spec/date/**', 'js/packages/date/**', 'php/src/Date/**']

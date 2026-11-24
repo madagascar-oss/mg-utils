@@ -2,9 +2,11 @@
 // Modules without an emitter get the generic `DATA` constant.
 import {
   ariaryTables,
+  dateTables,
   phoneTables,
   wordsTables,
   type AriaryData,
+  type DateData,
   type PhoneData,
   type WordsData,
 } from '../shared/tables.ts';
@@ -79,7 +81,32 @@ function ariary(data: AriaryData): string[] {
   ];
 }
 
-const EMITTERS: Readonly<Record<string, (data: never) => string[]>> = { words, phone, ariary };
+function date(data: DateData): string[] {
+  const tables = dateTables(data);
+  const styleUnion = tables.styles.map(([id]) => literal(id)).join(' | ');
+  return [
+    constant('MONTH_NAMES', tables.monthNames, 'Index = month number; index 0 is unused.'),
+    constant('MONTH_ABBREVIATIONS', tables.monthAbbreviations, 'Index = month number.'),
+    constant(
+      'WEEKDAY_NAMES',
+      tables.weekdayNames,
+      'Index = ISO weekday (Monday 1); index 0 is unused.',
+    ),
+    constant('WEEKDAY_ABBREVIATIONS', tables.weekdayAbbreviations, 'Index = ISO weekday.'),
+    `/** Date style for {@link formatDate}; \`long\` is the default. */\nexport type DateStyle = ${styleUnion};`,
+    `/** @internal Style → CLDR pattern; the first entry is the default. */\nexport const STYLE_PATTERNS: ReadonlyMap<DateStyle, string> = new Map<DateStyle, string>(${literal(tables.styles)});`,
+    constant('DEFAULT_STYLE', tables.styles[0]?.[0] ?? ''),
+    constant('MIN_YEAR', tables.minYear),
+    constant('MAX_YEAR', tables.maxYear),
+  ];
+}
+
+const EMITTERS: Readonly<Record<string, (data: never) => string[]>> = {
+  words,
+  phone,
+  ariary,
+  date,
+};
 
 export function dataFile(module: string, data: unknown, specVersion: string): string {
   const emit = EMITTERS[module];
