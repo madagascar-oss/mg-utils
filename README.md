@@ -6,7 +6,7 @@ Ariary amounts and dates — built from **one shared spec** so every language be
 [![CI](https://github.com/madagascar-oss/mg-utils-js/actions/workflows/ci.yml/badge.svg)](https://github.com/madagascar-oss/mg-utils-js/actions/workflows/ci.yml)
 [![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/madagascar-oss/mg-utils-js/badge)](https://scorecard.dev/viewer/?uri=github.com/madagascar-oss/mg-utils-js)
 
-Implements [spec](https://github.com/madagascar-oss/mg-utils-spec) **0.2.0** · [Docs & playground](https://madagascar-oss.github.io/mg-utils-docs/) · PHP: [mg-utils-php](https://github.com/madagascar-oss/mg-utils-php)
+Implements [spec](https://github.com/madagascar-oss/mg-utils-spec) **0.3.0** · [Docs & playground](https://madagascar-oss.github.io/mg-utils-docs/) · PHP: [mg-utils-php](https://github.com/madagascar-oss/mg-utils-php)
 
 ## Modules
 

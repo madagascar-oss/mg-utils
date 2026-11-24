@@ -1,6 +1,6 @@
 // GENERATED — edit spec/ instead. Run `just codegen` to refresh.
 
-// From spec/modules/words/data.yaml, spec 0.2.0.
+// From spec/modules/words/data.yaml, spec 0.3.0.
 
 /** @internal */
 export const ZERO_WORD = 'aotra' as const;
@@ -60,7 +60,7 @@ export const SCALES = [
 ] as const;
 
 /** @internal */
-export const JOINER_UNITS_BEFORE_TEN = "ambin' ny" as const;
+export const JOINER_UNITS_BEFORE_TEN = "ambin'ny" as const;
 
 /** @internal */
 export const JOINER_BELOW_THOUSAND = 'amby' as const;
