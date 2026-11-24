@@ -1,6 +1,13 @@
 // One emitter per module turns the shared tables into PHP files.
 // Modules without an emitter get a generic `Data::DATA` constant.
-import { phoneTables, wordsTables, type PhoneData, type WordsData } from '../shared/tables.ts';
+import {
+  ariaryTables,
+  phoneTables,
+  wordsTables,
+  type AriaryData,
+  type PhoneData,
+  type WordsData,
+} from '../shared/tables.ts';
 import { ROOT_NAMESPACE, dataClass, pascalCase, phpFile, phpLiteral } from './emit.ts';
 
 export interface PhpOutput {
@@ -102,9 +109,77 @@ function phone(data: PhoneData, source: string): PhpOutput[] {
   ];
 }
 
+function groupingEnum(separators: readonly (readonly [string, string])[]): string {
+  const cases = separators
+    .map(([id]) => `    case ${pascalCase(id)} = ${phpLiteral(id)};`)
+    .join('\n');
+  const characters = separators
+    .map(([id, value]) => `            self::${pascalCase(id)} => ${phpLiteral(value)},`)
+    .join('\n');
+  return phpFile(
+    `${ROOT_NAMESPACE}\\Ariary`,
+    `/**
+ * Thousand separator used when formatting amounts. Madagascar never uses a comma.
+ *
+ * Example: \`Ariary::fromInt(1500)->format(Grouping::Dot)\` returns \`'Ar 1.500'\`.
+ */
+enum Grouping: string
+{
+${cases}
+
+    /**
+     * The separator character, e.g. a no-break space for \`Grouping::Space\`.
+     */
+    public function separator(): string
+    {
+        return match ($this) {
+${characters}
+        };
+    }
+}`,
+  );
+}
+
+function ariary(data: AriaryData, source: string): PhpOutput[] {
+  const tables = ariaryTables(data);
+  return [
+    {
+      path: 'Ariary/Generated/Data.php',
+      source: dataClass(
+        `${ROOT_NAMESPACE}\\Ariary\\Generated`,
+        [
+          { name: 'CURRENCY_SYMBOL', type: 'string', value: tables.currencySymbol },
+          { name: 'CURRENCY_WORD', type: 'string', value: tables.currencyWord },
+          { name: 'SYMBOL_SEPARATOR', type: 'string', value: tables.symbolSeparator },
+          { name: 'GROUP_SIZE', type: 'int', value: tables.groupSize },
+          {
+            name: 'READABLE_SEPARATORS',
+            type: 'array',
+            value: tables.readableSeparators,
+            varDoc: 'list<string>',
+          },
+          {
+            name: 'CURRENCY_TOKENS',
+            type: 'array',
+            value: tables.currencyTokens,
+            varDoc: 'list<string>',
+          },
+          { name: 'FRANC_SYMBOL', type: 'string', value: tables.francSymbol },
+          { name: 'FRANCS_PER_ARIARY', type: 'int', value: tables.francsPerAriary },
+          { name: 'MIN_AMOUNT', type: 'int', value: tables.minAmount },
+          { name: 'MAX_AMOUNT', type: 'int', value: tables.maxAmount },
+        ],
+        source,
+      ),
+    },
+    { path: 'Ariary/Grouping.php', source: groupingEnum(tables.groupSeparators) },
+  ];
+}
+
 const EMITTERS: Readonly<Record<string, (data: never, source: string) => PhpOutput[]>> = {
   words,
   phone,
+  ariary,
 };
 
 export function moduleFiles(module: string, data: unknown, specVersion: string): PhpOutput[] {
