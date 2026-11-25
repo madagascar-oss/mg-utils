@@ -1,13 +1,12 @@
 import {
   COUNTRY_CODE,
-  INTERNATIONAL_PREFIX,
-  NATIONAL_NUMBER_LENGTH,
   OPERATOR_BY_PREFIX,
   OPERATOR_PREFIX_LENGTH,
-  TRUNK_PREFIX,
   type OperatorId,
 } from './generated/data.ts';
-import { MgError, type ErrorCode, type SafeParseResult } from './generated/errors.ts';
+import type { SafeParseResult } from './generated/errors.ts';
+import { readNationalNumber } from './read-national-number.ts';
+import { failure } from './result.ts';
 
 declare const phoneNumberBrand: unique symbol;
 
@@ -29,45 +28,6 @@ export interface PhoneNumber {
   readonly operator: OperatorId;
   /** Marks values that went through validation; it does not exist at runtime. */
   readonly [phoneNumberBrand]: true;
-}
-
-// Bounded so a parser that reads user input never scans unbounded text.
-const MAX_INPUT_LENGTH = 32;
-const SEPARATORS = /[\s().-]/g;
-// A national significant number never starts with the trunk prefix 0 (ITU-T E.164).
-const NATIONAL_NUMBER_DIGITS = /^[1-9]\d*$/;
-const NATIONAL_PREFIXES = [
-  `+${COUNTRY_CODE}`,
-  `${INTERNATIONAL_PREFIX}${COUNTRY_CODE}`,
-  COUNTRY_CODE,
-  TRUNK_PREFIX,
-  '',
-] as const;
-
-function failure(code: ErrorCode, message: string): SafeParseResult<never> {
-  return { success: false, error: new MgError(code, message) };
-}
-
-function stripNationalPrefix(compact: string): string | undefined {
-  const prefix = NATIONAL_PREFIXES.find(
-    (candidate) =>
-      compact.startsWith(candidate) && compact.length === candidate.length + NATIONAL_NUMBER_LENGTH,
-  );
-  return prefix === undefined ? undefined : compact.slice(prefix.length);
-}
-
-function readNationalNumber(input: string): SafeParseResult<string> {
-  if (input.length > MAX_INPUT_LENGTH) {
-    return failure(
-      'INVALID_FORMAT',
-      `Phone numbers are at most ${String(MAX_INPUT_LENGTH)} characters.`,
-    );
-  }
-  const nationalNumber = stripNationalPrefix(input.replace(SEPARATORS, ''));
-  if (nationalNumber === undefined || !NATIONAL_NUMBER_DIGITS.test(nationalNumber)) {
-    return failure('INVALID_FORMAT', 'Expected a Malagasy number such as 034 12 345 67.');
-  }
-  return { success: true, data: nationalNumber };
 }
 
 /**

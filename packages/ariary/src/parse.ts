@@ -1,41 +1,12 @@
-import { CURRENCY_TOKENS, GROUP_SIZE, MAX_AMOUNT, READABLE_SEPARATORS } from './generated/data.ts';
+import { MAX_AMOUNT } from './generated/data.ts';
 import { MgError, type ErrorCode, type SafeParseResult } from './generated/errors.ts';
+import { readDigits } from './read-digits.ts';
 
 // Bounded so a parser that reads user input never scans unbounded text.
 const MAX_INPUT_LENGTH = 32;
-const SPACE = ' ';
-// Spaces, no-break spaces and narrow no-break spaces count as one separator when reading.
-const WHITESPACE_SEPARATORS = new RegExp(
-  `[${READABLE_SEPARATORS.filter((separator) => /\s/.test(separator)).join('')}]`,
-  'g',
-);
-const SEPARATOR_CLASS = READABLE_SEPARATORS.filter((separator) => !/\s/.test(separator))
-  .map((separator) => `\\${separator}`)
-  .join('');
-const PLAIN_AMOUNT = /^(?:0|[1-9]\d*)$/;
-const GROUPED_AMOUNT = new RegExp(
-  `^[1-9]\\d{0,${String(GROUP_SIZE - 1)}}([ ${SEPARATOR_CLASS}])\\d{${String(GROUP_SIZE)}}(?:\\1\\d{${String(GROUP_SIZE)}})*$`,
-);
-const NON_DIGITS = /\D/g;
 
 function failure(code: ErrorCode, message: string): SafeParseResult<never> {
   return { success: false, error: new MgError(code, message) };
-}
-
-function stripCurrency(text: string): string | undefined {
-  const lower = text.toLowerCase();
-  const prefix = CURRENCY_TOKENS.find((token) => lower.startsWith(token)) ?? '';
-  const suffix = CURRENCY_TOKENS.find((token) => lower.endsWith(token)) ?? '';
-  if (prefix !== '' && suffix !== '') return undefined;
-  return text.slice(prefix.length, text.length - suffix.length).trim();
-}
-
-function readDigits(text: string): string | undefined {
-  const amount = stripCurrency(text.trim());
-  if (amount === undefined) return undefined;
-  const normalized = amount.replace(WHITESPACE_SEPARATORS, SPACE);
-  const isAmount = PLAIN_AMOUNT.test(normalized) || GROUPED_AMOUNT.test(normalized);
-  return isAmount ? normalized.replace(NON_DIGITS, '') : undefined;
 }
 
 /**
