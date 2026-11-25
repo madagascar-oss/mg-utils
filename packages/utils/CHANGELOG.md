@@ -1,5 +1,19 @@
 # @madagascar-oss/utils
 
+## 0.5.0
+
+### Minor Changes
+
+- [#21](https://github.com/madagascar-oss/mg-utils-js/pull/21) [`1e83a65`](https://github.com/madagascar-oss/mg-utils-js/commit/1e83a655eb5e6b4414c74755f918296155760492) Thanks [@johan-mickael](https://github.com/johan-mickael)! - Implement spec 0.4.0 for number words (output change): a count of one is bare only for `arivo`. `10 000` → `iray alina`, `100 000` → `iray hetsy`, `1 000 000` → `iray tapitrisa`, `10⁹` → `iray lavitrisa`; `1 000` stays `arivo`. `ariaryToWords` follows.
+
+### Patch Changes
+
+- Updated dependencies [[`1e83a65`](https://github.com/madagascar-oss/mg-utils-js/commit/1e83a655eb5e6b4414c74755f918296155760492)]:
+  - @madagascar-oss/words@0.5.0
+  - @madagascar-oss/ariary@0.5.0
+  - @madagascar-oss/date@0.5.0
+  - @madagascar-oss/phone@0.5.0
+
 ## 0.4.0
 
 ### Minor Changes
