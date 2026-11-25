@@ -3,7 +3,7 @@
 Malagasy dates: `Alatsinainy 23 Novambra 2026`, month and weekday names, from Unicode CLDR.
 Zero dependencies, ESM + CommonJS + types.
 
-Implements spec 0.3.0.
+Implements spec 0.4.0.
 
 ```sh
 npm install @madagascar-oss/date

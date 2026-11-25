@@ -19,7 +19,7 @@ export class MgError extends Error {
 export function numberToWords(value: number): string;
 
 // @public
-export const SPEC_VERSION = "0.3.0";
+export const SPEC_VERSION = "0.4.0";
 
 // (No @packageDocumentation comment for this package)
 

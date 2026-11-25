@@ -48,11 +48,12 @@ function belowThousandWords(value: number): string {
   return [belowHundred, HUNDRED_WORDS[hundreds]].filter(isNotEmpty).join(` ${joiner} `);
 }
 
-// A count of one is the bare group word: "arivo", not "iray arivo".
+// A count of one is bare only for the first group: "arivo", but "iray alina", "iray tapitrisa".
 function scaleWords(value: number, scale: Scale): string {
   const count = Math.floor(value / scale.value) % (scale.maxCount + 1);
   if (count === 0) return '';
-  return count === 1 ? scale.word : `${belowThousandWords(count)} ${scale.word}`;
+  if (count === 1 && scale.value === FIRST_SCALE_VALUE) return scale.word;
+  return `${belowThousandWords(count)} ${scale.word}`;
 }
 
 function assertSupportedInteger(value: unknown): asserts value is number {
