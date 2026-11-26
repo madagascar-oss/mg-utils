@@ -1,5 +1,27 @@
 # @madagascar-oss/utils
 
+## 0.6.0
+
+### Minor Changes
+
+- [#25](https://github.com/madagascar-oss/mg-utils-js/pull/25) [`bb7f20e`](https://github.com/madagascar-oss/mg-utils-js/commit/bb7f20e67414398bf74b189cf1493f03a215e912) Thanks [@johan-mickael](https://github.com/johan-mickael)! - Implement spec 0.5.0 for Ariary amounts.
+  
+  - No more 999 999 999 999 cap: amounts go up to `Number.MAX_SAFE_INTEGER`, so `ariaryToWords(1_000_000_000_000)` → `arivo lavitrisa ariary`.
+  - Decimal amounts, after a comma: `formatAriary(1500.5)` → `Ar 1 500,5`, `parseAriary('1 500,50 Ar')` → `1500.5`, `ariaryToWords(1500.5)` → `dimanjato sy arivo faingo dimy ariary`.
+  - **Behaviour change:** `parseAriary('1,500')` now returns `1.5` instead of throwing `INVALID_FORMAT`. For English-style text pass `{ grouping: 'comma', decimal: 'dot' }`.
+  - New `grouping: 'comma'` and `decimal: 'comma' | 'dot'` options for formatting and for the three parsers. The defaults stay Malagasy.
+  - FMG conversion is exact decimal arithmetic and accepts any francs: `fmgToAriary(7501)` → `1500.2`, `ariaryToFmg(0.07)` → `0.35`.
+
+- [#25](https://github.com/madagascar-oss/mg-utils-js/pull/25) [`bb7f20e`](https://github.com/madagascar-oss/mg-utils-js/commit/bb7f20e67414398bf74b189cf1493f03a215e912) Thanks [@johan-mickael](https://github.com/johan-mickael)! - Implement spec 0.5.0 for number words. `numberToWords` now spells any number up to `Number.MAX_SAFE_INTEGER`: `lavitrisa` takes any count, so `10¹²` → `arivo lavitrisa` and `1 999 999 999 999` → `… sy sivy amby sivifolo sy sivinjato sy arivo lavitrisa`. It also reads decimals with `faingo`: `3.14` → `telo faingo efatra ambin'ny folo`, `0.008` → `aotra faingo aotra aotra valo`. Numbers above 999 999 999 999 and decimals no longer throw.
+
+### Patch Changes
+
+- Updated dependencies [[`bb7f20e`](https://github.com/madagascar-oss/mg-utils-js/commit/bb7f20e67414398bf74b189cf1493f03a215e912), [`bb7f20e`](https://github.com/madagascar-oss/mg-utils-js/commit/bb7f20e67414398bf74b189cf1493f03a215e912)]:
+  - @madagascar-oss/ariary@0.6.0
+  - @madagascar-oss/words@0.6.0
+  - @madagascar-oss/date@0.6.0
+  - @madagascar-oss/phone@0.6.0
+
 ## 0.5.0
 
 ### Minor Changes

@@ -1,6 +1,6 @@
 {
   "name": "@madagascar-oss/ariary",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "description": "Malagasy Ariary amounts: format (Ar 1 500), parse, words and franc (FMG) conversion.",
   "license": "MIT",
   "author": "Madagascar OSS contributors",
