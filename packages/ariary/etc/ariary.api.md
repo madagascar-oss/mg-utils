@@ -69,7 +69,7 @@ export type SafeParseResult<T> = {
 };
 
 // @public
-export const SPEC_VERSION = "0.5.0";
+export const SPEC_VERSION = "0.6.0";
 
 // @public
 export function tryParseAriary(text: unknown, options?: AriaryParseOptions): number | undefined;

@@ -1,6 +1,6 @@
 // GENERATED — edit spec/ instead. Run `just codegen` to refresh.
 
-// From spec/modules/words/data.yaml, spec 0.5.0.
+// From spec/modules/words/data.yaml, spec 0.6.0.
 
 /** @internal */
 export const ZERO_WORD = 'aotra' as const;

@@ -54,11 +54,12 @@ describe('parsePhoneNumber fuzzing', () => {
 
 describe('tryParsePhoneNumber', () => {
   test('returns the parsed number for valid input', () => {
-    expect(tryParsePhoneNumber('034 12 345 67')?.operator).toBe('telma');
+    expect(tryParsePhoneNumber('034 12 345 67')?.operator).toBe('yas');
+    expect(tryParsePhoneNumber('035 12 345 67')?.operator).toBe('airtel');
   });
 
   test('returns undefined instead of throwing', () => {
-    expect(tryParsePhoneNumber('035 12 345 67')).toBeUndefined();
+    expect(tryParsePhoneNumber('031 12 345 67')).toBeUndefined();
   });
 
   test('agrees with safeParsePhoneNumber for any input', () => {
@@ -73,6 +74,6 @@ describe('tryParsePhoneNumber', () => {
 
 describe('OPERATOR_NAMES', () => {
   test('names the operator of a parsed number', () => {
-    expect(OPERATOR_NAMES[parsePhoneNumber('034 12 345 67').operator]).toBe('Telma');
+    expect(OPERATOR_NAMES[parsePhoneNumber('034 12 345 67').operator]).toBe('Yas Madagascar');
   });
 });

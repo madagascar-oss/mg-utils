@@ -65,7 +65,7 @@ export function emit(data: PhoneData): string[] {
         ' *',
         ' * @example',
         ' * ```ts',
-        " * OPERATOR_NAMES[parsePhoneNumber('034 12 345 67').operator]; // 'Telma'",
+        " * OPERATOR_NAMES[parsePhoneNumber('034 12 345 67').operator]; // 'Yas Madagascar'",
         ' * ```',
         ' */',
       ].join('\n'),

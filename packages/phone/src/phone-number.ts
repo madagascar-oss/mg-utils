@@ -39,7 +39,7 @@ export interface PhoneNumber {
  * @example
  * ```ts
  * const result = safeParsePhoneNumber('+261 34 12 345 67');
- * if (result.success) result.data.operator; // 'telma'
+ * if (result.success) result.data.operator; // 'yas'
  * ```
  */
 export function safeParsePhoneNumber(input: unknown): SafeParseResult<PhoneNumber> {
@@ -72,7 +72,7 @@ export function safeParsePhoneNumber(input: unknown): SafeParseResult<PhoneNumbe
  * @example
  * ```ts
  * parsePhoneNumber('034 12 345 67');
- * // { e164: '+261341234567', nationalNumber: '341234567', operator: 'telma' }
+ * // { e164: '+261341234567', nationalNumber: '341234567', operator: 'yas' }
  * ```
  */
 export function parsePhoneNumber(input: string): PhoneNumber {
@@ -91,8 +91,8 @@ export function parsePhoneNumber(input: string): PhoneNumber {
  *
  * @example
  * ```ts
- * tryParsePhoneNumber('034 12 345 67')?.operator; // 'telma'
- * tryParsePhoneNumber('035 12 345 67'); // undefined
+ * tryParsePhoneNumber('034 12 345 67')?.operator; // 'yas'
+ * tryParsePhoneNumber('031 12 345 67'); // undefined
  * ```
  */
 export function tryParsePhoneNumber(input: unknown): PhoneNumber | undefined {
@@ -109,7 +109,7 @@ export function tryParsePhoneNumber(input: unknown): PhoneNumber | undefined {
  * @example
  * ```ts
  * isValidPhoneNumber('034 12 345 67'); // true
- * isValidPhoneNumber('035 12 345 67'); // false
+ * isValidPhoneNumber('031 12 345 67'); // false
  * ```
  */
 export function isValidPhoneNumber(input: unknown): boolean {
