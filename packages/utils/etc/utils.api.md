@@ -4,8 +4,11 @@
 
 ```ts
 
+import { AriaryDecimal } from '@madagascar-oss/ariary';
 import { AriaryFormatOptions } from '@madagascar-oss/ariary';
 import { AriaryGrouping } from '@madagascar-oss/ariary';
+import { AriaryParseOptions } from '@madagascar-oss/ariary';
+import { AriarySeparatorOptions } from '@madagascar-oss/ariary';
 import { AriarySymbolPosition } from '@madagascar-oss/ariary';
 import { ariaryToFmg } from '@madagascar-oss/ariary';
 import { ariaryToWords } from '@madagascar-oss/ariary';
@@ -36,9 +39,15 @@ import { SPEC_VERSION } from '@madagascar-oss/phone';
 import { tryParseAriary } from '@madagascar-oss/ariary';
 import { tryParsePhoneNumber } from '@madagascar-oss/phone';
 
+export { AriaryDecimal }
+
 export { AriaryFormatOptions }
 
 export { AriaryGrouping }
+
+export { AriaryParseOptions }
+
+export { AriarySeparatorOptions }
 
 export { AriarySymbolPosition }
 

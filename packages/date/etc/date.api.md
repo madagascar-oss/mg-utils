@@ -38,7 +38,7 @@ export class MgError extends Error {
 export type NameWidth = 'wide' | 'abbreviated';
 
 // @public
-export const SPEC_VERSION = "0.4.0";
+export const SPEC_VERSION = "0.5.0";
 
 // (No @packageDocumentation comment for this package)
 

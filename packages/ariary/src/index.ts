@@ -11,6 +11,7 @@ export {
   type AriaryFormatOptions,
   type AriarySymbolPosition,
 } from './format.ts';
-export { parseAriary, safeParseAriary, tryParseAriary } from './parse.ts';
-export type { AriaryGrouping } from './generated/data.ts';
+export { parseAriary, safeParseAriary, tryParseAriary, type AriaryParseOptions } from './parse.ts';
+export type { AriarySeparatorOptions } from './separators.ts';
+export type { AriaryDecimal, AriaryGrouping } from './generated/data.ts';
 export { MgError, SPEC_VERSION, type ErrorCode, type SafeParseResult } from './generated/errors.ts';

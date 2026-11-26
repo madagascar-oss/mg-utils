@@ -1,16 +1,14 @@
-import {
-  CURRENCY_SYMBOL,
-  DEFAULT_GROUPING,
-  FRANC_SYMBOL,
-  FRANCS_PER_ARIARY,
-  GROUP_SEPARATORS,
-  GROUP_SIZE,
-  MAX_AMOUNT,
-  SYMBOL_SEPARATOR,
-  type AriaryGrouping,
-} from './generated/data.ts';
+import { CURRENCY_SYMBOL, FRANC_SYMBOL, GROUP_SIZE, SYMBOL_SEPARATOR } from './generated/data.ts';
 import { MgError } from './generated/errors.ts';
 import { assertAmount } from './amount.ts';
+import { plainDecimal } from './decimal.ts';
+import {
+  assertOptionsObject,
+  decimalFor,
+  formatGroupingId,
+  groupingFor,
+  type AriarySeparatorOptions,
+} from './separators.ts';
 
 /**
  * Where the currency symbol goes: `before` (default, `Ar 1 500`) or `after` (`1 500 Ar`).
@@ -30,34 +28,39 @@ export type AriarySymbolPosition = 'before' | 'after';
  * const options: AriaryFormatOptions = { grouping: 'dot', symbolPosition: 'after' };
  * ```
  */
-export interface AriaryFormatOptions {
-  /** Thousand separator: `space` (default) or `dot`. Never a comma. */
-  readonly grouping?: AriaryGrouping;
+export interface AriaryFormatOptions extends AriarySeparatorOptions {
   /** Symbol `before` (default) or `after` the amount. */
   readonly symbolPosition?: AriarySymbolPosition;
 }
 
 const SYMBOL_POSITIONS: ReadonlySet<unknown> = new Set<AriarySymbolPosition>(['before', 'after']);
+const DECIMAL_POINT = '.';
 const DIGIT_GROUP_BOUNDARY = new RegExp(`\\B(?=(\\d{${String(GROUP_SIZE)}})+(?!\\d))`, 'g');
 
-function separatorFor(options: unknown): string {
-  if (typeof options !== 'object' || options === null) {
-    throw new MgError('INVALID_TYPE', 'Options must be an object.');
-  }
-  const { grouping = DEFAULT_GROUPING, symbolPosition = 'before' } = options as AriaryFormatOptions;
-  const separator = GROUP_SEPARATORS.get(grouping);
-  if (separator === undefined || !SYMBOL_POSITIONS.has(symbolPosition)) {
-    throw new MgError(
-      'INVALID_TYPE',
-      'grouping is space or dot; symbolPosition is before or after.',
-    );
-  }
-  return separator;
+interface Layout {
+  readonly grouping: string;
+  readonly decimal: string;
+  readonly symbolAfter: boolean;
 }
 
+function layoutFor(options: unknown): Layout {
+  assertOptionsObject(options);
+  const { symbolPosition = 'before' } = options as AriaryFormatOptions;
+  if (!SYMBOL_POSITIONS.has(symbolPosition)) {
+    throw new MgError('INVALID_TYPE', 'symbolPosition is before or after.');
+  }
+  const decimal = decimalFor(options);
+  const grouping = groupingFor(formatGroupingId(options), decimal);
+  return { grouping, decimal, symbolAfter: symbolPosition === 'after' };
+}
+
+// Groups the whole part only; decimals follow a comma as they are, never grouped or rounded.
 function layOut(amount: number, symbol: string, options: AriaryFormatOptions): string {
-  const digits = String(amount).replace(DIGIT_GROUP_BOUNDARY, separatorFor(options));
-  return options.symbolPosition === 'after'
+  const layout = layoutFor(options);
+  const [whole = '', decimals] = plainDecimal(amount).split(DECIMAL_POINT);
+  const grouped = whole.replace(DIGIT_GROUP_BOUNDARY, layout.grouping);
+  const digits = decimals === undefined ? grouped : `${grouped}${layout.decimal}${decimals}`;
+  return layout.symbolAfter
     ? `${digits}${SYMBOL_SEPARATOR}${symbol}`
     : `${symbol}${SYMBOL_SEPARATOR}${digits}`;
 }
@@ -65,16 +68,18 @@ function layOut(amount: number, symbol: string, options: AriaryFormatOptions): s
 /**
  * Writes an Ariary amount the Malagasy way: symbol `Ar`, digits grouped by no-break spaces.
  *
- * @param amount - Whole ariary from 0 to 999 999 999 999.
- * @param options - Optional `grouping` (`space` or `dot`) and `symbolPosition` (`before` or `after`).
- * @returns The formatted amount, e.g. `Ar 1 500` (the spaces are U+00A0).
- * @throws {@link MgError} `INVALID_TYPE` for non-integers or unknown options,
- *   `OUT_OF_RANGE` outside 0 to 999 999 999 999.
+ * @param amount - Ariary from 0 to `Number.MAX_SAFE_INTEGER`, whole or decimal.
+ * @param options - Optional `grouping` (`space`, `dot` or `comma`), `decimal` (`comma` or `dot`)
+ *   and `symbolPosition` (`before` or `after`). The defaults are the Malagasy way.
+ * @returns The formatted amount, e.g. `Ar 1 500` or `Ar 1 500,5` (the spaces are U+00A0).
+ * @throws {@link MgError} `INVALID_TYPE` for a value that is not a finite number or unknown options,
+ *   `OUT_OF_RANGE` outside 0 to `Number.MAX_SAFE_INTEGER`.
  *
  * @example
  * ```ts
  * formatAriary(1500); // 'Ar 1 500'
  * formatAriary(1500, { grouping: 'dot', symbolPosition: 'after' }); // '1.500 Ar'
+ * formatAriary(1500.5); // 'Ar 1 500,5'
  * ```
  */
 export function formatAriary(amount: number, options: AriaryFormatOptions = {}): string {
@@ -85,7 +90,7 @@ export function formatAriary(amount: number, options: AriaryFormatOptions = {}):
 /**
  * Writes an amount in old Malagasy francs, with the same layout as {@link formatAriary}.
  *
- * @param francs - Whole francs from 0 to 4 999 999 999 995.
+ * @param francs - Francs from 0 to `Number.MAX_SAFE_INTEGER`, whole or decimal.
  * @param options - Same options as {@link formatAriary}.
  * @returns The formatted amount, e.g. `Fmg 7 500`.
  * @throws {@link MgError} `INVALID_TYPE` or `OUT_OF_RANGE`, as {@link formatAriary}.
@@ -96,6 +101,6 @@ export function formatAriary(amount: number, options: AriaryFormatOptions = {}):
  * ```
  */
 export function formatFmg(francs: number, options: AriaryFormatOptions = {}): string {
-  assertAmount(francs, MAX_AMOUNT * FRANCS_PER_ARIARY);
+  assertAmount(francs);
   return layOut(francs, FRANC_SYMBOL, options);
 }
