@@ -25,12 +25,12 @@ export class MdgError extends Error {
 export const OPERATOR_NAMES: {
     readonly orange: "Orange Madagascar";
     readonly airtel: "Airtel Madagascar";
-    readonly telma: "Telma";
+    readonly yas: "Yas Madagascar";
     readonly blueline: "Blueline";
 };
 
 // @public
-export type OperatorId = 'orange' | 'airtel' | 'telma' | 'blueline';
+export type OperatorId = 'orange' | 'airtel' | 'yas' | 'blueline';
 
 // @public
 export function parsePhoneNumber(input: string): PhoneNumber;
@@ -59,7 +59,7 @@ export type SafeParseResult<T> = {
 };
 
 // @public
-export const SPEC_VERSION = "0.5.0";
+export const SPEC_VERSION = "0.6.0";
 
 // @public
 export function tryParsePhoneNumber(input: unknown): PhoneNumber | undefined;
