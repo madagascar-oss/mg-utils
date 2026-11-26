@@ -3,7 +3,7 @@
 Every mg-utils module in one install: Malagasy number words, phone numbers, Ariary amounts
 and dates.
 
-Implements spec 0.4.0.
+Implements spec 0.5.0.
 
 ```sh
 npm install @madagascar-oss/utils

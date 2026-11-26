@@ -2,7 +2,7 @@
 
 Write numbers in Malagasy words. Zero dependencies, ESM + CommonJS + types.
 
-Implements spec 0.4.0.
+Implements spec 0.5.0.
 
 ```sh
 npm install @madagascar-oss/words
@@ -14,9 +14,13 @@ import { numberToWords } from '@madagascar-oss/words';
 numberToWords(21); // 'iraika amby roapolo'
 numberToWords(2026); // 'enina amby roapolo sy roa arivo'
 numberToWords(280_000); // 'valo alina sy roa hetsy'
+numberToWords(1_000_000_000_000); // 'arivo lavitrisa'
+numberToWords(3.14); // "telo faingo efatra ambin'ny folo"
+numberToWords(0.008); // 'aotra faingo aotra aotra valo'
 ```
 
-Supports integers from 0 to 999 999 999 999. Other input throws `MgError` with code
+Takes any number from 0 to `Number.MAX_SAFE_INTEGER` (9 007 199 254 740 991), whole or decimal.
+Only number values are accepted: strings are not parsed. Other input throws `MgError` with code
 `INVALID_TYPE` or `OUT_OF_RANGE`.
 
 Rules, sources and recorded disagreements: [spec/words](https://github.com/madagascar-oss/mg-utils-spec/blob/dev/modules/words/README.md).

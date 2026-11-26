@@ -1,6 +1,6 @@
 // GENERATED — edit spec/ instead. Run `just codegen` to refresh.
 
-// From spec/modules/words/data.yaml, spec 0.4.0.
+// From spec/modules/words/data.yaml, spec 0.5.0.
 
 /** @internal */
 export const ZERO_WORD = 'aotra' as const;
@@ -50,14 +50,17 @@ export const HUNDRED_WORDS = [
   'sivinjato',
 ] as const;
 
-/** @internal Ascending by value. */
+/** @internal Ascending; countDigits null = no limit. */
 export const SCALES = [
-  { value: 1000, word: 'arivo', maxCount: 9 },
-  { value: 10000, word: 'alina', maxCount: 9 },
-  { value: 100000, word: 'hetsy', maxCount: 9 },
-  { value: 1000000, word: 'tapitrisa', maxCount: 999 },
-  { value: 1000000000, word: 'lavitrisa', maxCount: 999 },
+  { word: 'arivo', exponent: 3, countDigits: 1 },
+  { word: 'alina', exponent: 4, countDigits: 1 },
+  { word: 'hetsy', exponent: 5, countDigits: 1 },
+  { word: 'tapitrisa', exponent: 6, countDigits: 3 },
+  { word: 'lavitrisa', exponent: 9, countDigits: null },
 ] as const;
+
+/** @internal */
+export const DECIMAL_SEPARATOR = 'faingo' as const;
 
 /** @internal */
 export const JOINER_UNITS_BEFORE_TEN = "ambin'ny" as const;
@@ -70,6 +73,3 @@ export const JOINER_BETWEEN_GROUPS = 'sy' as const;
 
 /** @internal */
 export const MIN_VALUE = 0 as const;
-
-/** @internal */
-export const MAX_VALUE = 999999999999 as const;

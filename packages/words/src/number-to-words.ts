@@ -1,9 +1,9 @@
 import {
+  DECIMAL_SEPARATOR,
   HUNDRED_WORDS,
   JOINER_BELOW_THOUSAND,
   JOINER_BETWEEN_GROUPS,
   JOINER_UNITS_BEFORE_TEN,
-  MAX_VALUE,
   MIN_VALUE,
   SCALES,
   TEN_WORDS,
@@ -18,7 +18,12 @@ type Scale = (typeof SCALES)[number];
 
 const BASE = 10;
 const HUNDRED = BASE * BASE;
-const FIRST_SCALE_VALUE = SCALES[0].value;
+const BELOW_THOUSAND_DIGITS = 3;
+const FIRST_SCALE_EXPONENT = SCALES[0].exponent;
+const ONE = '1';
+const LEADING_ZEROS = /^0+/;
+// String(value) of a small number, e.g. '1e-7' or '1.5e-10'.
+const NEGATIVE_EXPONENT = /^(\d)(?:\.(\d+))?e-(\d+)$/;
 
 function digitAt(value: number, place: number): Digit {
   return (Math.floor(value / place) % BASE) as Digit;
@@ -48,46 +53,81 @@ function belowThousandWords(value: number): string {
   return [belowHundred, HUNDRED_WORDS[hundreds]].filter(isNotEmpty).join(` ${joiner} `);
 }
 
-// A count of one is bare only for the first group: "arivo", but "iray alina", "iray tapitrisa".
-function scaleWords(value: number, scale: Scale): string {
-  const count = Math.floor(value / scale.value) % (scale.maxCount + 1);
-  if (count === 0) return '';
-  if (count === 1 && scale.value === FIRST_SCALE_VALUE) return scale.word;
-  return `${belowThousandWords(count)} ${scale.word}`;
+// The digits a group counts, without leading zeros: '' when the group is absent. The largest
+// group takes every digit left, so its count can be any size.
+function scaleCount(digits: string, scale: Scale): string {
+  const end = digits.length - scale.exponent;
+  if (end <= 0) return '';
+  const start = scale.countDigits === null ? 0 : Math.max(0, end - scale.countDigits);
+  return digits.slice(start, end).replace(LEADING_ZEROS, '');
 }
 
-function assertSupportedInteger(value: unknown): asserts value is number {
-  if (typeof value !== 'number' || !Number.isInteger(value)) {
-    throw new MgError('INVALID_TYPE', 'numberToWords expects an integer.');
+// A count of one is bare only for the first group: "arivo", but "iray alina", "iray tapitrisa".
+// Counts are read with every rule, so 1000 lavitrisa is "arivo lavitrisa".
+function scaleWords(digits: string, scale: Scale): string {
+  const count = scaleCount(digits, scale);
+  if (count === '') return '';
+  if (count === ONE && scale.exponent === FIRST_SCALE_EXPONENT) return scale.word;
+  return `${wholeWords(count)} ${scale.word}`;
+}
+
+// Works on decimal digits, not arithmetic, so counts and decimals of any length stay exact.
+function wholeWords(digits: string): string {
+  const significant = digits.replace(LEADING_ZEROS, '');
+  if (significant === '') return ZERO_WORD;
+  const groups = [
+    belowThousandWords(Number(significant.slice(-BELOW_THOUSAND_DIGITS))),
+    ...SCALES.map((scale) => scaleWords(significant, scale)),
+  ];
+  return groups.filter(isNotEmpty).join(` ${JOINER_BETWEEN_GROUPS} `);
+}
+
+// Each leading zero after the point is "aotra"; the rest reads as a whole number.
+function decimalWords(digits: string): string {
+  const significant = digits.replace(LEADING_ZEROS, '');
+  const zeros = Array.from({ length: digits.length - significant.length }, () => ZERO_WORD);
+  return [...zeros, wholeWords(significant)].join(' ');
+}
+
+// The shortest exact decimal form of the value, never in exponent notation.
+function plainDecimal(value: number): string {
+  const text = String(value);
+  const match = NEGATIVE_EXPONENT.exec(text);
+  if (match === null) return text;
+  const [, lead = '', rest = '', exponent = ''] = match;
+  return `0.${'0'.repeat(Number(exponent) - 1)}${lead}${rest}`;
+}
+
+function assertSupportedNumber(value: unknown): asserts value is number {
+  if (typeof value !== 'number' || !Number.isFinite(value)) {
+    throw new MgError('INVALID_TYPE', 'numberToWords expects a finite number.');
   }
-  if (value < MIN_VALUE || value > MAX_VALUE) {
+  if (value < MIN_VALUE || value > Number.MAX_SAFE_INTEGER) {
     throw new MgError(
       'OUT_OF_RANGE',
-      `numberToWords supports ${String(MIN_VALUE)} to ${String(MAX_VALUE)}.`,
+      `numberToWords supports ${String(MIN_VALUE)} to ${String(Number.MAX_SAFE_INTEGER)}.`,
     );
   }
 }
 
 /**
- * Writes a whole number in Malagasy words, smallest part first.
+ * Writes a number in Malagasy words, smallest part first, with `faingo` before the decimals.
  *
- * @param value - An integer from 0 to 999 999 999 999.
+ * @param value - A number from 0 to `Number.MAX_SAFE_INTEGER`, whole or decimal.
  * @returns The number in Malagasy words.
- * @throws {@link MgError} `INVALID_TYPE` if `value` is not an integer,
- *   `OUT_OF_RANGE` if it is negative or above 999 999 999 999.
+ * @throws {@link MgError} `INVALID_TYPE` if `value` is not a finite number,
+ *   `OUT_OF_RANGE` if it is negative or above `Number.MAX_SAFE_INTEGER`.
  *
  * @example
  * ```ts
  * numberToWords(21); // 'iraika amby roapolo'
  * numberToWords(2026); // 'enina amby roapolo sy roa arivo'
+ * numberToWords(3.14); // "telo faingo efatra ambin'ny folo"
  * ```
  */
 export function numberToWords(value: number): string {
-  assertSupportedInteger(value);
-  if (value === 0) return ZERO_WORD;
-  const groups = [
-    belowThousandWords(value % FIRST_SCALE_VALUE),
-    ...SCALES.map((scale) => scaleWords(value, scale)),
-  ];
-  return groups.filter(isNotEmpty).join(` ${JOINER_BETWEEN_GROUPS} `);
+  assertSupportedNumber(value);
+  const [whole = '', decimals] = plainDecimal(value).split('.');
+  if (decimals === undefined) return wholeWords(whole);
+  return `${wholeWords(whole)} ${DECIMAL_SEPARATOR} ${decimalWords(decimals)}`;
 }
