@@ -12,7 +12,7 @@ if (!MODULE_NAME.test(name)) {
 }
 if (!existsSync(join(MODULES_DIR, name, 'data.yaml'))) {
   console.error(
-    `Module "${name}" is not in spec/. Add it to mg-utils-spec and bump the submodule first.`,
+    `Module "${name}" is not in spec/. Add it to mdg-utils-spec and bump the submodule first.`,
   );
   process.exit(1);
 }
@@ -37,7 +37,7 @@ const wordsManifest = JSON.parse(
 const manifest = JSON.stringify(
   {
     ...wordsManifest,
-    name: `@madagascar-oss/${name}`,
+    name: `@mdgascar/${name}`,
     description: `TODO: describe ${name}.`,
     keywords: ['madagascar', 'malagasy', name],
   },
@@ -51,42 +51,42 @@ for (const file of ['tsup.config.ts', 'api-extractor.json', 'LICENSE']) {
 
 write(
   join(packageDir, 'README.md'),
-  `# @madagascar-oss/${name}
+  `# @mdgascar/${name}
 
 TODO: one-sentence description.
 
 Implements spec ${readSpecVersion()}.
 
 \`\`\`sh
-npm install @madagascar-oss/${name}
+npm install @mdgascar/${name}
 \`\`\`
 
-Rules and sources: [spec/${name}](https://github.com/madagascar-oss/mg-utils-spec/blob/dev/modules/${name}/README.md).
+Rules and sources: [spec/${name}](https://github.com/mdgascar/mdg-utils-spec/blob/dev/modules/${name}/README.md).
 `,
 );
 
 write(
   join(packageDir, 'src', 'index.ts'),
   `/**
- * TODO: describe ${name}. Part of mg-utils by Madagascar OSS.
+ * TODO: describe ${name}. Part of mdg-utils by Mdgascar.
  *
  * @packageDocumentation
  */
 export { ${fnName} } from './${name}.ts';
-export { MgError, SPEC_VERSION, type ErrorCode } from './generated/errors.ts';
+export { MdgError, SPEC_VERSION, type ErrorCode } from './generated/errors.ts';
 `,
 );
 
 write(
   join(packageDir, 'src', `${name}.ts`),
-  `import { MgError } from './generated/errors.ts';
+  `import { MdgError } from './generated/errors.ts';
 
 /**
  * Placeholder: replace with the module's real function, spec first.
  *
  * @param input - A string.
  * @returns The same string.
- * @throws {@link MgError} \`INVALID_TYPE\` if \`input\` is not a string.
+ * @throws {@link MdgError} \`INVALID_TYPE\` if \`input\` is not a string.
  *
  * @example
  * \`\`\`ts
@@ -94,7 +94,7 @@ write(
  * \`\`\`
  */
 export function ${fnName}(input: unknown): string {
-  if (typeof input !== 'string') throw new MgError('INVALID_TYPE', 'Expected a string.');
+  if (typeof input !== 'string') throw new MdgError('INVALID_TYPE', 'Expected a string.');
   return input;
 }
 `,

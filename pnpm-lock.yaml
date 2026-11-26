@@ -73,7 +73,7 @@ importers:
 
   packages/ariary:
     dependencies:
-      '@madagascar-oss/words':
+      '@mdgascar/words':
         specifier: workspace:^
         version: link:../words
 
@@ -83,16 +83,16 @@ importers:
 
   packages/utils:
     dependencies:
-      '@madagascar-oss/ariary':
+      '@mdgascar/ariary':
         specifier: workspace:^
         version: link:../ariary
-      '@madagascar-oss/date':
+      '@mdgascar/date':
         specifier: workspace:^
         version: link:../date
-      '@madagascar-oss/phone':
+      '@mdgascar/phone':
         specifier: workspace:^
         version: link:../phone
-      '@madagascar-oss/words':
+      '@mdgascar/words':
         specifier: workspace:^
         version: link:../words
 

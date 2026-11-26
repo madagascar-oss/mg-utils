@@ -1,5 +1,5 @@
 import { DEFAULT_STYLE, STYLE_PATTERNS, type DateStyle } from './generated/data.ts';
-import { MgError } from './generated/errors.ts';
+import { MdgError } from './generated/errors.ts';
 import { isoWeekdayOf, toCalendarDate, type CalendarDate, type MonthNumber } from './calendar.ts';
 import { monthNameOf, weekdayNameOf } from './names.ts';
 
@@ -34,7 +34,7 @@ function render(pattern: string, date: CalendarDate): string {
  *   calendar fields).
  * @param style - `long` (default), `full`, `medium`, `short` (CLDR) or `numeric` (`dd/MM/y`).
  * @returns The formatted date.
- * @throws {@link MgError} `INVALID_FORMAT` for text that is not a real `YYYY-MM-DD` date,
+ * @throws {@link MdgError} `INVALID_FORMAT` for text that is not a real `YYYY-MM-DD` date,
  *   `OUT_OF_RANGE` for impossible fields or years outside 1–9999, `INVALID_TYPE` for other
  *   input or an unknown style.
  *
@@ -51,7 +51,10 @@ export function formatDate(
 ): string {
   const pattern = STYLE_PATTERNS.get(style);
   if (pattern === undefined) {
-    throw new MgError('INVALID_TYPE', `Style is one of: ${[...STYLE_PATTERNS.keys()].join(', ')}.`);
+    throw new MdgError(
+      'INVALID_TYPE',
+      `Style is one of: ${[...STYLE_PATTERNS.keys()].join(', ')}.`,
+    );
   }
   return render(pattern, toCalendarDate(date));
 }

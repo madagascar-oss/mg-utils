@@ -1,4 +1,4 @@
-# @madagascar-oss/phone
+# @mdgascar/phone
 
 Parse, validate and format Madagascar (+261) mobile phone numbers. Zero dependencies,
 ESM + CommonJS + types.
@@ -6,7 +6,7 @@ ESM + CommonJS + types.
 Implements spec 0.5.0.
 
 ```sh
-npm install @madagascar-oss/phone
+npm install @mdgascar/phone
 ```
 
 ```ts
@@ -17,7 +17,7 @@ import {
   parsePhoneNumber,
   safeParsePhoneNumber,
   tryParsePhoneNumber,
-} from '@madagascar-oss/phone';
+} from '@mdgascar/phone';
 
 parsePhoneNumber('034 12 345 67');
 // { e164: '+261341234567', nationalNumber: '341234567', operator: 'telma' }
@@ -32,6 +32,6 @@ if (!result.success) console.log(result.error.code); // 'INVALID_FORMAT' | 'UNKN
 OPERATOR_NAMES.telma; // 'Telma'
 ```
 
-Rules, operator prefixes and sources: [spec/phone](https://github.com/madagascar-oss/mg-utils-spec/blob/dev/modules/phone/README.md).
+Rules, operator prefixes and sources: [spec/phone](https://github.com/mdgascar/mdg-utils-spec/blob/dev/modules/phone/README.md).
 
-Docs, API reference and a live playground: [madagascar-oss.github.io/mg-utils-docs/docs/phone/](https://madagascar-oss.github.io/mg-utils-docs/docs/phone/).
+Docs, API reference and a live playground: [mdgascar.github.io/mdg-utils-docs/docs/phone/](https://mdgascar.github.io/mdg-utils-docs/docs/phone/).

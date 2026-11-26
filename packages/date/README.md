@@ -1,4 +1,4 @@
-# @madagascar-oss/date
+# @mdgascar/date
 
 Malagasy dates: `Alatsinainy 23 Novambra 2026`, month and weekday names, from Unicode CLDR.
 Zero dependencies, ESM + CommonJS + types.
@@ -6,11 +6,11 @@ Zero dependencies, ESM + CommonJS + types.
 Implements spec 0.5.0.
 
 ```sh
-npm install @madagascar-oss/date
+npm install @mdgascar/date
 ```
 
 ```ts
-import { formatDate, getMonthName, getWeekdayName } from '@madagascar-oss/date';
+import { formatDate, getMonthName, getWeekdayName } from '@mdgascar/date';
 
 formatDate('2026-11-23'); // '23 Novambra 2026'
 formatDate('2026-11-23', 'full'); // 'Alatsinainy 23 Novambra 2026'
@@ -22,6 +22,6 @@ getMonthName(6); // 'Jona'
 getWeekdayName(1); // 'Alatsinainy' (ISO 8601: Monday is 1)
 ```
 
-Rules, sources and recorded decisions: [spec/date](https://github.com/madagascar-oss/mg-utils-spec/blob/dev/modules/date/README.md).
+Rules, sources and recorded decisions: [spec/date](https://github.com/mdgascar/mdg-utils-spec/blob/dev/modules/date/README.md).
 
-Docs, API reference and a live playground: [madagascar-oss.github.io/mg-utils-docs/docs/date/](https://madagascar-oss.github.io/mg-utils-docs/docs/date/).
+Docs, API reference and a live playground: [mdgascar.github.io/mdg-utils-docs/docs/date/](https://mdgascar.github.io/mdg-utils-docs/docs/date/).

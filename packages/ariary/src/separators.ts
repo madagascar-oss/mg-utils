@@ -8,7 +8,7 @@ import {
   type AriaryDecimal,
   type AriaryGrouping,
 } from './generated/data.ts';
-import { MgError } from './generated/errors.ts';
+import { MdgError } from './generated/errors.ts';
 
 /**
  * Separator options for formatting and reading amounts.
@@ -32,7 +32,7 @@ export interface AriarySeparatorOptions {
  */
 export function assertOptionsObject(options: unknown): asserts options is Record<string, unknown> {
   if (typeof options !== 'object' || options === null) {
-    throw new MgError('INVALID_TYPE', 'Options must be an object.');
+    throw new MdgError('INVALID_TYPE', 'Options must be an object.');
   }
 }
 
@@ -44,7 +44,7 @@ export function assertOptionsObject(options: unknown): asserts options is Record
  */
 export function decimalFor(options: AriarySeparatorOptions): string {
   const decimal = DECIMAL_SEPARATORS.get(options.decimal ?? DEFAULT_DECIMAL);
-  if (decimal === undefined) throw new MgError('INVALID_TYPE', 'decimal is comma or dot.');
+  if (decimal === undefined) throw new MdgError('INVALID_TYPE', 'decimal is comma or dot.');
   return decimal;
 }
 
@@ -57,9 +57,10 @@ export function decimalFor(options: AriarySeparatorOptions): string {
  */
 export function groupingFor(id: AriaryGrouping, decimal: string): string {
   const grouping = GROUP_SEPARATORS.get(id);
-  if (grouping === undefined) throw new MgError('INVALID_TYPE', 'grouping is space, dot or comma.');
+  if (grouping === undefined)
+    throw new MdgError('INVALID_TYPE', 'grouping is space, dot or comma.');
   if (grouping === decimal) {
-    throw new MgError('INVALID_TYPE', 'grouping and decimal must be different characters.');
+    throw new MdgError('INVALID_TYPE', 'grouping and decimal must be different characters.');
   }
   return grouping;
 }

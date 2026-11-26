@@ -1,4 +1,4 @@
-# mg-utils-js — every command in one place. Run `just` to list them.
+# mdg-utils-js — every command in one place. Run `just` to list them.
 set shell := ["bash", "-euo", "pipefail", "-c"]
 
 # List commands

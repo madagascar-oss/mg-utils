@@ -1,30 +1,30 @@
-// MgError is generated into every package, so its behaviour is checked once for all of them.
+// MdgError is generated into every package, so its behaviour is checked once for all of them.
 import { readdirSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { describe, expect, test } from 'vitest';
 
-type MgErrorClass = new (code: string, message: string) => Error & { code: string };
+type MdgErrorClass = new (code: string, message: string) => Error & { code: string };
 
 const packagesDir = fileURLToPath(new URL('../packages/', import.meta.url));
 const packageNames = readdirSync(packagesDir);
 
-describe.each(packageNames)('@madagascar-oss/%s MgError', async (name) => {
-  const { MgError } = (await import(`@madagascar-oss/${name}`)) as { MgError: MgErrorClass };
+describe.each(packageNames)('@mdgascar/%s MdgError', async (name) => {
+  const { MdgError } = (await import(`@mdgascar/${name}`)) as { MdgError: MdgErrorClass };
 
   test('keeps the shared code and name', () => {
-    const error = new MgError('OUT_OF_RANGE', 'too big');
-    expect(error).toMatchObject({ name: 'MgError', code: 'OUT_OF_RANGE', message: 'too big' });
+    const error = new MdgError('OUT_OF_RANGE', 'too big');
+    expect(error).toMatchObject({ name: 'MdgError', code: 'OUT_OF_RANGE', message: 'too big' });
   });
 
-  test('matches an MgError with instanceof', () => {
-    expect(new MgError('INVALID_TYPE', 'x') instanceof MgError).toBe(true);
+  test('matches an MdgError with instanceof', () => {
+    expect(new MdgError('INVALID_TYPE', 'x') instanceof MdgError).toBe(true);
   });
 
   test('does not match a plain Error', () => {
-    expect(new Error('x') instanceof MgError).toBe(false);
+    expect(new Error('x') instanceof MdgError).toBe(false);
   });
 
-  test('does not match an object that only looks like an MgError', () => {
-    expect({ name: 'MgError', code: 'INVALID_TYPE' } instanceof MgError).toBe(false);
+  test('does not match an object that only looks like an MdgError', () => {
+    expect({ name: 'MdgError', code: 'INVALID_TYPE' } instanceof MdgError).toBe(false);
   });
 });

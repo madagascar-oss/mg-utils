@@ -66,7 +66,7 @@ export function safeParsePhoneNumber(input: unknown): SafeParseResult<PhoneNumbe
  *
  * @param input - The number as typed by a user.
  * @returns The validated {@link PhoneNumber}.
- * @throws {@link MgError} `INVALID_TYPE` for non-strings, `INVALID_FORMAT` for text that is
+ * @throws {@link MdgError} `INVALID_TYPE` for non-strings, `INVALID_FORMAT` for text that is
  *   not a Malagasy number, `UNKNOWN_OPERATOR` for an unassigned mobile prefix.
  *
  * @example

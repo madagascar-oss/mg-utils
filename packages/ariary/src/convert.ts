@@ -1,4 +1,4 @@
-import { numberToWords } from '@madagascar-oss/words';
+import { numberToWords } from '@mdgascar/words';
 import { CURRENCY_WORD, FRANC_DIVISION_FACTOR, FRANCS_PER_ARIARY } from './generated/data.ts';
 import { assertAmount, assertInRange } from './amount.ts';
 import { divideExact, multiplyExact } from './decimal.ts';
@@ -8,7 +8,7 @@ import { divideExact, multiplyExact } from './decimal.ts';
  *
  * @param amount - Ariary from 0 to `Number.MAX_SAFE_INTEGER`, whole or decimal.
  * @returns The amount in words followed by `ariary`; decimals follow `faingo`.
- * @throws {@link MgError} `INVALID_TYPE` or `OUT_OF_RANGE`.
+ * @throws {@link MdgError} `INVALID_TYPE` or `OUT_OF_RANGE`.
  *
  * @example
  * ```ts
@@ -26,7 +26,7 @@ export function ariaryToWords(amount: number): string {
  *
  * @param francs - Francs from 0 to `Number.MAX_SAFE_INTEGER`, whole or decimal.
  * @returns The amount in ariary: `7501` → `1500.2`.
- * @throws {@link MgError} `INVALID_TYPE` if `francs` is not a finite number, `OUT_OF_RANGE` when
+ * @throws {@link MdgError} `INVALID_TYPE` if `francs` is not a finite number, `OUT_OF_RANGE` when
  *   it is negative or above `Number.MAX_SAFE_INTEGER`.
  *
  * @example
@@ -45,7 +45,7 @@ export function fmgToAriary(francs: number): number {
  *
  * @param amount - Ariary from 0 up, whole or decimal.
  * @returns The amount in francs: `0.07` → `0.35`, never `0.35000000000000003`.
- * @throws {@link MgError} `INVALID_TYPE` if `amount` is not a finite number, `OUT_OF_RANGE` when
+ * @throws {@link MdgError} `INVALID_TYPE` if `amount` is not a finite number, `OUT_OF_RANGE` when
  *   it is negative or the francs would exceed `Number.MAX_SAFE_INTEGER`.
  *
  * @example

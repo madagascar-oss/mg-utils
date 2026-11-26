@@ -1,5 +1,5 @@
 import { CURRENCY_SYMBOL, FRANC_SYMBOL, GROUP_SIZE, SYMBOL_SEPARATOR } from './generated/data.ts';
-import { MgError } from './generated/errors.ts';
+import { MdgError } from './generated/errors.ts';
 import { assertAmount } from './amount.ts';
 import { plainDecimal } from './decimal.ts';
 import {
@@ -47,7 +47,7 @@ function layoutFor(options: unknown): Layout {
   assertOptionsObject(options);
   const { symbolPosition = 'before' } = options as AriaryFormatOptions;
   if (!SYMBOL_POSITIONS.has(symbolPosition)) {
-    throw new MgError('INVALID_TYPE', 'symbolPosition is before or after.');
+    throw new MdgError('INVALID_TYPE', 'symbolPosition is before or after.');
   }
   const decimal = decimalFor(options);
   const grouping = groupingFor(formatGroupingId(options), decimal);
@@ -72,7 +72,7 @@ function layOut(amount: number, symbol: string, options: AriaryFormatOptions): s
  * @param options - Optional `grouping` (`space`, `dot` or `comma`), `decimal` (`comma` or `dot`)
  *   and `symbolPosition` (`before` or `after`). The defaults are the Malagasy way.
  * @returns The formatted amount, e.g. `Ar 1 500` or `Ar 1 500,5` (the spaces are U+00A0).
- * @throws {@link MgError} `INVALID_TYPE` for a value that is not a finite number or unknown options,
+ * @throws {@link MdgError} `INVALID_TYPE` for a value that is not a finite number or unknown options,
  *   `OUT_OF_RANGE` outside 0 to `Number.MAX_SAFE_INTEGER`.
  *
  * @example
@@ -93,7 +93,7 @@ export function formatAriary(amount: number, options: AriaryFormatOptions = {}):
  * @param francs - Francs from 0 to `Number.MAX_SAFE_INTEGER`, whole or decimal.
  * @param options - Same options as {@link formatAriary}.
  * @returns The formatted amount, e.g. `Fmg 7 500`.
- * @throws {@link MgError} `INVALID_TYPE` or `OUT_OF_RANGE`, as {@link formatAriary}.
+ * @throws {@link MdgError} `INVALID_TYPE` or `OUT_OF_RANGE`, as {@link formatAriary}.
  *
  * @example
  * ```ts

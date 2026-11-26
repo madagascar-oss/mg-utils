@@ -25,7 +25,7 @@
     "noEmit": true,
     "types": ["node"],
     "paths": {
-      "@madagascar-oss/*": ["./packages/*/src/index.ts"]
+      "@mdgascar/*": ["./packages/*/src/index.ts"]
     }
   },
   "include": ["packages/**/*.ts", "conformance/**/*.ts", "tools/**/*.ts", "*.ts", "*.js"],

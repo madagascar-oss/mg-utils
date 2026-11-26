@@ -3,22 +3,16 @@
   "changelog": [
     "@changesets/changelog-github",
     {
-      "repo": "madagascar-oss/mg-utils-js"
+      "repo": "mdgascar/mdg-utils-js"
     }
   ],
   "commit": false,
   "fixed": [
-    [
-      "@madagascar-oss/words",
-      "@madagascar-oss/phone",
-      "@madagascar-oss/ariary",
-      "@madagascar-oss/date",
-      "@madagascar-oss/utils"
-    ]
+    ["@mdgascar/words", "@mdgascar/phone", "@mdgascar/ariary", "@mdgascar/date", "@mdgascar/utils"]
   ],
   "linked": [],
   "access": "public",
   "baseBranch": "main",
   "updateInternalDependencies": "patch",
-  "ignore": ["@madagascar-oss/conformance"]
+  "ignore": ["@mdgascar/conformance"]
 }

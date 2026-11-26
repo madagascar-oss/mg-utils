@@ -1,5 +1,5 @@
 import { MAX_AMOUNT } from './amount.ts';
-import { MgError, type ErrorCode, type SafeParseResult } from './generated/errors.ts';
+import { MdgError, type ErrorCode, type SafeParseResult } from './generated/errors.ts';
 import { readableGrouping, readDigits, type ReadSeparators } from './read-digits.ts';
 import {
   assertOptionsObject,
@@ -26,22 +26,22 @@ const PARSE_OPTION_KEYS: ReadonlySet<string> = new Set(['grouping', 'decimal']);
 const MAX_INPUT_LENGTH = 32;
 
 function failure(code: ErrorCode, message: string): SafeParseResult<never> {
-  return { success: false, error: new MgError(code, message) };
+  return { success: false, error: new MdgError(code, message) };
 }
 
 // The parsers never throw for bad options either: the error comes back as a value.
-function safeReadSeparators(options: unknown): ReadSeparators | MgError {
+function safeReadSeparators(options: unknown): ReadSeparators | MdgError {
   try {
     return readSeparatorsFor(options);
   } catch (error) {
-    return error as MgError;
+    return error as MdgError;
   }
 }
 
 function readSeparatorsFor(options: unknown): ReadSeparators {
   assertOptionsObject(options);
   if (Object.keys(options).some((key) => !PARSE_OPTION_KEYS.has(key))) {
-    throw new MgError('INVALID_TYPE', 'Reading takes only the grouping and decimal options.');
+    throw new MdgError('INVALID_TYPE', 'Reading takes only the grouping and decimal options.');
   }
   const separators = options as AriaryParseOptions;
   const decimal = decimalFor(separators);
@@ -69,7 +69,7 @@ export function safeParseAriary(
 ): SafeParseResult<number> {
   if (typeof text !== 'string') return failure('INVALID_TYPE', 'Expected the amount as text.');
   const separators = safeReadSeparators(options);
-  if (separators instanceof MgError) return { success: false, error: separators };
+  if (separators instanceof MdgError) return { success: false, error: separators };
   if (text.length > MAX_INPUT_LENGTH) {
     return failure('INVALID_FORMAT', `Amounts are at most ${String(MAX_INPUT_LENGTH)} characters.`);
   }
@@ -90,7 +90,7 @@ export function safeParseAriary(
  * @param text - An amount such as `Ar 1 500`, `1.500 Ar`, `MGA 1500` or `1 500,50`.
  * @param options - Optional `grouping` and `decimal`; see {@link AriaryParseOptions}.
  * @returns The amount, whole or decimal.
- * @throws {@link MgError} `INVALID_TYPE` for non-strings or bad options, `INVALID_FORMAT` for text
+ * @throws {@link MdgError} `INVALID_TYPE` for non-strings or bad options, `INVALID_FORMAT` for text
  *   that is not an amount (signs, a dot as decimal point by default), `OUT_OF_RANGE` above
  *   `Number.MAX_SAFE_INTEGER`.
  *

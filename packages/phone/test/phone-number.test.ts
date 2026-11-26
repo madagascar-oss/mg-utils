@@ -1,7 +1,7 @@
 import fc from 'fast-check';
 import { describe, expect, test } from 'vitest';
 import {
-  MgError,
+  MdgError,
   OPERATOR_NAMES,
   formatPhoneNumber,
   isValidPhoneNumber,
@@ -20,11 +20,11 @@ const validNationalNumber = fc
   .map(([prefix, rest]) => `${prefix}${rest}`);
 
 describe('parsePhoneNumber fuzzing', () => {
-  test('throws only MgError for any string input', () => {
+  test('throws only MdgError for any string input', () => {
     fc.assert(
       fc.property(fc.string({ maxLength: FUZZ_MAX_INPUT_LENGTH }), (input) => {
         const result = safeParsePhoneNumber(input);
-        expect(result.success || result.error instanceof MgError).toBe(true);
+        expect(result.success || result.error instanceof MdgError).toBe(true);
       }),
       { numRuns: FUZZ_RUNS },
     );

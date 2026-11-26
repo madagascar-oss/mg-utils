@@ -5,7 +5,7 @@ import { defineConfig } from 'vitest/config';
 const packagesDir = fileURLToPath(new URL('packages/', import.meta.url));
 const packageAliases = Object.fromEntries(
   readdirSync(packagesDir).map((name) => [
-    `@madagascar-oss/${name}`,
+    `@mdgascar/${name}`,
     `${packagesDir}${name}/src/index.ts`,
   ]),
 );

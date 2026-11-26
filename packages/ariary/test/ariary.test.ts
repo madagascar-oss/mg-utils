@@ -1,7 +1,7 @@
 import fc from 'fast-check';
 import { describe, expect, test } from 'vitest';
 import {
-  MgError,
+  MdgError,
   ariaryToFmg,
   formatAriary,
   parseAriary,
@@ -53,11 +53,11 @@ describe('formatAriary and parseAriary', () => {
     );
   });
 
-  test('throws only MgError for any string input', () => {
+  test('throws only MdgError for any string input', () => {
     fc.assert(
       fc.property(fc.string({ maxLength: FUZZ_MAX_INPUT_LENGTH }), (text) => {
         const result = safeParseAriary(text);
-        expect(result.success || result.error instanceof MgError).toBe(true);
+        expect(result.success || result.error instanceof MdgError).toBe(true);
       }),
       { numRuns: FUZZ_RUNS },
     );

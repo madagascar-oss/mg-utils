@@ -1,5 +1,5 @@
 {
-  "name": "mg-utils-js",
+  "name": "mdg-utils-js",
   "image": "mcr.microsoft.com/devcontainers/javascript-node:1-22-bookworm",
   "features": {
     "ghcr.io/guiyomh/features/just:0": {},

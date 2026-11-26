@@ -1,5 +1,5 @@
 import { MAX_YEAR, MIN_YEAR, WEEKDAY_NAMES } from './generated/data.ts';
-import { MgError } from './generated/errors.ts';
+import { MdgError } from './generated/errors.ts';
 
 /**
  * A calendar date: year 1–9999, month 1–12, day of the month.
@@ -49,15 +49,15 @@ function checked(
   impossibleDateCode: 'INVALID_FORMAT' | 'OUT_OF_RANGE',
 ): CalendarDate {
   if (date.year < MIN_YEAR || date.year > MAX_YEAR) {
-    throw new MgError('OUT_OF_RANGE', `Years go from ${String(MIN_YEAR)} to ${String(MAX_YEAR)}.`);
+    throw new MdgError('OUT_OF_RANGE', `Years go from ${String(MIN_YEAR)} to ${String(MAX_YEAR)}.`);
   }
-  if (!isRealDate(date)) throw new MgError(impossibleDateCode, 'This day does not exist.');
+  if (!isRealDate(date)) throw new MdgError(impossibleDateCode, 'This day does not exist.');
   return date;
 }
 
 function fromText(text: string): CalendarDate {
   const match = ISO_DATE.exec(text);
-  if (match === null) throw new MgError('INVALID_FORMAT', 'Expected a date as YYYY-MM-DD.');
+  if (match === null) throw new MdgError('INVALID_FORMAT', 'Expected a date as YYYY-MM-DD.');
   const [, year, month, day] = match;
   return checked({ year: Number(year), month: Number(month), day: Number(day) }, 'INVALID_FORMAT');
 }
@@ -65,13 +65,13 @@ function fromText(text: string): CalendarDate {
 function fromFields(fields: object): CalendarDate {
   const { year, month, day } = fields as Partial<Record<keyof CalendarDate, unknown>>;
   if (!Number.isInteger(year) || !Number.isInteger(month) || !Number.isInteger(day)) {
-    throw new MgError('INVALID_TYPE', 'Expected whole numbers for year, month and day.');
+    throw new MdgError('INVALID_TYPE', 'Expected whole numbers for year, month and day.');
   }
   return checked({ year, month, day } as CalendarDate, 'OUT_OF_RANGE');
 }
 
 function fromDate(date: Date): CalendarDate {
-  if (Number.isNaN(date.getTime())) throw new MgError('INVALID_FORMAT', 'Invalid Date.');
+  if (Number.isNaN(date.getTime())) throw new MdgError('INVALID_FORMAT', 'Invalid Date.');
   const fields = { year: date.getFullYear(), month: date.getMonth() + 1, day: date.getDate() };
   return checked(fields, 'OUT_OF_RANGE');
 }
@@ -86,7 +86,7 @@ export function toCalendarDate(input: unknown): CalendarDate {
   if (typeof input === 'string') return fromText(input);
   if (input instanceof Date) return fromDate(input);
   if (typeof input === 'object' && input !== null) return fromFields(input);
-  throw new MgError('INVALID_TYPE', 'Expected YYYY-MM-DD text, { year, month, day } or a Date.');
+  throw new MdgError('INVALID_TYPE', 'Expected YYYY-MM-DD text, { year, month, day } or a Date.');
 }
 
 /**
