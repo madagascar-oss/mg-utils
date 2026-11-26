@@ -1,5 +1,12 @@
 # @mdgascar/ariary
 
+## 0.7.0
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @mdgascar/words@0.7.0
+
 ## 0.6.0
 
 ### Minor Changes
