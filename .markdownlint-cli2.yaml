@@ -5,3 +5,4 @@ ignores:
   - '**/etc/*.api.md'
   - '**/CHANGELOG.md'
   - '**/dist/**'
+  - 'spec/**'

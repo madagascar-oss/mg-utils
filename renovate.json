@@ -8,16 +8,38 @@
   "schedule": ["before 6am on monday"],
   "timezone": "Indian/Antananarivo",
   "rangeStrategy": "bump",
-  "lockFileMaintenance": { "enabled": true, "schedule": ["before 6am on monday"] },
+  "lockFileMaintenance": {
+    "enabled": true,
+    "schedule": ["before 6am on monday"]
+  },
   "packageRules": [
-    { "groupName": "dev dependencies", "matchDepTypes": ["devDependencies"] },
-    { "groupName": "GitHub Actions", "matchManagers": ["github-actions"] },
-    { "matchUpdateTypes": ["patch", "digest", "pin"], "automerge": true },
+    {
+      "groupName": "dev dependencies",
+      "matchDepTypes": ["devDependencies"]
+    },
+    {
+      "groupName": "GitHub Actions",
+      "matchManagers": ["github-actions"]
+    },
+    {
+      "matchUpdateTypes": ["patch", "digest", "pin"],
+      "automerge": true
+    },
     {
       "description": "TypeScript is capped by typescript-eslint support; bump them together.",
       "matchPackageNames": ["typescript"],
       "matchUpdateTypes": ["major", "minor"],
       "enabled": false
+    },
+    {
+      "description": "Spec bumps carry code changes: never automerge.",
+      "matchManagers": ["git-submodules"],
+      "automerge": false,
+      "commitMessageTopic": "spec"
     }
-  ]
+  ],
+  "baseBranches": ["dev"],
+  "git-submodules": {
+    "enabled": true
+  }
 }

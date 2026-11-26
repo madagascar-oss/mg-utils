@@ -1,11 +1,18 @@
 {
   "$schema": "https://unpkg.com/@changesets/config@3/schema.json",
-  "changelog": ["@changesets/changelog-github", { "repo": "madagascar-oss/mg-utils" }],
+  "changelog": [
+    "@changesets/changelog-github",
+    {
+      "repo": "mdgascar/mdg-utils-js"
+    }
+  ],
   "commit": false,
-  "fixed": [],
+  "fixed": [
+    ["@mdgascar/words", "@mdgascar/phone", "@mdgascar/ariary", "@mdgascar/date", "@mdgascar/utils"]
+  ],
   "linked": [],
   "access": "public",
   "baseBranch": "main",
   "updateInternalDependencies": "patch",
-  "ignore": ["@madagascar-oss/test-runner"]
+  "ignore": ["@mdgascar/conformance"]
 }

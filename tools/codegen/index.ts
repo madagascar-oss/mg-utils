@@ -1,4 +1,4 @@
-// spec/ → native constants. Output is formatted with Prettier so `git diff --exit-code`
+// spec/ → TypeScript constants. Output is formatted with Prettier so `git diff --exit-code`
 // after `just codegen` detects any drift between spec and generated code.
 import { mkdirSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
@@ -14,8 +14,8 @@ import {
   readYaml,
   stripProvenance,
 } from '../lib/spec.ts';
-import { errorsFile } from './typescript/emit.ts';
-import { dataFile } from './typescript/modules.ts';
+import { errorsFile } from './errors-file.ts';
+import { dataFile } from './modules/index.ts';
 
 const specVersion = readSpecVersion();
 const errors = readErrors();

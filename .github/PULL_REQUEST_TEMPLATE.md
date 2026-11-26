@@ -1,12 +1,12 @@
 ## What and why
 
-<!-- One concern per PR, under about 300 changed lines. -->
+<!-- Target dev (main only takes merges from dev). One concern per PR, under about 300 changed lines. -->
 
 Closes #
 
 ## Source for any data
 
-<!-- Link the official source for every added or changed value in spec/*/data.yaml. Write "none" if no data changed. -->
+<!-- Link the official source for every added or changed value in mdg-utils-spec (`modules/*/data.yaml`). Write "none" if no data changed. -->
 
 ## Definition of done
 

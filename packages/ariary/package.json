@@ -1,0 +1,58 @@
+{
+  "name": "@mdgascar/ariary",
+  "version": "0.7.0",
+  "description": "Malagasy Ariary amounts: format (Ar 1 500), parse, words and franc (FMG) conversion.",
+  "license": "MIT",
+  "author": "Mdgascar contributors",
+  "homepage": "https://github.com/mdgascar/mdg-utils-js/tree/main/packages/ariary#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mdgascar/mdg-utils-js.git",
+    "directory": "packages/ariary"
+  },
+  "bugs": "https://github.com/mdgascar/mdg-utils-js/issues",
+  "keywords": [
+    "madagascar",
+    "malagasy",
+    "ariary",
+    "mga",
+    "currency",
+    "money",
+    "format"
+  ],
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      }
+    },
+    "./package.json": "./package.json"
+  },
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "engines": {
+    "node": ">=22.18.0"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
+  "scripts": {
+    "build": "tsup",
+    "api": "api-extractor run --local"
+  },
+  "dependencies": {
+    "@mdgascar/words": "workspace:^"
+  }
+}

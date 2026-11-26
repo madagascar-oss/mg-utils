@@ -5,12 +5,16 @@ import { parse } from 'yaml';
 
 export const ROOT_DIR = fileURLToPath(new URL('../..', import.meta.url));
 export const SPEC_DIR = join(ROOT_DIR, 'spec');
-export const PACKAGES_DIR = join(ROOT_DIR, 'js', 'packages');
+export const MODULES_DIR = join(SPEC_DIR, 'modules');
+export const PACKAGES_DIR = join(ROOT_DIR, 'packages');
+/** Indentation of JSON files written by tools, matching Prettier. */
+export const JSON_INDENT = 2;
+
 export const MODULE_FILES = ['README.md', 'data.yaml', 'schema.json', 'tests.yaml'] as const;
 
 export function listModules(): string[] {
-  return readdirSync(SPEC_DIR, { withFileTypes: true })
-    .filter((entry) => entry.isDirectory() && !entry.name.startsWith('_'))
+  return readdirSync(MODULES_DIR, { withFileTypes: true })
+    .filter((entry) => entry.isDirectory())
     .map((entry) => entry.name)
     .sort();
 }
@@ -19,12 +23,8 @@ export function readYaml(path: string): unknown {
   return parse(readFileSync(path, 'utf8'));
 }
 
-export function readJson(path: string): unknown {
-  return JSON.parse(readFileSync(path, 'utf8'));
-}
-
 export function moduleFile(module: string, file: (typeof MODULE_FILES)[number]): string {
-  return join(SPEC_DIR, module, file);
+  return join(MODULES_DIR, module, file);
 }
 
 export function readSpecVersion(): string {

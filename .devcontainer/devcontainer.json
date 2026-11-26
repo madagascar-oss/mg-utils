@@ -1,10 +1,11 @@
 {
-  "name": "mg-utils",
+  "name": "mdg-utils-js",
   "image": "mcr.microsoft.com/devcontainers/javascript-node:1-22-bookworm",
   "features": {
-    "ghcr.io/devcontainers/features/php:1": { "version": "8.3", "installComposer": true },
     "ghcr.io/guiyomh/features/just:0": {},
-    "ghcr.io/devcontainers/features/python:1": { "version": "3.12" }
+    "ghcr.io/devcontainers/features/python:1": {
+      "version": "3.12"
+    }
   },
   "postCreateCommand": "pipx install yamllint && just setup",
   "customizations": {
@@ -20,9 +21,9 @@
         "editor.formatOnSave": true,
         "editor.defaultFormatter": "esbenp.prettier-vscode",
         "yaml.schemas": {
-          "spec/_schemas/tests.schema.json": "spec/*/tests.yaml",
-          "spec/phone/schema.json": "spec/phone/data.yaml",
-          "spec/words/schema.json": "spec/words/data.yaml"
+          "spec/schemas/tests.schema.json": "spec/modules/*/tests.yaml",
+          "spec/modules/phone/schema.json": "spec/modules/phone/data.yaml",
+          "spec/modules/words/schema.json": "spec/modules/words/data.yaml"
         }
       }
     }

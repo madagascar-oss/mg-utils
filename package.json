@@ -1,5 +1,5 @@
 {
-  "name": "mg-utils-monorepo",
+  "name": "mdg-utils-js",
   "private": true,
   "type": "module",
   "packageManager": "pnpm@10.30.1",
@@ -9,21 +9,18 @@
   "scripts": {
     "hooks": "lefthook install",
     "codegen": "node tools/codegen/index.ts",
-    "validate": "node tools/validate/index.ts",
-    "stale-data": "node tools/stale-data/index.ts",
     "new-module": "node tools/new-module/index.ts",
-    "build": "pnpm -r --filter \"./js/packages/*\" build",
+    "build": "pnpm -r --filter \"./packages/*\" build",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "lint": "eslint . && prettier --check . && pnpm typecheck && knip",
     "format": "prettier --write . && eslint --fix .",
     "test": "vitest run --coverage",
     "bench": "vitest bench --run --reporter=verbose",
-    "api": "pnpm -r --filter \"./js/packages/*\" api",
+    "api": "pnpm -r --filter \"./packages/*\" api",
     "changeset": "changeset",
     "version-packages": "changeset version",
     "release": "pnpm build && changeset publish",
-    "spec-claim": "node tools/spec-claim/index.ts",
-    "demo": "node tools/demo/index.ts && python3 -m http.server 8080 --directory docs/site"
+    "spec-claim": "node tools/spec-claim/index.ts"
   },
   "devDependencies": {
     "@changesets/changelog-github": "^1.0.1",
@@ -32,8 +29,6 @@
     "@microsoft/api-extractor": "^7.60.1",
     "@types/node": "^22.18.0",
     "@vitest/coverage-v8": "^5.1.1",
-    "ajv": "^8.20.0",
-    "ajv-formats": "^3.0.1",
     "eslint": "^10.15.0",
     "eslint-plugin-jsdoc": "^65.5.3",
     "eslint-plugin-n": "^18.5.0",

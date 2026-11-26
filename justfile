@@ -1,4 +1,4 @@
-# mg-utils — every command in one place. Run `just` to list them.
+# mdg-utils-js — every command in one place. Run `just` to list them.
 set shell := ["bash", "-euo", "pipefail", "-c"]
 
 # List commands
@@ -8,6 +8,7 @@ default:
 # Install dependencies and git hooks (target: under 5 minutes)
 setup:
     command -v pnpm >/dev/null || npm install --global pnpm@10
+    git submodule update --init
     pnpm install --frozen-lockfile
     pnpm hooks
 
@@ -15,11 +16,10 @@ setup:
 codegen:
     pnpm codegen
 
-# Validate spec/ files and fail if generated code drifted from the spec
+# Fail if generated code drifted from the spec
 check:
-    pnpm validate
     pnpm codegen
-    git diff --exit-code -- 'js/packages/*/src/generated' || (echo "Generated code is out of date: run 'just codegen' and commit." && exit 1)
+    git diff --exit-code -- 'packages/*/src/generated' || (echo "Generated code is out of date: run 'just codegen' and commit." && exit 1)
 
 # Format, lint, typecheck and look for dead code
 lint:
@@ -47,19 +47,11 @@ api: build
 
 # Everything CI runs
 ci: check lint test build
-    pnpm -r --filter "./js/packages/*" exec api-extractor run
+    pnpm -r --filter "./packages/*" exec api-extractor run
     pnpm spec-claim
 
-# List data entries whose `checked:` date is older than 12 months
-stale-data:
-    pnpm stale-data
-
-# Scaffold a new module in spec/ and every language
+# Scaffold the JS package for a module that exists in spec/
 new-module name:
     pnpm new-module {{name}}
     pnpm install
     pnpm codegen
-
-# Build and serve the live demo on http://localhost:8080
-demo: build
-    pnpm demo

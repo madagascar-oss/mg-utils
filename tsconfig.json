@@ -1,11 +1,33 @@
 {
-  "extends": "./tsconfig.base.json",
   "compilerOptions": {
+    "target": "ES2022",
+    "lib": ["ES2023"],
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "exactOptionalPropertyTypes": true,
+    "noImplicitOverride": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noPropertyAccessFromIndexSignature": true,
+    "useUnknownInCatchVariables": true,
+    "verbatimModuleSyntax": true,
+    "erasableSyntaxOnly": true,
+    "allowImportingTsExtensions": true,
+    "isolatedModules": true,
+    "resolveJsonModule": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "stripInternal": true,
+    "noEmit": true,
     "types": ["node"],
     "paths": {
-      "@madagascar-oss/*": ["./js/packages/*/src/index.ts"]
+      "@mdgascar/*": ["./packages/*/src/index.ts"]
     }
   },
-  "include": ["js/**/*.ts", "tools/**/*.ts", "*.ts", "*.js"],
-  "exclude": ["**/dist/**", "**/node_modules/**"]
+  "include": ["packages/**/*.ts", "conformance/**/*.ts", "tools/**/*.ts", "*.ts", "*.js"],
+  "exclude": ["**/dist/**", "**/node_modules/**", "spec/**"]
 }

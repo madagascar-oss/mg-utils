@@ -1,8 +1,8 @@
-// Scaffolds a module everywhere: spec files, a JS package and test wiring.
+// Scaffolds the JS side of a module that already exists in spec/: a package and test wiring.
 // Usage: just new-module <name>   (lower-case, e.g. ariary)
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
-import { PACKAGES_DIR, ROOT_DIR, SPEC_DIR, readSpecVersion } from '../lib/spec.ts';
+import { JSON_INDENT, MODULES_DIR, PACKAGES_DIR, ROOT_DIR, readSpecVersion } from '../lib/spec.ts';
 
 const MODULE_NAME = /^[a-z][a-z0-9]*$/;
 const name = process.argv[2] ?? '';
@@ -10,16 +10,20 @@ if (!MODULE_NAME.test(name)) {
   console.error('Usage: just new-module <name>  (lower-case letters and digits, e.g. ariary)');
   process.exit(1);
 }
-const specDir = join(SPEC_DIR, name);
+if (!existsSync(join(MODULES_DIR, name, 'data.yaml'))) {
+  console.error(
+    `Module "${name}" is not in spec/. Add it to mdg-utils-spec and bump the submodule first.`,
+  );
+  process.exit(1);
+}
 const packageDir = join(PACKAGES_DIR, name);
-if (existsSync(specDir) || existsSync(packageDir)) {
+if (existsSync(packageDir)) {
   console.error(`Module "${name}" already exists.`);
   process.exit(1);
 }
 
 const pascal = name.charAt(0).toUpperCase() + name.slice(1);
 const fnName = `check${pascal}Input`;
-const today = new Date().toISOString().slice(0, 10);
 
 function write(path: string, content: string): void {
   mkdirSync(join(path, '..'), { recursive: true });
@@ -27,87 +31,19 @@ function write(path: string, content: string): void {
   console.log(`created ${path.slice(ROOT_DIR.length)}`);
 }
 
-write(
-  join(specDir, 'README.md'),
-  `# ${name}
-
-What this module does, in one sentence.
-
-Main function: \`${fnName}(input)\` (placeholder — rename it in spec and code).
-
-## Rules
-
-1. Write each rule in plain words, with an example.
-
-## Errors
-
-| Input | Code |
-| --- | --- |
-| Not a string | \`INVALID_TYPE\` |
-
-## Sources
-
-- Link every official source used in \`data.yaml\`.
-
-## Recorded disagreements
-
-- None yet.
-`,
-);
-
-write(
-  join(specDir, 'data.yaml'),
-  `# Data for ${name}. Every entry needs \`source:\` (https URL) and \`checked:\` (date).
-entries: []
-# - id: example
-#   value: "..."
-#   source: https://...
-#   checked: ${today}
-`,
-);
-
-write(
-  join(specDir, 'schema.json'),
-  `${JSON.stringify(
-    {
-      $schema: 'https://json-schema.org/draft/2020-12/schema',
-      $id: `https://github.com/madagascar-oss/mg-utils/spec/${name}/schema.json`,
-      title: name,
-      type: 'object',
-      additionalProperties: false,
-      required: ['entries'],
-      properties: {
-        entries: { type: 'array', items: { $ref: '../_schemas/source.schema.json' } },
-      },
-    },
-    null,
-    2,
-  )}\n`,
-);
-
-write(
-  join(specDir, 'tests.yaml'),
-  `# Shared test vectors for ${fnName}. Every language must pass all of them.
-- input: "example"
-  expected: "example"
-- input: null
-  error: INVALID_TYPE
-`,
-);
-
 const wordsManifest = JSON.parse(
   readFileSync(join(PACKAGES_DIR, 'words', 'package.json'), 'utf8'),
 ) as Record<string, unknown>;
 const manifest = JSON.stringify(
   {
     ...wordsManifest,
-    name: `@madagascar-oss/${name}`,
+    name: `@mdgascar/${name}`,
     description: `TODO: describe ${name}.`,
     keywords: ['madagascar', 'malagasy', name],
   },
   null,
-  2,
-).replaceAll('js/packages/words', `js/packages/${name}`);
+  JSON_INDENT,
+).replaceAll('packages/words', `packages/${name}`);
 write(join(packageDir, 'package.json'), `${manifest}\n`);
 for (const file of ['tsup.config.ts', 'api-extractor.json', 'LICENSE']) {
   write(join(packageDir, file), readFileSync(join(PACKAGES_DIR, 'words', file), 'utf8'));
@@ -115,42 +51,42 @@ for (const file of ['tsup.config.ts', 'api-extractor.json', 'LICENSE']) {
 
 write(
   join(packageDir, 'README.md'),
-  `# @madagascar-oss/${name}
+  `# @mdgascar/${name}
 
 TODO: one-sentence description.
 
 Implements spec ${readSpecVersion()}.
 
 \`\`\`sh
-npm install @madagascar-oss/${name}
+npm install @mdgascar/${name}
 \`\`\`
 
-Rules and sources: [spec/${name}](../../../spec/${name}/README.md).
+Rules and sources: [spec/${name}](https://github.com/mdgascar/mdg-utils-spec/blob/dev/modules/${name}/README.md).
 `,
 );
 
 write(
   join(packageDir, 'src', 'index.ts'),
   `/**
- * TODO: describe ${name}. Part of mg-utils by Madagascar OSS.
+ * TODO: describe ${name}. Part of mdg-utils by Mdgascar.
  *
  * @packageDocumentation
  */
 export { ${fnName} } from './${name}.ts';
-export { MgError, SPEC_VERSION, type ErrorCode } from './generated/errors.ts';
+export { MdgError, SPEC_VERSION, type ErrorCode } from './generated/errors.ts';
 `,
 );
 
 write(
   join(packageDir, 'src', `${name}.ts`),
-  `import { MgError } from './generated/errors.ts';
+  `import { MdgError } from './generated/errors.ts';
 
 /**
  * Placeholder: replace with the module's real function, spec first.
  *
  * @param input - A string.
  * @returns The same string.
- * @throws {@link MgError} \`INVALID_TYPE\` if \`input\` is not a string.
+ * @throws {@link MdgError} \`INVALID_TYPE\` if \`input\` is not a string.
  *
  * @example
  * \`\`\`ts
@@ -158,7 +94,7 @@ write(
  * \`\`\`
  */
 export function ${fnName}(input: unknown): string {
-  if (typeof input !== 'string') throw new MgError('INVALID_TYPE', 'Expected a string.');
+  if (typeof input !== 'string') throw new MdgError('INVALID_TYPE', 'Expected a string.');
   return input;
 }
 `,
@@ -166,9 +102,9 @@ export function ${fnName}(input: unknown): string {
 
 write(join(packageDir, 'etc', '.gitkeep'), '');
 
-const defaultsPath = join(ROOT_DIR, 'js', 'test-runner', 'default-functions.json');
+const defaultsPath = join(ROOT_DIR, 'conformance', 'functions.json');
 const defaults = JSON.parse(readFileSync(defaultsPath, 'utf8')) as Record<string, string>;
 const sorted = Object.fromEntries(Object.entries({ ...defaults, [name]: fnName }).sort());
-writeFileSync(defaultsPath, `${JSON.stringify(sorted, null, 2)}\n`);
-console.log(`registered ${name} → ${fnName} in js/test-runner/default-functions.json`);
-console.log('Next: edit spec/ first, then run `just codegen` and `just test`.');
+writeFileSync(defaultsPath, `${JSON.stringify(sorted, null, JSON_INDENT)}\n`);
+console.log(`registered ${name} → ${fnName} in conformance/functions.json`);
+console.log('Next: run `just codegen` and `just test`.');

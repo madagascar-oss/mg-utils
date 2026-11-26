@@ -2,7 +2,7 @@ name: CI
 
 on:
   push:
-    branches: [main]
+    branches: [main, dev]
   pull_request:
   merge_group:
 
@@ -15,7 +15,7 @@ concurrency:
 
 jobs:
   lint:
-    uses: madagascar-oss/.github/.github/workflows/reusable-lint.yml@main
+    uses: mdgascar/.github/.github/workflows/reusable-lint.yml@0610e49630c07c4854ea85312207c26722fc1437 # main
 
   js-lint:
     name: Format + lint
@@ -24,23 +24,24 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
+          submodules: true
       - uses: ./.github/actions/setup
       - run: pnpm lint
       - name: Public API unchanged (run `just api` and commit etc/ if intended)
-        run: pnpm build && pnpm -r --filter "./js/packages/*" exec api-extractor run
+        run: pnpm build && pnpm -r --filter "./packages/*" exec api-extractor run
 
   spec:
-    name: Spec schema + codegen drift
+    name: Codegen drift
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
+          submodules: true
       - uses: ./.github/actions/setup
-      - run: pnpm validate
       - run: pnpm codegen
       - name: Generated code matches spec/
-        run: git diff --exit-code -- 'js/packages/*/src/generated' || (echo "::error::Generated code is out of date. Run 'just codegen' and commit." && exit 1)
+        run: git diff --exit-code -- 'packages/*/src/generated' || (echo "::error::Generated code is out of date. Run 'just codegen' and commit." && exit 1)
 
   test-js:
     name: Spec vectors (Node ${{ matrix.node }})
@@ -54,6 +55,7 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
+          submodules: true
       - uses: ./.github/actions/setup
         with:
           node-version: ${{ matrix.node }}

@@ -1,25 +1,28 @@
 name: Release
 
+# dev: Changesets keeps a "chore: release packages" PR open against dev that bumps versions
+#      and writes changelogs.
+# main: merging dev into main publishes every version not yet on npm, tags it and creates
+#       the GitHub release. Merging dev into main is the only release action.
 on:
   push:
-    branches: [main]
+    branches: [dev, main]
 
 permissions:
   contents: read
 
 concurrency:
-  group: release
+  group: release-${{ github.ref_name }}
   cancel-in-progress: false
 
 jobs:
-  release:
-    name: Version PR or publish
+  version:
+    name: Version PR
+    if: github.ref_name == 'dev'
     runs-on: ubuntu-latest
-    environment: npm
     permissions:
-      contents: write # tags and GitHub releases
-      pull-requests: write # the Version PR
-      id-token: write # npm trusted publishing + provenance, no token on any laptop
+      contents: write # push the changeset-release/dev branch
+      pull-requests: write # open or update the Version PR
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -28,10 +31,39 @@ jobs:
       - uses: changesets/action@ae32849d5ba541f9ae29e40e22a623bc13562f51 # v2.1.2
         with:
           version-script: pnpm version-packages
-          publish-script: pnpm release
           commit-message: 'chore: release packages'
           pr-title: 'chore: release packages'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  publish:
+    name: Publish
+    if: github.ref_name == 'main'
+    runs-on: ubuntu-latest
+    environment: npm
+    permissions:
+      contents: write # tags and GitHub releases
+      id-token: write # npm trusted publishing + provenance, no token on any laptop
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: ./.github/actions/setup
+      - name: Refuse to publish unversioned changes
+        run: |
+          pending=$(find .changeset -name '*.md' ! -name README.md | wc -l)
+          if [ "$pending" -gt 0 ]; then
+            echo "::error::$pending pending changeset(s) on main. Merge the 'chore: release packages' PR into dev, then merge dev into main again."
+            exit 1
+          fi
+      - uses: changesets/action@ae32849d5ba541f9ae29e40e22a623bc13562f51 # v2.1.2
+        with:
+          publish-script: pnpm release
           create-github-releases: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_CONFIG_PROVENANCE: 'true'
+          # One-time bootstrap: npm only allows a trusted publisher on a package that already
+          # exists, so the first release of each package uses this token. Remove this line and
+          # the secret once trusted publishing is set up on every package.
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}

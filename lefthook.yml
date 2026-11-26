@@ -14,8 +14,8 @@ pre-commit:
       glob: '*.{yaml,yml}'
       run: yamllint -c .yamllint.yaml {staged_files} || echo "yamllint not installed; CI will check YAML"
     spec:
-      glob: 'spec/**'
-      run: pnpm validate && pnpm codegen && git add js/packages/*/src/generated
+      glob: 'spec'
+      run: pnpm codegen && git add packages/*/src/generated
 commit-msg:
   commands:
     conventional:
