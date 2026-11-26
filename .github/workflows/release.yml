@@ -63,3 +63,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_CONFIG_PROVENANCE: 'true'
+          # One-time bootstrap: npm only allows a trusted publisher on a package that already
+          # exists, so the first release of each package uses this token. Remove this line and
+          # the secret once trusted publishing is set up on every package.
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
