@@ -1,5 +1,11 @@
 # @mdgascar/phone
 
+## 0.7.0
+
+### Minor Changes
+
+- [#30](https://github.com/mdgascar/mdg-utils-js/pull/30) [`b3fbafd`](https://github.com/mdgascar/mdg-utils-js/commit/b3fbafd46f0f5bcd408f076603ff2b4e9aba39a9) Thanks [@johan-mickael](https://github.com/johan-mickael)! - Spec 0.6.0. **Breaking**: Telma is now Yas Madagascar, so the operator id `telma` is now `yas` (`OPERATOR_NAMES.yas` is `'Yas Madagascar'`). New prefix 035 for Airtel Madagascar (on sale since 22 June 2026): `parsePhoneNumber('035 12 345 67').operator` is `'airtel'`.
+
 ## 0.6.0
 
 No changes in this release.
