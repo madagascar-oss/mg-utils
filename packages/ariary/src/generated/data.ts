@@ -43,6 +43,3 @@ export const FRANCS_PER_ARIARY = 5 as const;
 
 /** @internal */
 export const MIN_AMOUNT = 0 as const;
-
-/** @internal */
-export const MAX_AMOUNT = 999999999999 as const;

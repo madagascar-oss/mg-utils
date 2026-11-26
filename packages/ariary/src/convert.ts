@@ -1,12 +1,12 @@
 import { numberToWords } from '@madagascar-oss/words';
-import { CURRENCY_WORD, FRANCS_PER_ARIARY, MAX_AMOUNT } from './generated/data.ts';
+import { CURRENCY_WORD, FRANCS_PER_ARIARY } from './generated/data.ts';
 import { MgError } from './generated/errors.ts';
-import { assertAmount } from './amount.ts';
+import { assertAmount, MAX_AMOUNT_IN_FRANCS } from './amount.ts';
 
 /**
  * Writes an Ariary amount in Malagasy words.
  *
- * @param amount - Whole ariary from 0 to 999 999 999 999.
+ * @param amount - Whole ariary from 0 to `Number.MAX_SAFE_INTEGER`.
  * @returns The amount in words followed by `ariary`.
  * @throws {@link MgError} `INVALID_TYPE` or `OUT_OF_RANGE`.
  *
@@ -34,7 +34,7 @@ export function ariaryToWords(amount: number): string {
  * ```
  */
 export function fmgToAriary(francs: number): number {
-  assertAmount(francs, MAX_AMOUNT * FRANCS_PER_ARIARY);
+  assertAmount(francs);
   if (francs % FRANCS_PER_ARIARY !== 0) {
     throw new MgError(
       'OUT_OF_RANGE',
@@ -47,9 +47,10 @@ export function fmgToAriary(francs: number): number {
 /**
  * Converts ariary to old Malagasy francs (FMG): 1 Ar = 5 FMG.
  *
- * @param amount - Whole ariary from 0 to 999 999 999 999.
+ * @param amount - Whole ariary from 0 to `Number.MAX_SAFE_INTEGER / 5` (rounded down).
  * @returns The amount in francs.
- * @throws {@link MgError} `INVALID_TYPE` or `OUT_OF_RANGE`.
+ * @throws {@link MgError} `INVALID_TYPE`, or `OUT_OF_RANGE` when negative or when the francs
+ *   would exceed `Number.MAX_SAFE_INTEGER`.
  *
  * @example
  * ```ts
@@ -57,6 +58,6 @@ export function fmgToAriary(francs: number): number {
  * ```
  */
 export function ariaryToFmg(amount: number): number {
-  assertAmount(amount);
+  assertAmount(amount, MAX_AMOUNT_IN_FRANCS);
   return amount * FRANCS_PER_ARIARY;
 }

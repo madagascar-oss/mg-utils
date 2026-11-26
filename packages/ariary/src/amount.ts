@@ -1,5 +1,11 @@
-import { MAX_AMOUNT, MIN_AMOUNT } from './generated/data.ts';
+import { FRANCS_PER_ARIARY, MIN_AMOUNT } from './generated/data.ts';
 import { MgError } from './generated/errors.ts';
+
+/** @internal The spec sets no maximum: amounts stop where a number stops being exact. */
+export const MAX_AMOUNT = Number.MAX_SAFE_INTEGER;
+
+/** @internal Largest ariary amount whose value in francs is still exact. */
+export const MAX_AMOUNT_IN_FRANCS = Math.floor(MAX_AMOUNT / FRANCS_PER_ARIARY);
 
 /**
  * @internal Validates a whole amount at the public boundary.

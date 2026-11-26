@@ -1,4 +1,4 @@
-import { MAX_AMOUNT } from './generated/data.ts';
+import { MAX_AMOUNT } from './amount.ts';
 import { MgError, type ErrorCode, type SafeParseResult } from './generated/errors.ts';
 import { readDigits } from './read-digits.ts';
 
@@ -46,7 +46,7 @@ export function safeParseAriary(text: unknown): SafeParseResult<number> {
  * @param text - An amount such as `Ar 1 500`, `1.500 Ar`, `MGA 1500` or `1 500`.
  * @returns The amount in whole ariary.
  * @throws {@link MgError} `INVALID_TYPE` for non-strings, `INVALID_FORMAT` for text that is not an
- *   amount (commas, decimals, signs), `OUT_OF_RANGE` above 999 999 999 999.
+ *   amount (commas, decimals, signs), `OUT_OF_RANGE` above `Number.MAX_SAFE_INTEGER`.
  *
  * @example
  * ```ts

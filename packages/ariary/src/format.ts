@@ -2,10 +2,8 @@ import {
   CURRENCY_SYMBOL,
   DEFAULT_GROUPING,
   FRANC_SYMBOL,
-  FRANCS_PER_ARIARY,
   GROUP_SEPARATORS,
   GROUP_SIZE,
-  MAX_AMOUNT,
   SYMBOL_SEPARATOR,
   type AriaryGrouping,
 } from './generated/data.ts';
@@ -65,11 +63,11 @@ function layOut(amount: number, symbol: string, options: AriaryFormatOptions): s
 /**
  * Writes an Ariary amount the Malagasy way: symbol `Ar`, digits grouped by no-break spaces.
  *
- * @param amount - Whole ariary from 0 to 999 999 999 999.
+ * @param amount - Whole ariary from 0 to `Number.MAX_SAFE_INTEGER`.
  * @param options - Optional `grouping` (`space` or `dot`) and `symbolPosition` (`before` or `after`).
  * @returns The formatted amount, e.g. `Ar 1 500` (the spaces are U+00A0).
  * @throws {@link MgError} `INVALID_TYPE` for non-integers or unknown options,
- *   `OUT_OF_RANGE` outside 0 to 999 999 999 999.
+ *   `OUT_OF_RANGE` outside 0 to `Number.MAX_SAFE_INTEGER`.
  *
  * @example
  * ```ts
@@ -85,7 +83,7 @@ export function formatAriary(amount: number, options: AriaryFormatOptions = {}):
 /**
  * Writes an amount in old Malagasy francs, with the same layout as {@link formatAriary}.
  *
- * @param francs - Whole francs from 0 to 4 999 999 999 995.
+ * @param francs - Whole francs from 0 to `Number.MAX_SAFE_INTEGER`.
  * @param options - Same options as {@link formatAriary}.
  * @returns The formatted amount, e.g. `Fmg 7 500`.
  * @throws {@link MgError} `INVALID_TYPE` or `OUT_OF_RANGE`, as {@link formatAriary}.
@@ -96,6 +94,6 @@ export function formatAriary(amount: number, options: AriaryFormatOptions = {}):
  * ```
  */
 export function formatFmg(francs: number, options: AriaryFormatOptions = {}): string {
-  assertAmount(francs, MAX_AMOUNT * FRANCS_PER_ARIARY);
+  assertAmount(francs);
   return layOut(francs, FRANC_SYMBOL, options);
 }
