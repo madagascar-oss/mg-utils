@@ -1,5 +1,11 @@
 # @madagascar-oss/words
 
+## 0.6.0
+
+### Minor Changes
+
+- [#25](https://github.com/madagascar-oss/mg-utils-js/pull/25) [`bb7f20e`](https://github.com/madagascar-oss/mg-utils-js/commit/bb7f20e67414398bf74b189cf1493f03a215e912) Thanks [@johan-mickael](https://github.com/johan-mickael)! - Implement spec 0.5.0 for number words. `numberToWords` now spells any number up to `Number.MAX_SAFE_INTEGER`: `lavitrisa` takes any count, so `10¹²` → `arivo lavitrisa` and `1 999 999 999 999` → `… sy sivy amby sivifolo sy sivinjato sy arivo lavitrisa`. It also reads decimals with `faingo`: `3.14` → `telo faingo efatra ambin'ny folo`, `0.008` → `aotra faingo aotra aotra valo`. Numbers above 999 999 999 999 and decimals no longer throw.
+
 ## 0.5.0
 
 ### Minor Changes
