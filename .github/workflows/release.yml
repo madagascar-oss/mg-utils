@@ -56,41 +56,11 @@ jobs:
             echo "::error::$pending pending changeset(s) on main. Merge the 'chore: release packages' PR into dev, then merge dev into main again."
             exit 1
           fi
-      # One-time bootstrap for packages that are not on npm yet. npm only allows a trusted
-      # publisher on a package that already exists, so the first version of each package is
-      # staged with NPM_TOKEN (a normal token, no 2FA bypass). Staging does not publish: a
-      # maintainer approves it on npmjs.com with 2FA. Remove these two steps, the `if:` on the
-      # changesets step and the NPM_TOKEN secret once trusted publishing is set up everywhere.
-      - name: Point npm at the bootstrap token
-        # The file holds the variable name, not the token; npm expands it at publish time.
-        run: echo "//registry.npmjs.org/:_authToken=\${NPM_TOKEN}" > "$HOME/.npmrc"
-      - name: Stage packages that are not on npm yet
-        id: stage
-        env:
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-          # npm stage publish needs npm 11.15.0 or later.
-          NPM_STAGE_CLI: npm@11.21.3
-        run: |
-          staged=false
-          for dir in packages/*/; do
-            name=$(node -p "require('./${dir}package.json').name")
-            if npm view "$name" name >/dev/null 2>&1; then
-              continue
-            fi
-            if [ "$staged" = false ]; then
-              npm install --global "$NPM_STAGE_CLI"
-              pnpm build
-            fi
-            # pnpm pack rewrites workspace:^ dependencies to real versions; npm would not.
-            tarball=$(cd "$dir" && pnpm pack --pack-destination "$RUNNER_TEMP" --json \
-              | node -e 'let s="";process.stdin.on("data",c=>s+=c).on("end",()=>console.log(JSON.parse(s).filename))')
-            npm stage publish "$tarball" --access public --provenance
-            echo "::notice::Staged $name. Approve it on npmjs.com (Staged Packages) with 2FA."
-            staged=true
-          done
-          echo "staged=$staged" >> "$GITHUB_OUTPUT"
+      # Publishing uses npm trusted publishing (OIDC) only. npm can't add a trusted publisher
+      # to a package that doesn't exist yet, so a NEW package needs one manual first version:
+      # stage it with `npm stage publish --provenance`, approve it with 2FA, then add the
+      # trusted publisher (repo mdgascar/mdg-utils-js, workflow release.yml, environment npm).
       - uses: changesets/action@ae32849d5ba541f9ae29e40e22a623bc13562f51 # v2.1.2
-        if: steps.stage.outputs.staged != 'true'
         with:
           publish-script: pnpm release
           create-github-releases: true
