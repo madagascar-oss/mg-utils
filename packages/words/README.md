@@ -13,8 +13,7 @@ import { numberToWords } from '@mdgascar/words';
 
 numberToWords(21); // 'iraika amby roapolo'
 numberToWords(2026); // 'enina amby roapolo sy roa arivo'
-numberToWords(280_000); // 'valo alina sy roa hetsy'
-numberToWords(1_000_000_000_000); // 'arivo lavitrisa'
+numberToWords(280000); // 'valo alina sy roa hetsy'
 numberToWords(3.14); // "telo faingo efatra ambin'ny folo"
 numberToWords(0.008); // 'aotra faingo aotra aotra valo'
 ```
