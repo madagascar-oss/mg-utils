@@ -60,7 +60,7 @@ jobs:
       # .npmrc from NPM_TOKEN, so do it here. The file holds the variable name, not the token;
       # npm expands it at publish time. Remove this step together with NPM_TOKEN.
       - name: Point npm at the bootstrap token
-        run: echo '//registry.npmjs.org/:_authToken=${NPM_TOKEN}' > "$HOME/.npmrc"
+        run: echo "//registry.npmjs.org/:_authToken=\${NPM_TOKEN}" > "$HOME/.npmrc"
       - uses: changesets/action@ae32849d5ba541f9ae29e40e22a623bc13562f51 # v2.1.2
         with:
           publish-script: pnpm release
