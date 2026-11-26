@@ -24,8 +24,11 @@ export {
   parseAriary,
   safeParseAriary,
   tryParseAriary,
+  type AriaryDecimal,
   type AriaryFormatOptions,
   type AriaryGrouping,
+  type AriaryParseOptions,
+  type AriarySeparatorOptions,
   type AriarySymbolPosition,
 } from '@madagascar-oss/ariary';
 export {

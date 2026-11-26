@@ -18,27 +18,38 @@ const FRANCS_PER_ARIARY = 5;
 const FIRST_AMOUNT_TOO_LARGE_IN_FRANCS =
   Math.floor(LARGEST_SUPPORTED_AMOUNT / FRANCS_PER_ARIARY) + 1;
 const FUZZ_MAX_INPUT_LENGTH = 40;
+const MAX_INPUT_LENGTH = 32;
 const FUZZ_RUNS = 2000;
 const SAMPLE_AMOUNT = 1500;
 
-const layouts = fc.record({
-  grouping: fc.constantFrom<NonNullable<AriaryFormatOptions['grouping']>>('space', 'dot'),
-  symbolPosition: fc.constantFrom<NonNullable<AriaryFormatOptions['symbolPosition']>>(
-    'before',
-    'after',
-  ),
-});
+const layouts = fc
+  .record({
+    grouping: fc.constantFrom<NonNullable<AriaryFormatOptions['grouping']>>(
+      'space',
+      'dot',
+      'comma',
+    ),
+    decimal: fc.constantFrom<NonNullable<AriaryFormatOptions['decimal']>>('comma', 'dot'),
+    symbolPosition: fc.constantFrom<NonNullable<AriaryFormatOptions['symbolPosition']>>(
+      'before',
+      'after',
+    ),
+  })
+  .filter(({ grouping, decimal }) => grouping !== decimal);
+const amounts = fc.oneof(
+  fc.integer({ min: 0, max: LARGEST_SUPPORTED_AMOUNT }),
+  fc.double({ min: 0, max: LARGEST_SUPPORTED_AMOUNT, noNaN: true }),
+);
 
 describe('formatAriary and parseAriary', () => {
-  test('reads back every amount it writes, in every layout', () => {
+  test('reads back every amount it writes, whole or decimal, in every layout', () => {
     fc.assert(
-      fc.property(
-        fc.integer({ min: 0, max: LARGEST_SUPPORTED_AMOUNT }),
-        layouts,
-        (amount, options) => {
-          expect(parseAriary(formatAriary(amount, options))).toBe(amount);
-        },
-      ),
+      fc.property(amounts, layouts, (amount, { grouping, decimal, symbolPosition }) => {
+        const text = formatAriary(amount, { grouping, decimal, symbolPosition });
+        // Reading stops at 32 characters (ADR 0004); 5e-324 formats to over 300.
+        fc.pre(text.length <= MAX_INPUT_LENGTH);
+        expect(parseAriary(text, { grouping, decimal })).toBe(amount);
+      }),
     );
   });
 
@@ -79,7 +90,7 @@ describe('tryParseAriary', () => {
   });
 
   test('returns undefined instead of throwing', () => {
-    expect(tryParseAriary('1,500')).toBeUndefined();
+    expect(tryParseAriary('1.5')).toBeUndefined();
   });
 
   test('agrees with safeParseAriary for any input', () => {

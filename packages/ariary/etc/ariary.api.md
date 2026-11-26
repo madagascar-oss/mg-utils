@@ -5,13 +5,24 @@
 ```ts
 
 // @public
-export interface AriaryFormatOptions {
-    readonly grouping?: AriaryGrouping;
+export type AriaryDecimal = 'comma' | 'dot';
+
+// @public
+export interface AriaryFormatOptions extends AriarySeparatorOptions {
     readonly symbolPosition?: AriarySymbolPosition;
 }
 
 // @public
-export type AriaryGrouping = 'space' | 'dot';
+export type AriaryGrouping = 'space' | 'dot' | 'comma';
+
+// @public
+export type AriaryParseOptions = AriarySeparatorOptions;
+
+// @public
+export interface AriarySeparatorOptions {
+    readonly decimal?: AriaryDecimal;
+    readonly grouping?: AriaryGrouping;
+}
 
 // @public
 export type AriarySymbolPosition = 'before' | 'after';
@@ -43,10 +54,10 @@ export class MgError extends Error {
 }
 
 // @public
-export function parseAriary(text: string): number;
+export function parseAriary(text: string, options?: AriaryParseOptions): number;
 
 // @public
-export function safeParseAriary(text: unknown): SafeParseResult<number>;
+export function safeParseAriary(text: unknown, options?: AriaryParseOptions): SafeParseResult<number>;
 
 // @public
 export type SafeParseResult<T> = {
@@ -61,7 +72,7 @@ export type SafeParseResult<T> = {
 export const SPEC_VERSION = "0.5.0";
 
 // @public
-export function tryParseAriary(text: unknown): number | undefined;
+export function tryParseAriary(text: unknown, options?: AriaryParseOptions): number | undefined;
 
 // (No @packageDocumentation comment for this package)
 
