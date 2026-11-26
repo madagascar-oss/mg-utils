@@ -5,7 +5,7 @@ comma for decimals; other conventions opt-in), read amounts
 typed by users, write them in words, and convert old francs (FMG). Zero third-party
 dependencies, ESM + CommonJS + types.
 
-Implements spec 0.5.0.
+Implements spec 0.6.0.
 
 ```sh
 npm install @mdgascar/ariary

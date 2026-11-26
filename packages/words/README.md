@@ -2,7 +2,7 @@
 
 Write numbers in Malagasy words. Zero dependencies, ESM + CommonJS + types.
 
-Implements spec 0.5.0.
+Implements spec 0.6.0.
 
 ```sh
 npm install @mdgascar/words
