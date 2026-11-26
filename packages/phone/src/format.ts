@@ -1,5 +1,5 @@
 import { COUNTRY_CODE, GROUPING, TRUNK_PREFIX } from './generated/data.ts';
-import { MgError } from './generated/errors.ts';
+import { MdgError } from './generated/errors.ts';
 import { parsePhoneNumber } from './phone-number.ts';
 
 /**
@@ -43,7 +43,7 @@ function isPhoneNumberFormat(value: unknown): value is PhoneNumberFormat {
  * @param input - The number in any spelling accepted by {@link parsePhoneNumber}.
  * @param format - `'e164'`, `'international'` or `'national'`.
  * @returns The formatted number.
- * @throws {@link MgError} `INVALID_TYPE` for an unknown format, plus every error of
+ * @throws {@link MdgError} `INVALID_TYPE` for an unknown format, plus every error of
  *   {@link parsePhoneNumber}.
  *
  * @example
@@ -54,7 +54,10 @@ function isPhoneNumberFormat(value: unknown): value is PhoneNumberFormat {
  */
 export function formatPhoneNumber(input: string, format: PhoneNumberFormat): string {
   if (!isPhoneNumberFormat(format)) {
-    throw new MgError('INVALID_TYPE', `Format must be one of: ${PHONE_NUMBER_FORMATS.join(', ')}.`);
+    throw new MdgError(
+      'INVALID_TYPE',
+      `Format must be one of: ${PHONE_NUMBER_FORMATS.join(', ')}.`,
+    );
   }
   return FORMATTERS[format](parsePhoneNumber(input).nationalNumber);
 }

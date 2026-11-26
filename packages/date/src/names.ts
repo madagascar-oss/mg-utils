@@ -4,7 +4,7 @@ import {
   WEEKDAY_ABBREVIATIONS,
   WEEKDAY_NAMES,
 } from './generated/data.ts';
-import { MgError } from './generated/errors.ts';
+import { MdgError } from './generated/errors.ts';
 import type { IsoWeekday, MonthNumber } from './calendar.ts';
 
 /**
@@ -21,16 +21,16 @@ const NAME_WIDTHS: ReadonlySet<unknown> = new Set<NameWidth>(['wide', 'abbreviat
 
 function checkedNumber(value: unknown, last: number, what: string): number {
   if (typeof value !== 'number' || !Number.isInteger(value)) {
-    throw new MgError('INVALID_TYPE', `Expected a whole ${what} number.`);
+    throw new MdgError('INVALID_TYPE', `Expected a whole ${what} number.`);
   }
   if (value < 1 || value > last) {
-    throw new MgError('OUT_OF_RANGE', `${what} numbers go from 1 to ${String(last)}.`);
+    throw new MdgError('OUT_OF_RANGE', `${what} numbers go from 1 to ${String(last)}.`);
   }
   return value;
 }
 
 function checkedWidth(width: unknown): NameWidth {
-  if (!NAME_WIDTHS.has(width)) throw new MgError('INVALID_TYPE', 'Width is wide or abbreviated.');
+  if (!NAME_WIDTHS.has(width)) throw new MdgError('INVALID_TYPE', 'Width is wide or abbreviated.');
   return width as NameWidth;
 }
 
@@ -62,7 +62,7 @@ export function weekdayNameOf(weekday: IsoWeekday, width: NameWidth): string {
  * @param month - Month number, 1 (Janoary) to 12 (Desambra).
  * @param width - `wide` (default) or `abbreviated`.
  * @returns The month name.
- * @throws {@link MgError} `OUT_OF_RANGE` outside 1–12, `INVALID_TYPE` for non-integers or an
+ * @throws {@link MdgError} `OUT_OF_RANGE` outside 1–12, `INVALID_TYPE` for non-integers or an
  *   unknown width.
  *
  * @example
@@ -82,7 +82,7 @@ export function getMonthName(month: number, width: NameWidth = 'wide'): string {
  * @param isoWeekday - 1 (Alatsinainy) to 7 (Alahady).
  * @param width - `wide` (default) or `abbreviated`.
  * @returns The weekday name.
- * @throws {@link MgError} `OUT_OF_RANGE` outside 1–7, `INVALID_TYPE` for non-integers or an
+ * @throws {@link MdgError} `OUT_OF_RANGE` outside 1–7, `INVALID_TYPE` for non-integers or an
  *   unknown width.
  *
  * @example

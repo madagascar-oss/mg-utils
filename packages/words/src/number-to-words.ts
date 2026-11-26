@@ -11,7 +11,7 @@ import {
   UNIT_WORDS,
   ZERO_WORD,
 } from './generated/data.ts';
-import { MgError } from './generated/errors.ts';
+import { MdgError } from './generated/errors.ts';
 
 type Digit = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9;
 type Scale = (typeof SCALES)[number];
@@ -100,10 +100,10 @@ function plainDecimal(value: number): string {
 
 function assertSupportedNumber(value: unknown): asserts value is number {
   if (typeof value !== 'number' || !Number.isFinite(value)) {
-    throw new MgError('INVALID_TYPE', 'numberToWords expects a finite number.');
+    throw new MdgError('INVALID_TYPE', 'numberToWords expects a finite number.');
   }
   if (value < MIN_VALUE || value > Number.MAX_SAFE_INTEGER) {
-    throw new MgError(
+    throw new MdgError(
       'OUT_OF_RANGE',
       `numberToWords supports ${String(MIN_VALUE)} to ${String(Number.MAX_SAFE_INTEGER)}.`,
     );
@@ -115,7 +115,7 @@ function assertSupportedNumber(value: unknown): asserts value is number {
  *
  * @param value - A number from 0 to `Number.MAX_SAFE_INTEGER`, whole or decimal.
  * @returns The number in Malagasy words.
- * @throws {@link MgError} `INVALID_TYPE` if `value` is not a finite number,
+ * @throws {@link MdgError} `INVALID_TYPE` if `value` is not a finite number,
  *   `OUT_OF_RANGE` if it is negative or above `Number.MAX_SAFE_INTEGER`.
  *
  * @example

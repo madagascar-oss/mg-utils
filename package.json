@@ -1,5 +1,5 @@
 {
-  "name": "mg-utils-js",
+  "name": "mdg-utils-js",
   "private": true,
   "type": "module",
   "packageManager": "pnpm@10.30.1",

@@ -6,7 +6,7 @@ Closes #
 
 ## Source for any data
 
-<!-- Link the official source for every added or changed value in mg-utils-spec (`modules/*/data.yaml`). Write "none" if no data changed. -->
+<!-- Link the official source for every added or changed value in mdg-utils-spec (`modules/*/data.yaml`). Write "none" if no data changed. -->
 
 ## Definition of done
 

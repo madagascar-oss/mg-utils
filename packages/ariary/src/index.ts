@@ -1,6 +1,6 @@
 /**
- * Malagasy Ariary amounts: format, read, words and franc conversion. Part of mg-utils by
- * Madagascar OSS.
+ * Malagasy Ariary amounts: format, read, words and franc conversion. Part of mdg-utils by
+ * Mdgascar.
  *
  * @packageDocumentation
  */
@@ -14,4 +14,9 @@ export {
 export { parseAriary, safeParseAriary, tryParseAriary, type AriaryParseOptions } from './parse.ts';
 export type { AriarySeparatorOptions } from './separators.ts';
 export type { AriaryDecimal, AriaryGrouping } from './generated/data.ts';
-export { MgError, SPEC_VERSION, type ErrorCode, type SafeParseResult } from './generated/errors.ts';
+export {
+  MdgError,
+  SPEC_VERSION,
+  type ErrorCode,
+  type SafeParseResult,
+} from './generated/errors.ts';

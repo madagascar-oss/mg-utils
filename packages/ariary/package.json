@@ -1,16 +1,16 @@
 {
-  "name": "@madagascar-oss/ariary",
+  "name": "@mdgascar/ariary",
   "version": "0.6.0",
   "description": "Malagasy Ariary amounts: format (Ar 1 500), parse, words and franc (FMG) conversion.",
   "license": "MIT",
-  "author": "Madagascar OSS contributors",
-  "homepage": "https://github.com/madagascar-oss/mg-utils-js/tree/main/packages/ariary#readme",
+  "author": "Mdgascar contributors",
+  "homepage": "https://github.com/mdgascar/mdg-utils-js/tree/main/packages/ariary#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/madagascar-oss/mg-utils-js.git",
+    "url": "git+https://github.com/mdgascar/mdg-utils-js.git",
     "directory": "packages/ariary"
   },
-  "bugs": "https://github.com/madagascar-oss/mg-utils-js/issues",
+  "bugs": "https://github.com/mdgascar/mdg-utils-js/issues",
   "keywords": [
     "madagascar",
     "malagasy",
@@ -53,6 +53,6 @@
     "api": "api-extractor run --local"
   },
   "dependencies": {
-    "@madagascar-oss/words": "workspace:^"
+    "@mdgascar/words": "workspace:^"
   }
 }

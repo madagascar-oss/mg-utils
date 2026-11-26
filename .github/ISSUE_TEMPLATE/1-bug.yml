@@ -17,7 +17,7 @@ body:
     id: language
     attributes:
       label: Package, version and runtime
-      placeholder: 'JS, @madagascar-oss/phone 0.1.0, Node 22'
+      placeholder: 'JS, @mdgascar/phone 0.1.0, Node 22'
     validations:
       required: true
   - type: textarea

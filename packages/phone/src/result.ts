@@ -1,4 +1,4 @@
-import { MgError, type ErrorCode, type SafeParseResult } from './generated/errors.ts';
+import { MdgError, type ErrorCode, type SafeParseResult } from './generated/errors.ts';
 
 /**
  * A rejected parse carrying its spec error code.
@@ -9,9 +9,9 @@ import { MgError, type ErrorCode, type SafeParseResult } from './generated/error
  *
  * @example
  * ```ts
- * failure('INVALID_FORMAT', 'Expected a number.'); // { success: false, error: MgError }
+ * failure('INVALID_FORMAT', 'Expected a number.'); // { success: false, error: MdgError }
  * ```
  */
 export function failure(code: ErrorCode, message: string): SafeParseResult<never> {
-  return { success: false, error: new MgError(code, message) };
+  return { success: false, error: new MdgError(code, message) };
 }

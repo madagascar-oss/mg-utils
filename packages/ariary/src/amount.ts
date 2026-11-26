@@ -1,5 +1,5 @@
 import { MIN_AMOUNT } from './generated/data.ts';
-import { MgError } from './generated/errors.ts';
+import { MdgError } from './generated/errors.ts';
 
 /** @internal The spec sets no maximum: amounts stop where a number stops being exact. */
 export const MAX_AMOUNT = Number.MAX_SAFE_INTEGER;
@@ -11,7 +11,7 @@ export const MAX_AMOUNT = Number.MAX_SAFE_INTEGER;
  */
 export function assertAmount(value: unknown): asserts value is number {
   if (typeof value !== 'number' || !Number.isFinite(value)) {
-    throw new MgError('INVALID_TYPE', 'Amounts are finite numbers.');
+    throw new MdgError('INVALID_TYPE', 'Amounts are finite numbers.');
   }
   assertInRange(value);
 }
@@ -23,7 +23,7 @@ export function assertAmount(value: unknown): asserts value is number {
  */
 export function assertInRange(value: number): void {
   if (value < MIN_AMOUNT || value > MAX_AMOUNT) {
-    throw new MgError(
+    throw new MdgError(
       'OUT_OF_RANGE',
       `Amounts go from ${String(MIN_AMOUNT)} to ${String(MAX_AMOUNT)}.`,
     );

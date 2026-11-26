@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest';
 import {
-  MgError,
+  MdgError,
   formatAriary,
   formatDate,
   formatPhoneNumber,
@@ -30,11 +30,11 @@ test('re-exports date formatting', () => {
   expect(formatDate(SAMPLE_DATE, 'full')).toBe('Alatsinainy 23 Novambra 2026');
 });
 
-test('recognises errors from every module with one MgError', () => {
-  expect(() => numberToWords(-1)).toThrow(MgError);
-  expect(() => formatPhoneNumber('x', 'e164')).toThrow(MgError);
-  expect(() => formatAriary(-1)).toThrow(MgError);
-  expect(() => formatDate('2026-02-30')).toThrow(MgError);
+test('recognises errors from every module with one MdgError', () => {
+  expect(() => numberToWords(-1)).toThrow(MdgError);
+  expect(() => formatPhoneNumber('x', 'e164')).toThrow(MdgError);
+  expect(() => formatAriary(-1)).toThrow(MdgError);
+  expect(() => formatDate('2026-02-30')).toThrow(MdgError);
 });
 
 test('re-exports the non-throwing parsers', () => {

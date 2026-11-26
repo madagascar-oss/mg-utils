@@ -7,7 +7,7 @@ import defaultFunctions from './functions.json' with { type: 'json' };
 type AnyFunction = (...args: unknown[]) => unknown;
 
 async function loadExports(module: string): Promise<Record<string, unknown>> {
-  return (await import(`@madagascar-oss/${module}`)) as Record<string, unknown>;
+  return (await import(`@mdgascar/${module}`)) as Record<string, unknown>;
 }
 
 function formatArgument(argument: unknown): string {
@@ -38,7 +38,7 @@ describe.each(modules)('spec/modules/%s/tests.yaml', async (module) => {
       if (vector.error === undefined) {
         expect(call()).toEqual(vector.expected);
       } else {
-        expect(call).toThrow(expect.objectContaining({ name: 'MgError', code: vector.error }));
+        expect(call).toThrow(expect.objectContaining({ name: 'MdgError', code: vector.error }));
       }
     },
   );

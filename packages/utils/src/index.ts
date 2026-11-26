@@ -1,9 +1,9 @@
 /**
- * Every mg-utils module in one package. Part of mg-utils by Madagascar OSS.
+ * Every mdg-utils module in one package. Part of mdg-utils by Mdgascar.
  *
  * @packageDocumentation
  */
-export { numberToWords } from '@madagascar-oss/words';
+export { numberToWords } from '@mdgascar/words';
 export {
   OPERATOR_NAMES,
   formatPhoneNumber,
@@ -14,7 +14,7 @@ export {
   type OperatorId,
   type PhoneNumber,
   type PhoneNumberFormat,
-} from '@madagascar-oss/phone';
+} from '@mdgascar/phone';
 export {
   ariaryToFmg,
   ariaryToWords,
@@ -30,7 +30,7 @@ export {
   type AriaryParseOptions,
   type AriarySeparatorOptions,
   type AriarySymbolPosition,
-} from '@madagascar-oss/ariary';
+} from '@mdgascar/ariary';
 export {
   formatDate,
   getMonthName,
@@ -38,5 +38,5 @@ export {
   type CalendarDate,
   type DateStyle,
   type NameWidth,
-} from '@madagascar-oss/date';
-export { MgError, SPEC_VERSION, type ErrorCode, type SafeParseResult } from '@madagascar-oss/phone';
+} from '@mdgascar/date';
+export { MdgError, SPEC_VERSION, type ErrorCode, type SafeParseResult } from '@mdgascar/phone';

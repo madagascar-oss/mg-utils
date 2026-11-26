@@ -1,10 +1,10 @@
-# Contributing to mg-utils-js
+# Contributing to mdg-utils-js
 
 A stranger should be able to make a correct contribution in one evening. If something here
 slows you down, that is a bug — please open an issue.
 
-The [organisation guide](https://github.com/madagascar-oss/.github/blob/main/CONTRIBUTING.md)
-and [Code of Conduct](https://github.com/madagascar-oss/.github/blob/main/CODE_OF_CONDUCT.md)
+The [organisation guide](https://github.com/mdgascar/.github/blob/main/CONTRIBUTING.md)
+and [Code of Conduct](https://github.com/mdgascar/.github/blob/main/CODE_OF_CONDUCT.md)
 apply too.
 
 ## Six steps
@@ -16,7 +16,7 @@ apply too.
 3. **Set up.** Open in Codespaces, or locally install Node.js 22.18+, pnpm and
    [just](https://just.systems), clone with `--recurse-submodules`, then run `just setup`.
 4. **Change spec first, code second.** Data and vectors live in
-   [mg-utils-spec](https://github.com/madagascar-oss/mg-utils-spec). Once a spec release is out, Renovate opens a PR here
+   [mdg-utils-spec](https://github.com/mdgascar/mdg-utils-spec). Once a spec release is out, Renovate opens a PR here
    bumping the `spec/` submodule; run `just codegen`, then change code until `just test` passes. Work on a branch named `<type>/<short-name>`
    from `dev`, e.g. `feat/ariary-format` or `fix/phone-dots`.
 5. **Open the PR against `dev`.** Link the issue, cite a source for any data, and add a changeset
@@ -57,7 +57,7 @@ feat/… fix/… docs/… chore/…  ──squash──▶  dev  ──merge─�
 
 ## Data rules
 
-See [mg-utils-spec](https://github.com/madagascar-oss/mg-utils-spec/blob/dev/CONTRIBUTING.md#data-rules): no source, no merge.
+See [mdg-utils-spec](https://github.com/mdgascar/mdg-utils-spec/blob/dev/CONTRIBUTING.md#data-rules): no source, no merge.
 
 ## Code rules
 
@@ -66,10 +66,10 @@ a reviewer does.
 
 ## Versioning
 
-The spec and the packages follow Semantic Versioning separately. All `@madagascar-oss/*`
+The spec and the packages follow Semantic Versioning separately. All `@mdgascar/*`
 packages share **one version number** (Changesets `fixed` group): a release bumps them
 together, so `words` 0.3.0 always goes with `utils` 0.3.0. Spec bumps follow the
-[spec rules](https://github.com/madagascar-oss/mg-utils-spec/blob/dev/CONTRIBUTING.md#versioning).
+[spec rules](https://github.com/mdgascar/mdg-utils-spec/blob/dev/CONTRIBUTING.md#versioning).
 
 | Change                               | Spec  | Package                                |
 | ------------------------------------ | ----- | -------------------------------------- |
