@@ -1,4 +1,5 @@
-import { MAX_AMOUNT } from './amount.ts';
+import { canonical, exactNumber, type AmountResultKind, type AmountValue } from './amount.ts';
+import { MAX_READ_LENGTH } from './generated/data.ts';
 import { MdgError, type ErrorCode, type SafeParseResult } from './generated/errors.ts';
 import { readableGrouping, readDigits, type ReadSeparators } from './read-digits.ts';
 import {
@@ -9,45 +10,52 @@ import {
 } from './separators.ts';
 
 /**
- * Options for reading amounts: which `grouping` and `decimal` separators the text uses.
- * Without `grouping`, every Malagasy one is accepted (spaces or dot); `decimal` defaults to a
- * comma. Say so for text in another convention: `{ grouping: 'comma', decimal: 'dot' }`.
+ * Options for reading amounts: which `grouping` and `decimal` separators the text uses, and
+ * what to give back. Without `grouping`, every Malagasy one is accepted (spaces or dot);
+ * `decimal` defaults to a comma. Say so for text in another convention:
+ * `{ grouping: 'comma', decimal: 'dot' }`.
  *
  * @example
  * ```ts
  * const english: AriaryParseOptions = { grouping: 'comma', decimal: 'dot' };
  * ```
  */
-export type AriaryParseOptions = AriarySeparatorOptions;
+export interface AriaryParseOptions extends AriarySeparatorOptions {
+  /** `number` (default), or `text` for the exact decimal digits of any amount. */
+  readonly as?: AmountResultKind;
+}
 
-const PARSE_OPTION_KEYS: ReadonlySet<string> = new Set(['grouping', 'decimal']);
+interface ReadOptions extends ReadSeparators {
+  readonly kind: AmountResultKind;
+}
 
-// Bounded so a parser that reads user input never scans unbounded text.
-const MAX_INPUT_LENGTH = 32;
+const PARSE_OPTION_KEYS: ReadonlySet<string> = new Set(['grouping', 'decimal', 'as']);
+const RESULT_KINDS: ReadonlySet<unknown> = new Set<AmountResultKind>(['number', 'text']);
 
 function failure(code: ErrorCode, message: string): SafeParseResult<never> {
   return { success: false, error: new MdgError(code, message) };
 }
 
 // The parsers never throw for bad options either: the error comes back as a value.
-function safeReadSeparators(options: unknown): ReadSeparators | MdgError {
+function safeReadOptions(options: unknown): ReadOptions | MdgError {
   try {
-    return readSeparatorsFor(options);
+    return readOptionsFor(options);
   } catch (error) {
     return error as MdgError;
   }
 }
 
-function readSeparatorsFor(options: unknown): ReadSeparators {
+function readOptionsFor(options: unknown): ReadOptions {
   assertOptionsObject(options);
   if (Object.keys(options).some((key) => !PARSE_OPTION_KEYS.has(key))) {
-    throw new MdgError('INVALID_TYPE', 'Reading takes only the grouping and decimal options.');
+    throw new MdgError('INVALID_TYPE', 'Reading takes only the grouping, decimal and as options.');
   }
-  const separators = options as AriaryParseOptions;
+  const { as: kind = 'number', ...separators } = options as AriaryParseOptions;
+  if (!RESULT_KINDS.has(kind)) throw new MdgError('INVALID_TYPE', "as is 'number' or 'text'.");
   const decimal = decimalFor(separators);
   const grouping =
     separators.grouping === undefined ? undefined : groupingFor(separators.grouping, decimal);
-  return { grouping: readableGrouping(grouping, decimal), decimal };
+  return { grouping: readableGrouping(grouping, decimal), decimal, kind };
 }
 
 /**
@@ -66,22 +74,19 @@ function readSeparatorsFor(options: unknown): ReadSeparators {
 export function safeParseAriary(
   text: unknown,
   options: AriaryParseOptions = {},
-): SafeParseResult<number> {
+): SafeParseResult<number | string> {
   if (typeof text !== 'string') return failure('INVALID_TYPE', 'Expected the amount as text.');
-  const separators = safeReadSeparators(options);
-  if (separators instanceof MdgError) return { success: false, error: separators };
-  if (text.length > MAX_INPUT_LENGTH) {
-    return failure('INVALID_FORMAT', `Amounts are at most ${String(MAX_INPUT_LENGTH)} characters.`);
+  const read = safeReadOptions(options);
+  if (read instanceof MdgError) return { success: false, error: read };
+  if (text.length > MAX_READ_LENGTH) {
+    return failure('INVALID_FORMAT', `Amounts are at most ${String(MAX_READ_LENGTH)} characters.`);
   }
-  const digits = readDigits(text, separators);
+  const digits = readDigits(text, read);
   if (digits === undefined) {
     return failure('INVALID_FORMAT', 'Expected an amount such as Ar 1 500 or Ar 1 500,50.');
   }
-  const amount = Number(digits);
-  if (amount > MAX_AMOUNT) {
-    return failure('OUT_OF_RANGE', `Amounts go up to ${String(MAX_AMOUNT)}.`);
-  }
-  return { success: true, data: amount };
+  const exact = canonical(digits);
+  return read.kind === 'text' ? { success: true, data: exact } : exactNumber(exact);
 }
 
 /**
@@ -91,8 +96,8 @@ export function safeParseAriary(
  * @param options - Optional `grouping` and `decimal`; see {@link AriaryParseOptions}.
  * @returns The amount, whole or decimal.
  * @throws {@link MdgError} `INVALID_TYPE` for non-strings or bad options, `INVALID_FORMAT` for text
- *   that is not an amount (signs, a dot as decimal point by default), `OUT_OF_RANGE` above
- *   `Number.MAX_SAFE_INTEGER`.
+ *   that is not an amount (signs, a dot as decimal point by default), `PRECISION_LOSS` when a
+ *   number cannot hold the amount exactly (pass `{ as: 'text' }` for the exact digits).
  *
  * @example
  * ```ts
@@ -102,10 +107,13 @@ export function safeParseAriary(
  * parseAriary('1,500.50', { grouping: 'comma', decimal: 'dot' }); // 1500.5
  * ```
  */
-export function parseAriary(text: string, options: AriaryParseOptions = {}): number {
+export function parseAriary<Kind extends AmountResultKind = 'number'>(
+  text: string,
+  options: AriarySeparatorOptions & { readonly as?: Kind } = {},
+): AmountValue<Kind> {
   const result = safeParseAriary(text, options);
   if (!result.success) throw result.error;
-  return result.data;
+  return result.data as AmountValue<Kind>;
 }
 
 /**
@@ -126,7 +134,7 @@ export function parseAriary(text: string, options: AriaryParseOptions = {}): num
 export function tryParseAriary(
   text: unknown,
   options: AriaryParseOptions = {},
-): number | undefined {
+): number | string | undefined {
   const result = safeParseAriary(text, options);
   return result.success ? result.data : undefined;
 }

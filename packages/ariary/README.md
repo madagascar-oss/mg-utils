@@ -5,7 +5,7 @@ comma for decimals; other conventions opt-in), read amounts
 typed by users, write them in words, and convert old francs (FMG). Zero third-party
 dependencies, ESM + CommonJS + types.
 
-Implements spec 0.8.0.
+Implements spec 0.9.0.
 
 ```sh
 npm install @mdgascar/ariary
@@ -38,13 +38,14 @@ safeParseAriary('1.5'); // { success: false, error: MdgError INVALID_FORMAT }
 
 spellAriary(1500); // 'dimanjato sy arivo ariary'
 spellAriary(1500.5); // 'dimanjato sy arivo faingo dimy ariary'
-spellAriary(30_000_000, { system: 'traditional' }); // 'telo safatsiroa ariary'
-spellAriary('2000000000000000.9'); // exact text: 'roa tapitrisa lavitrisa faingo sivy ariary'
 fmgToAriary(7500); // 1500
 fmgToAriary(7501); // 1500.2
 ariaryToFmg(0.07); // 0.35 (exact, never 0.35000000000000003)
 formatFmg(7500); // 'Fmg 7 500'
 ```
+
+Nothing is ever rounded: an amount a number cannot hold exactly throws `PRECISION_LOSS`, and
+`{ as: 'text' }` gives the exact digits (`parseAriary('1 500,50', { as: 'text' })` → `'1500.5'`).
 
 Rules, sources and recorded decisions: [spec/ariary](https://github.com/mdgascar/mdg-utils-spec/blob/dev/modules/ariary/README.md).
 

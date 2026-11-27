@@ -3,7 +3,7 @@
 Every mdg-utils module in one install: Malagasy number words, phone numbers, Ariary amounts
 and dates.
 
-Implements spec 0.8.0.
+Implements spec 0.9.0.
 
 ```sh
 npm install @mdgascar/utils

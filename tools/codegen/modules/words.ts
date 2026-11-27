@@ -12,7 +12,17 @@ interface WordsData {
   readonly traditionalScales: readonly Valued[];
   readonly decimalSeparator: Worded;
   readonly joiners: Readonly<Record<'unitsBeforeTen' | 'belowThousand' | 'betweenGroups', Worded>>;
-  readonly limits: { readonly min: number; readonly maxTextLength: number };
+  readonly ordinals: {
+    readonly first: Worded;
+    readonly prefix: Worded;
+    readonly prefixBeforeVowel: Worded;
+    readonly vowels: readonly string[];
+  };
+  readonly limits: {
+    readonly min: number;
+    readonly maxTextLength: number;
+    readonly maxWordsLength: number;
+  };
 }
 
 interface WordsTables {
@@ -27,8 +37,13 @@ interface WordsTables {
   readonly joinerUnitsBeforeTen: string;
   readonly joinerBelowThousand: string;
   readonly joinerBetweenGroups: string;
+  readonly ordinalFirst: string;
+  readonly ordinalPrefix: string;
+  readonly ordinalPrefixBeforeVowel: string;
+  readonly vowels: readonly string[];
   readonly minValue: number;
   readonly maxTextLength: number;
+  readonly maxWordsLength: number;
 }
 
 // A group word, the power of ten it stands for, and how many digits its count takes
@@ -116,8 +131,13 @@ function wordsTables(data: WordsData): WordsTables {
     joinerUnitsBeforeTen: data.joiners.unitsBeforeTen.word,
     joinerBelowThousand: data.joiners.belowThousand.word,
     joinerBetweenGroups: data.joiners.betweenGroups.word,
+    ordinalFirst: data.ordinals.first.word,
+    ordinalPrefix: data.ordinals.prefix.word,
+    ordinalPrefixBeforeVowel: data.ordinals.prefixBeforeVowel.word,
+    vowels: data.ordinals.vowels,
     minValue: data.limits.min,
     maxTextLength: data.limits.maxTextLength,
+    maxWordsLength: data.limits.maxWordsLength,
   };
 }
 
@@ -140,6 +160,11 @@ export function emit(data: WordsData): string[] {
     constant('JOINER_BELOW_THOUSAND', tables.joinerBelowThousand),
     constant('JOINER_BETWEEN_GROUPS', tables.joinerBetweenGroups),
     constant('MIN_VALUE', tables.minValue),
+    constant('ORDINAL_FIRST', tables.ordinalFirst, 'Rule 14: the ordinal of 1.'),
+    constant('ORDINAL_PREFIX', tables.ordinalPrefix),
+    constant('ORDINAL_PREFIX_BEFORE_VOWEL', tables.ordinalPrefixBeforeVowel),
+    constant('VOWELS', tables.vowels, 'Letters that take the short ordinal prefix.'),
     constant('MAX_TEXT_LENGTH', tables.maxTextLength, 'Longest decimal text read (rule 13).'),
+    constant('MAX_WORDS_LENGTH', tables.maxWordsLength, 'Longest words text read by parseWords.'),
   ];
 }

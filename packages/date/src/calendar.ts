@@ -55,11 +55,22 @@ function checked(
   return date;
 }
 
+/**
+ * @internal Checks fields read from text: a year outside 1–9999 is OUT_OF_RANGE, a day that
+ * does not exist is INVALID_FORMAT (rule 3).
+ *
+ * @param date - Fields read from text.
+ * @returns The same fields, when they are a real date.
+ */
+export function checkedTextDate(date: CalendarDate): CalendarDate {
+  return checked(date, 'INVALID_FORMAT');
+}
+
 function fromText(text: string): CalendarDate {
   const match = ISO_DATE.exec(text);
   if (match === null) throw new MdgError('INVALID_FORMAT', 'Expected a date as YYYY-MM-DD.');
   const [, year, month, day] = match;
-  return checked({ year: Number(year), month: Number(month), day: Number(day) }, 'INVALID_FORMAT');
+  return checkedTextDate({ year: Number(year), month: Number(month), day: Number(day) });
 }
 
 function fromFields(fields: object): CalendarDate {

@@ -4,6 +4,9 @@
 
 ```ts
 
+import { AmountResultKind } from '@mdgascar/ariary';
+import { AmountResultOptions } from '@mdgascar/ariary';
+import { AmountValue } from '@mdgascar/ariary';
 import { AriaryDecimal } from '@mdgascar/ariary';
 import { AriaryFormatOptions } from '@mdgascar/ariary';
 import { AriaryGrouping } from '@mdgascar/ariary';
@@ -27,19 +30,37 @@ import { NumberSystem } from '@mdgascar/words';
 import { OPERATOR_NAMES } from '@mdgascar/phone';
 import { OperatorId } from '@mdgascar/phone';
 import { parseAriary } from '@mdgascar/ariary';
+import { parseDate } from '@mdgascar/date';
+import { ParsedValue } from '@mdgascar/words';
 import { parsePhone } from '@mdgascar/phone';
+import { ParseResultKind } from '@mdgascar/words';
+import { parseWords } from '@mdgascar/words';
+import { ParseWordsOptions } from '@mdgascar/words';
+import { PhoneArea } from '@mdgascar/phone';
+import { PhoneLineType } from '@mdgascar/phone';
 import { PhoneNumber } from '@mdgascar/phone';
 import { PhoneNumberFormat } from '@mdgascar/phone';
 import { safeParseAriary } from '@mdgascar/ariary';
+import { safeParseDate } from '@mdgascar/date';
 import { safeParsePhone } from '@mdgascar/phone';
 import { SafeParseResult } from '@mdgascar/phone';
+import { safeParseWords } from '@mdgascar/words';
 import { SPEC_VERSION } from '@mdgascar/phone';
 import { spell } from '@mdgascar/words';
 import { spellAriary } from '@mdgascar/ariary';
 import { SpellOptions } from '@mdgascar/words';
+import { spellOrdinal } from '@mdgascar/words';
 import { tryParseAriary } from '@mdgascar/ariary';
+import { tryParseDate } from '@mdgascar/date';
 import { tryParsePhone } from '@mdgascar/phone';
+import { tryParseWords } from '@mdgascar/words';
 import { weekdayName } from '@mdgascar/date';
+
+export { AmountResultKind }
+
+export { AmountResultOptions }
+
+export { AmountValue }
 
 export { AriaryDecimal }
 
@@ -87,7 +108,21 @@ export { OperatorId }
 
 export { parseAriary }
 
+export { parseDate }
+
+export { ParsedValue }
+
 export { parsePhone }
+
+export { ParseResultKind }
+
+export { parseWords }
+
+export { ParseWordsOptions }
+
+export { PhoneArea }
+
+export { PhoneLineType }
 
 export { PhoneNumber }
 
@@ -95,9 +130,13 @@ export { PhoneNumberFormat }
 
 export { safeParseAriary }
 
+export { safeParseDate }
+
 export { safeParsePhone }
 
 export { SafeParseResult }
+
+export { safeParseWords }
 
 export { SPEC_VERSION }
 
@@ -107,9 +146,15 @@ export { spellAriary }
 
 export { SpellOptions }
 
+export { spellOrdinal }
+
 export { tryParseAriary }
 
+export { tryParseDate }
+
 export { tryParsePhone }
+
+export { tryParseWords }
 
 export { weekdayName }
 
