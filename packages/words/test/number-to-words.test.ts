@@ -10,6 +10,8 @@ const BROKEN_JOIN = / {2}|\b(sy|amby|faingo) \1\b|^ | $/;
 const DECIMAL_SEPARATOR = 'faingo';
 
 const TRADITIONAL = { system: 'traditional' } as const;
+// Extra zeros added around decimal text, well within the 100-character limit.
+const TEXT_PADDING = 20;
 // Below 10 000 both systems write the same words (spec rule 12).
 const FIRST_DIFFERENT_POWER = 10_000;
 const TRADITIONAL_NAMES =
@@ -92,6 +94,23 @@ describe('numberToWords', () => {
   test('throws INVALID_TYPE when the options are not an object', () => {
     expect(() => numberToWords(1, null as unknown as object)).toThrow(
       expect.objectContaining({ code: 'INVALID_TYPE' }),
+    );
+  });
+
+  test('reads decimal text the same as the number it writes', () => {
+    fc.assert(
+      fc.property(supportedIntegers, (value) => {
+        expect(numberToWords(String(value))).toBe(numberToWords(value));
+      }),
+    );
+  });
+
+  test('ignores trailing decimal zeros and leading whole zeros in text', () => {
+    fc.assert(
+      fc.property(supportedIntegers, fc.nat({ max: TEXT_PADDING }), (value, padding) => {
+        const padded = `${'0'.repeat(padding)}${String(value)}.${'0'.repeat(padding + 1)}`;
+        expect(numberToWords(padded)).toBe(numberToWords(value));
+      }),
     );
   });
 });

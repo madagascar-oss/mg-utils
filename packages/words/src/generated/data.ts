@@ -1,6 +1,6 @@
 // GENERATED — edit spec/ instead. Run `just codegen` to refresh.
 
-// From spec/modules/words/data.yaml, spec 0.7.0.
+// From spec/modules/words/data.yaml, spec 0.8.0.
 
 /** @internal */
 export const ZERO_WORD = 'aotra' as const;
@@ -59,7 +59,7 @@ export const SCALES = [
   { word: 'lavitrisa', exponent: 9, countDigits: null },
 ] as const;
 
-/** @internal Rule 12: one name per power of ten, ascending; countDigits null = no limit. */
+/** @internal Rule 12: one name per power of ten, ascending, each taking one digit. */
 export const TRADITIONAL_SCALES = [
   { word: 'arivo', exponent: 3, countDigits: 1 },
   { word: 'alina', exponent: 4, countDigits: 1 },
@@ -76,7 +76,7 @@ export const TRADITIONAL_SCALES = [
   { word: 'tsitamboisafaharoa', exponent: 15, countDigits: 1 },
   { word: 'lavitrisafaharoa', exponent: 16, countDigits: 1 },
   { word: 'alinkisafaharoa', exponent: 17, countDigits: 1 },
-  { word: 'tsipesimpeseninafaharoa', exponent: 18, countDigits: null },
+  { word: 'tsipesimpeseninafaharoa', exponent: 18, countDigits: 1 },
 ] as const;
 
 /** @internal */
@@ -93,3 +93,6 @@ export const JOINER_BETWEEN_GROUPS = 'sy' as const;
 
 /** @internal */
 export const MIN_VALUE = 0 as const;
+
+/** @internal Longest decimal text read (rule 13). */
+export const MAX_TEXT_LENGTH = 100 as const;

@@ -2,7 +2,7 @@
 
 Write numbers in Malagasy words. Zero dependencies, ESM + CommonJS + types.
 
-Implements spec 0.7.0.
+Implements spec 0.8.0.
 
 ```sh
 npm install @mdgascar/words
@@ -19,8 +19,21 @@ numberToWords(0.008); // 'aotra faingo aotra aotra valo'
 ```
 
 Takes any number from 0 to `Number.MAX_SAFE_INTEGER` (9 007 199 254 740 991), whole or decimal.
-Only number values are accepted: strings are not parsed. Other input throws `MdgError` with code
-`INVALID_TYPE` or `OUT_OF_RANGE`.
+Other input throws `MdgError` with code `INVALID_TYPE` or `OUT_OF_RANGE`.
+
+## Exact digits: decimal text
+
+A JavaScript number keeps about 15–17 significant digits, so `2_000_000_000_000_000.9` is
+already `2000000000000001` before any function sees it. Pass the digits as text to read them
+exactly, at any size:
+
+```ts
+numberToWords(2_000_000_000_000_000.9); // 'iray sy roa tapitrisa lavitrisa' (the float)
+numberToWords('2000000000000000.9'); // 'roa tapitrisa lavitrisa faingo sivy'
+```
+
+Text is digits with an optional `.` and decimals, at most 100 characters; anything else
+(`'1 500'`, `'-1'`, `'1e5'`) throws `INVALID_FORMAT`.
 
 ## Traditional system
 

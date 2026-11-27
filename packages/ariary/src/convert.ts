@@ -6,20 +6,23 @@ import { divideExact, multiplyExact } from './decimal.ts';
 /**
  * Writes an Ariary amount in Malagasy words.
  *
- * @param amount - Ariary from 0 to `Number.MAX_SAFE_INTEGER`, whole or decimal.
+ * @param amount - Ariary from 0 to `Number.MAX_SAFE_INTEGER`, whole or decimal, or plain
+ *   decimal text such as `'2000000000000000.9'`, read exactly.
  * @param options - The words `system`: `standard` (default) or `traditional`.
  * @returns The amount in words followed by `ariary`; decimals follow `faingo`.
- * @throws {@link MdgError} `INVALID_TYPE` or `OUT_OF_RANGE`.
+ * @throws {@link MdgError} `INVALID_TYPE`, `INVALID_FORMAT` (text) or `OUT_OF_RANGE`.
  *
  * @example
  * ```ts
  * ariaryToWords(1500); // 'dimanjato sy arivo ariary'
  * ariaryToWords(1500.5); // 'dimanjato sy arivo faingo dimy ariary'
  * ariaryToWords(30_000_000, { system: 'traditional' }); // 'telo safatsiroa ariary'
+ * ariaryToWords('2000000000000000.9'); // 'roa tapitrisa lavitrisa faingo sivy ariary'
  * ```
  */
-export function ariaryToWords(amount: number, options: NumberToWordsOptions = {}): string {
-  assertAmount(amount);
+export function ariaryToWords(amount: number | string, options: NumberToWordsOptions = {}): string {
+  // Text is checked by numberToWords (rule 13); a number by the Ariary range.
+  if (typeof amount !== 'string') assertAmount(amount);
   return `${numberToWords(amount, options)} ${CURRENCY_WORD}`;
 }
 
