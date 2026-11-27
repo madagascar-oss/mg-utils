@@ -34,7 +34,7 @@ export type AriarySymbolPosition = 'before' | 'after';
 export function ariaryToFmg(amount: number): number;
 
 // @public
-export function ariaryToWords(amount: number, options?: NumberToWordsOptions): string;
+export function ariaryToWords(amount: number | string, options?: NumberToWordsOptions): string;
 
 // @public
 export type ErrorCode = 'INVALID_TYPE' | 'OUT_OF_RANGE' | 'INVALID_FORMAT' | 'UNKNOWN_OPERATOR';
@@ -76,7 +76,7 @@ export type SafeParseResult<T> = {
 };
 
 // @public
-export const SPEC_VERSION = "0.7.0";
+export const SPEC_VERSION = "0.8.0";
 
 // @public
 export function tryParseAriary(text: unknown, options?: AriaryParseOptions): number | undefined;

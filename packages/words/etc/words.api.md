@@ -19,7 +19,7 @@ export class MdgError extends Error {
 export type NumberSystem = 'standard' | 'traditional';
 
 // @public
-export function numberToWords(value: number, options?: NumberToWordsOptions): string;
+export function numberToWords(value: number | string, options?: NumberToWordsOptions): string;
 
 // @public
 export interface NumberToWordsOptions {
@@ -27,7 +27,7 @@ export interface NumberToWordsOptions {
 }
 
 // @public
-export const SPEC_VERSION = "0.7.0";
+export const SPEC_VERSION = "0.8.0";
 
 // (No @packageDocumentation comment for this package)
 

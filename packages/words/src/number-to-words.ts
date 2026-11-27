@@ -4,6 +4,7 @@ import {
   JOINER_BELOW_THOUSAND,
   JOINER_BETWEEN_GROUPS,
   JOINER_UNITS_BEFORE_TEN,
+  MAX_TEXT_LENGTH,
   MIN_VALUE,
   SCALES,
   TEN_WORDS,
@@ -55,6 +56,9 @@ const BELOW_THOUSAND_DIGITS = 3;
 const FIRST_SCALE_EXPONENT = SCALES[0].exponent;
 const ONE = '1';
 const LEADING_ZEROS = /^0+/;
+const TRAILING_ZEROS = /0+$/;
+// Rule 13: ASCII digits, then optionally a point and more digits. Nothing else.
+const DECIMAL_TEXT = /^([0-9]+)(?:\.([0-9]+))?$/;
 // String(value) of a small number, e.g. '1e-7' or '1.5e-10'.
 const NEGATIVE_EXPONENT = /^(\d)(?:\.(\d+))?e-(\d+)$/;
 
@@ -104,6 +108,17 @@ function scaleWords(digits: string, scale: Scale, scales: ScaleTable): string {
   return `${wholeWords(count, scales)} ${scale.word}`;
 }
 
+// How many digits a table can name: the largest group's count width, or no limit.
+function reach(scales: ScaleTable): number {
+  const largest = scales[scales.length - 1];
+  return largest?.countDigits == null ? Infinity : largest.exponent + largest.countDigits;
+}
+
+// Rule 12: a number longer than the traditional names reach is read with the standard scales.
+function tableFor(digits: string, scales: ScaleTable): ScaleTable {
+  return digits.replace(LEADING_ZEROS, '').length > reach(scales) ? SCALES : scales;
+}
+
 // Works on decimal digits, not arithmetic, so counts and decimals of any length stay exact.
 function wholeWords(digits: string, scales: ScaleTable): string {
   const significant = digits.replace(LEADING_ZEROS, '');
@@ -119,7 +134,7 @@ function wholeWords(digits: string, scales: ScaleTable): string {
 function decimalWords(digits: string, scales: ScaleTable): string {
   const significant = digits.replace(LEADING_ZEROS, '');
   const zeros = Array.from({ length: digits.length - significant.length }, () => ZERO_WORD);
-  return [...zeros, wholeWords(significant, scales)].join(' ');
+  return [...zeros, wholeWords(significant, tableFor(significant, scales))].join(' ');
 }
 
 // The shortest exact decimal form of the value, never in exponent notation.
@@ -131,9 +146,30 @@ function plainDecimal(value: number): string {
   return `0.${'0'.repeat(Number(exponent) - 1)}${lead}${rest}`;
 }
 
+// Rule 13: the whole digits and the decimals of plain decimal text, trailing decimal zeros
+// dropped. Checked at the edge, so the reading below trusts its digits.
+function decimalTextParts(text: string): readonly [string, string | undefined] {
+  const match = text.length <= MAX_TEXT_LENGTH ? DECIMAL_TEXT.exec(text) : null;
+  if (match === null) {
+    throw new MdgError(
+      'INVALID_FORMAT',
+      `numberToWords reads digits with an optional .decimals, at most ${String(MAX_TEXT_LENGTH)} characters.`,
+    );
+  }
+  const [, whole = '', decimals = ''] = match;
+  const significantDecimals = decimals.replace(TRAILING_ZEROS, '');
+  return [whole, significantDecimals === '' ? undefined : significantDecimals];
+}
+
+function numberParts(value: number): readonly [string, string | undefined] {
+  assertSupportedNumber(value);
+  const [whole = '', decimals] = plainDecimal(value).split('.');
+  return [whole, decimals];
+}
+
 function assertSupportedNumber(value: unknown): asserts value is number {
   if (typeof value !== 'number' || !Number.isFinite(value)) {
-    throw new MdgError('INVALID_TYPE', 'numberToWords expects a finite number.');
+    throw new MdgError('INVALID_TYPE', 'numberToWords expects a finite number or decimal text.');
   }
   if (value < MIN_VALUE || value > Number.MAX_SAFE_INTEGER) {
     throw new MdgError(
@@ -157,12 +193,15 @@ function scalesFor(options: unknown): ScaleTable {
 /**
  * Writes a number in Malagasy words, smallest part first, with `faingo` before the decimals.
  *
- * @param value - A number from 0 to `Number.MAX_SAFE_INTEGER`, whole or decimal.
+ * @param value - A number from 0 to `Number.MAX_SAFE_INTEGER`, whole or decimal, or plain
+ *   decimal text such as `'2000000000000000.9'`, read exactly (a number that large has already
+ *   lost its decimals to floating point).
  * @param options - Optional `system`: `standard` (default) or `traditional`, which names every
  *   power of ten (`telo safatsiroa` for 30 000 000).
  * @returns The number in Malagasy words.
  * @throws {@link MdgError} `INVALID_TYPE` if `value` is not a finite number or the options are
- *   unknown, `OUT_OF_RANGE` if it is negative or above `Number.MAX_SAFE_INTEGER`.
+ *   unknown, `INVALID_FORMAT` for text that is not plain decimal (at most 100 characters),
+ *   `OUT_OF_RANGE` if a number is negative or above `Number.MAX_SAFE_INTEGER`.
  *
  * @example
  * ```ts
@@ -170,12 +209,14 @@ function scalesFor(options: unknown): ScaleTable {
  * numberToWords(2026); // 'enina amby roapolo sy roa arivo'
  * numberToWords(3.14); // "telo faingo efatra ambin'ny folo"
  * numberToWords(30_000_000, { system: 'traditional' }); // 'telo safatsiroa'
+ * numberToWords('2000000000000000.9'); // 'roa tapitrisa lavitrisa faingo sivy'
  * ```
  */
-export function numberToWords(value: number, options: NumberToWordsOptions = {}): string {
-  assertSupportedNumber(value);
+export function numberToWords(value: number | string, options: NumberToWordsOptions = {}): string {
+  const [whole, decimals] =
+    typeof value === 'string' ? decimalTextParts(value) : numberParts(value);
   const scales = scalesFor(options);
-  const [whole = '', decimals] = plainDecimal(value).split('.');
-  if (decimals === undefined) return wholeWords(whole, scales);
-  return `${wholeWords(whole, scales)} ${DECIMAL_SEPARATOR} ${decimalWords(decimals, scales)}`;
+  const wholePart = wholeWords(whole, tableFor(whole, scales));
+  if (decimals === undefined) return wholePart;
+  return `${wholePart} ${DECIMAL_SEPARATOR} ${decimalWords(decimals, scales)}`;
 }

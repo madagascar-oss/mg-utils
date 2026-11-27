@@ -3,7 +3,7 @@
 Parse, validate and format Madagascar (+261) mobile phone numbers. Zero dependencies,
 ESM + CommonJS + types.
 
-Implements spec 0.7.0.
+Implements spec 0.8.0.
 
 ```sh
 npm install @mdgascar/phone

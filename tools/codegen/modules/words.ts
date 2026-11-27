@@ -12,7 +12,7 @@ interface WordsData {
   readonly traditionalScales: readonly Valued[];
   readonly decimalSeparator: Worded;
   readonly joiners: Readonly<Record<'unitsBeforeTen' | 'belowThousand' | 'betweenGroups', Worded>>;
-  readonly limits: { readonly min: number };
+  readonly limits: { readonly min: number; readonly maxTextLength: number };
 }
 
 interface WordsTables {
@@ -28,6 +28,7 @@ interface WordsTables {
   readonly joinerBelowThousand: string;
   readonly joinerBetweenGroups: string;
   readonly minValue: number;
+  readonly maxTextLength: number;
 }
 
 // A group word, the power of ten it stands for, and how many digits its count takes
@@ -75,7 +76,8 @@ function scaleTable(scales: WordsData['scales']): Scale[] {
 
 /**
  * Turns the traditional scales (rule 12) into the same shape: one digit per power of ten, each
- * the next power up, and the largest taking every digit left (no port reaches past it).
+ * the next power up. The largest takes one digit too, so the table ends at 10¹⁹ − 1; longer
+ * numbers are read with the standard scales instead.
  */
 function traditionalScaleTable(scales: WordsData['traditionalScales']): Scale[] {
   const sorted = [...scales].sort((left, right) => left.value - right.value);
@@ -84,8 +86,7 @@ function traditionalScaleTable(scales: WordsData['traditionalScales']): Scale[] 
     if (!POWER_OF_TEN.test(digits))
       throw new Error(`traditional scale ${word}: not a power of ten`);
     const next = sorted[index + 1];
-    if (next === undefined) return { word, exponent: digits.length - 1, countDigits: null };
-    if (value * DECIMAL_BASE !== next.value) {
+    if (next !== undefined && value * DECIMAL_BASE !== next.value) {
       throw new Error(`traditional scale ${word}: the next name is not 10 times larger`);
     }
     return { word, exponent: digits.length - 1, countDigits: 1 };
@@ -116,6 +117,7 @@ function wordsTables(data: WordsData): WordsTables {
     joinerBelowThousand: data.joiners.belowThousand.word,
     joinerBetweenGroups: data.joiners.betweenGroups.word,
     minValue: data.limits.min,
+    maxTextLength: data.limits.maxTextLength,
   };
 }
 
@@ -131,12 +133,13 @@ export function emit(data: WordsData): string[] {
     constant(
       'TRADITIONAL_SCALES',
       tables.traditionalScales,
-      'Rule 12: one name per power of ten, ascending; countDigits null = no limit.',
+      'Rule 12: one name per power of ten, ascending, each taking one digit.',
     ),
     constant('DECIMAL_SEPARATOR', tables.decimalSeparator),
     constant('JOINER_UNITS_BEFORE_TEN', tables.joinerUnitsBeforeTen),
     constant('JOINER_BELOW_THOUSAND', tables.joinerBelowThousand),
     constant('JOINER_BETWEEN_GROUPS', tables.joinerBetweenGroups),
     constant('MIN_VALUE', tables.minValue),
+    constant('MAX_TEXT_LENGTH', tables.maxTextLength, 'Longest decimal text read (rule 13).'),
   ];
 }

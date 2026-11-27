@@ -7,7 +7,7 @@ Ariary amounts and dates — built from **one shared spec** so every language be
 [![npm](https://img.shields.io/npm/v/@mdgascar/utils?label=%40mdgascar%2Futils)](https://www.npmjs.com/package/@mdgascar/utils)
 [![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/mdgascar/mdg-utils-js/badge)](https://scorecard.dev/viewer/?uri=github.com/mdgascar/mdg-utils-js)
 
-Implements [spec](https://github.com/mdgascar/mdg-utils-spec) **0.7.0** · [Docs & playground](https://mdgascar.github.io/mdg-utils-docs/) · PHP: [mdg-utils-php](https://github.com/mdgascar/mdg-utils-php)
+Implements [spec](https://github.com/mdgascar/mdg-utils-spec) **0.8.0** · [Docs & playground](https://mdgascar.github.io/mdg-utils-docs/) · PHP: [mdg-utils-php](https://github.com/mdgascar/mdg-utils-php)
 
 ## Modules
 
