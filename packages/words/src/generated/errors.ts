@@ -1,7 +1,7 @@
 // GENERATED — edit spec/ instead. Run `just codegen` to refresh.
 
 /** Version of the shared spec this code was generated from. */
-export const SPEC_VERSION = '0.8.0';
+export const SPEC_VERSION = '0.9.0';
 
 /**
  * Error code shared by every mdg-utils language port.

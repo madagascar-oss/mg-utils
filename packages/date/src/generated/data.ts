@@ -1,6 +1,6 @@
 // GENERATED — edit spec/ instead. Run `just codegen` to refresh.
 
-// From spec/modules/date/data.yaml, spec 0.8.0.
+// From spec/modules/date/data.yaml, spec 0.9.0.
 
 /** @internal Index = month number; index 0 is unused. */
 export const MONTH_NAMES = [
