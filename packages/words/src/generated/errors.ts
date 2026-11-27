@@ -18,7 +18,7 @@ export type ErrorCode = 'INVALID_TYPE' | 'OUT_OF_RANGE' | 'INVALID_FORMAT' | 'UN
  *
  * @example
  * ```ts
- * const result = safeParsePhoneNumber(input);
+ * const result = safeParsePhone(input);
  * if (result.success) console.log(result.data);
  * else console.log(result.error.code);
  * ```
@@ -33,7 +33,7 @@ export type SafeParseResult<T> =
  * @example
  * ```ts
  * try {
- *   numberToWords(-1);
+ *   spell(-1);
  * } catch (error) {
  *   if (error instanceof MdgError && error.code === 'OUT_OF_RANGE') {
  *     // handle it

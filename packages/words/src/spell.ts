@@ -31,14 +31,14 @@ type ScaleTable = readonly Scale[];
 export type NumberSystem = 'standard' | 'traditional';
 
 /**
- * Options for {@link numberToWords}.
+ * Options for {@link spell}.
  *
  * @example
  * ```ts
- * const options: NumberToWordsOptions = { system: 'traditional' };
+ * const options: SpellOptions = { system: 'traditional' };
  * ```
  */
-export interface NumberToWordsOptions {
+export interface SpellOptions {
   /** `standard` (default) or `traditional`. */
   readonly system?: NumberSystem;
 }
@@ -153,7 +153,7 @@ function decimalTextParts(text: string): readonly [string, string | undefined] {
   if (match === null) {
     throw new MdgError(
       'INVALID_FORMAT',
-      `numberToWords reads digits with an optional .decimals, at most ${String(MAX_TEXT_LENGTH)} characters.`,
+      `spell reads digits with an optional .decimals, at most ${String(MAX_TEXT_LENGTH)} characters.`,
     );
   }
   const [, whole = '', decimals = ''] = match;
@@ -169,21 +169,21 @@ function numberParts(value: number): readonly [string, string | undefined] {
 
 function assertSupportedNumber(value: unknown): asserts value is number {
   if (typeof value !== 'number' || !Number.isFinite(value)) {
-    throw new MdgError('INVALID_TYPE', 'numberToWords expects a finite number or decimal text.');
+    throw new MdgError('INVALID_TYPE', 'spell expects a finite number or decimal text.');
   }
   if (value < MIN_VALUE || value > Number.MAX_SAFE_INTEGER) {
     throw new MdgError(
       'OUT_OF_RANGE',
-      `numberToWords supports ${String(MIN_VALUE)} to ${String(Number.MAX_SAFE_INTEGER)}.`,
+      `spell supports ${String(MIN_VALUE)} to ${String(Number.MAX_SAFE_INTEGER)}.`,
     );
   }
 }
 
 function scalesFor(options: unknown): ScaleTable {
   if (typeof options !== 'object' || options === null) {
-    throw new MdgError('INVALID_TYPE', 'numberToWords options must be an object.');
+    throw new MdgError('INVALID_TYPE', 'spell options must be an object.');
   }
-  const { system = DEFAULT_SYSTEM } = options as NumberToWordsOptions;
+  const { system = DEFAULT_SYSTEM } = options as SpellOptions;
   if (!SYSTEMS.has(system)) {
     throw new MdgError('INVALID_TYPE', 'system is standard or traditional.');
   }
@@ -205,14 +205,14 @@ function scalesFor(options: unknown): ScaleTable {
  *
  * @example
  * ```ts
- * numberToWords(21); // 'iraika amby roapolo'
- * numberToWords(2026); // 'enina amby roapolo sy roa arivo'
- * numberToWords(3.14); // "telo faingo efatra ambin'ny folo"
- * numberToWords(30_000_000, { system: 'traditional' }); // 'telo safatsiroa'
- * numberToWords('2000000000000000.9'); // 'roa tapitrisa lavitrisa faingo sivy'
+ * spell(21); // 'iraika amby roapolo'
+ * spell(2026); // 'enina amby roapolo sy roa arivo'
+ * spell(3.14); // "telo faingo efatra ambin'ny folo"
+ * spell(30_000_000, { system: 'traditional' }); // 'telo safatsiroa'
+ * spell('2000000000000000.9'); // 'roa tapitrisa lavitrisa faingo sivy'
  * ```
  */
-export function numberToWords(value: number | string, options: NumberToWordsOptions = {}): string {
+export function spell(value: number | string, options: SpellOptions = {}): string {
   const [whole, decimals] =
     typeof value === 'string' ? decimalTextParts(value) : numberParts(value);
   const scales = scalesFor(options);

@@ -10,7 +10,7 @@ npm install @mdgascar/date
 ```
 
 ```ts
-import { formatDate, getMonthName, getWeekdayName } from '@mdgascar/date';
+import { formatDate, monthName, weekdayName } from '@mdgascar/date';
 
 formatDate('2026-11-23'); // '23 Novambra 2026'
 formatDate('2026-11-23', 'full'); // 'Alatsinainy 23 Novambra 2026'
@@ -18,8 +18,8 @@ formatDate('2026-11-23', 'short'); // '2026-11-23' (CLDR)
 formatDate('2026-11-23', 'numeric'); // '23/11/2026'
 formatDate({ year: 1960, month: 6, day: 26 }, 'full'); // 'Alahady 26 Jona 1960'
 
-getMonthName(6); // 'Jona'
-getWeekdayName(1); // 'Alatsinainy' (ISO 8601: Monday is 1)
+monthName(6); // 'Jona'
+weekdayName(1); // 'Alatsinainy' (ISO 8601: Monday is 1)
 ```
 
 Rules, sources and recorded decisions: [spec/date](https://github.com/mdgascar/mdg-utils-spec/blob/dev/modules/date/README.md).

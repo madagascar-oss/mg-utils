@@ -3,5 +3,5 @@
  *
  * @packageDocumentation
  */
-export { numberToWords, type NumberSystem, type NumberToWordsOptions } from './number-to-words.ts';
+export { spell, type NumberSystem, type SpellOptions } from './spell.ts';
 export { MdgError, SPEC_VERSION, type ErrorCode } from './generated/errors.ts';

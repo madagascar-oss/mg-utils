@@ -16,7 +16,8 @@
     "malagasy",
     "numbers",
     "words",
-    "number-to-words"
+    "number-to-words",
+    "spell"
   ],
   "type": "module",
   "sideEffects": false,

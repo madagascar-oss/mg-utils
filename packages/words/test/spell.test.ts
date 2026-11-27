@@ -1,6 +1,6 @@
 import fc from 'fast-check';
 import { describe, expect, test } from 'vitest';
-import { numberToWords } from '../src/index.ts';
+import { spell } from '../src/index.ts';
 
 const BIGINT_INPUT = 12n;
 // First integer a number cannot hold exactly next to its neighbours.
@@ -25,11 +25,11 @@ const supportedNumbers = fc.oneof(
   fc.double({ min: 0, max: Number.MAX_SAFE_INTEGER, noNaN: true }),
 );
 
-describe('numberToWords', () => {
+describe('spell', () => {
   test('returns words for every supported number without throwing', () => {
     fc.assert(
       fc.property(supportedNumbers, (value) => {
-        expect(numberToWords(value)).toMatch(WORDS_ONLY);
+        expect(spell(value)).toMatch(WORDS_ONLY);
       }),
     );
   });
@@ -37,7 +37,7 @@ describe('numberToWords', () => {
   test('never repeats a joiner or leaves a double space', () => {
     fc.assert(
       fc.property(supportedNumbers, (value) => {
-        expect(numberToWords(value)).not.toMatch(BROKEN_JOIN);
+        expect(spell(value)).not.toMatch(BROKEN_JOIN);
       }),
     );
   });
@@ -45,19 +45,19 @@ describe('numberToWords', () => {
   test('says faingo exactly when the number has decimals', () => {
     fc.assert(
       fc.property(supportedNumbers, (value) => {
-        expect(numberToWords(value).includes(DECIMAL_SEPARATOR)).toBe(!Number.isInteger(value));
+        expect(spell(value).includes(DECIMAL_SEPARATOR)).toBe(!Number.isInteger(value));
       }),
     );
   });
 
   test('throws OUT_OF_RANGE above Number.MAX_SAFE_INTEGER', () => {
-    expect(() => numberToWords(FIRST_UNSAFE_INTEGER)).toThrow(
+    expect(() => spell(FIRST_UNSAFE_INTEGER)).toThrow(
       expect.objectContaining({ code: 'OUT_OF_RANGE' }),
     );
   });
 
   test('throws INVALID_TYPE for a bigint, because only numbers are accepted', () => {
-    expect(() => numberToWords(BIGINT_INPUT as unknown as number)).toThrow(
+    expect(() => spell(BIGINT_INPUT as unknown as number)).toThrow(
       expect.objectContaining({ code: 'INVALID_TYPE' }),
     );
   });
@@ -65,7 +65,7 @@ describe('numberToWords', () => {
   test('in the traditional system, returns words for every supported number', () => {
     fc.assert(
       fc.property(supportedNumbers, (value) => {
-        const words = numberToWords(value, TRADITIONAL);
+        const words = spell(value, TRADITIONAL);
         expect(words).toMatch(WORDS_ONLY);
         expect(words).not.toMatch(BROKEN_JOIN);
       }),
@@ -75,7 +75,7 @@ describe('numberToWords', () => {
   test('both systems write the same words below 10 000', () => {
     fc.assert(
       fc.property(fc.integer({ min: 0, max: FIRST_DIFFERENT_POWER - 1 }), (value) => {
-        expect(numberToWords(value, TRADITIONAL)).toBe(numberToWords(value));
+        expect(spell(value, TRADITIONAL)).toBe(spell(value));
       }),
     );
   });
@@ -83,7 +83,7 @@ describe('numberToWords', () => {
   test('in the traditional system, every power of ten takes a single digit', () => {
     fc.assert(
       fc.property(supportedIntegers, (value) => {
-        const groups = numberToWords(value, TRADITIONAL).split(' sy ');
+        const groups = spell(value, TRADITIONAL).split(' sy ');
         for (const group of groups.filter((part) => TRADITIONAL_NAMES.test(part))) {
           expect(group).not.toMatch(COUNT_ABOVE_NINE);
         }
@@ -92,7 +92,7 @@ describe('numberToWords', () => {
   });
 
   test('throws INVALID_TYPE when the options are not an object', () => {
-    expect(() => numberToWords(1, null as unknown as object)).toThrow(
+    expect(() => spell(1, null as unknown as object)).toThrow(
       expect.objectContaining({ code: 'INVALID_TYPE' }),
     );
   });
@@ -100,7 +100,7 @@ describe('numberToWords', () => {
   test('reads decimal text the same as the number it writes', () => {
     fc.assert(
       fc.property(supportedIntegers, (value) => {
-        expect(numberToWords(String(value))).toBe(numberToWords(value));
+        expect(spell(String(value))).toBe(spell(value));
       }),
     );
   });
@@ -109,7 +109,7 @@ describe('numberToWords', () => {
     fc.assert(
       fc.property(supportedIntegers, fc.nat({ max: TEXT_PADDING }), (value, padding) => {
         const padded = `${'0'.repeat(padding)}${String(value)}.${'0'.repeat(padding + 1)}`;
-        expect(numberToWords(padded)).toBe(numberToWords(value));
+        expect(spell(padded)).toBe(spell(value));
       }),
     );
   });

@@ -3,10 +3,10 @@ import {
   MdgError,
   formatAriary,
   formatDate,
-  formatPhoneNumber,
-  numberToWords,
+  formatPhone,
+  spell,
   tryParseAriary,
-  tryParsePhoneNumber,
+  tryParsePhone,
 } from '../src/index.ts';
 
 const TWENTY_ONE = 21;
@@ -15,11 +15,11 @@ const SAMPLE_AMOUNT = 1500;
 const SAMPLE_DATE = '2026-11-23';
 
 test('re-exports number words', () => {
-  expect(numberToWords(TWENTY_ONE)).toBe(TWENTY_ONE_IN_WORDS);
+  expect(spell(TWENTY_ONE)).toBe(TWENTY_ONE_IN_WORDS);
 });
 
 test('re-exports phone formatting', () => {
-  expect(formatPhoneNumber('0341234567', 'e164')).toBe('+261341234567');
+  expect(formatPhone('0341234567', 'e164')).toBe('+261341234567');
 });
 
 test('re-exports ariary formatting', () => {
@@ -31,13 +31,13 @@ test('re-exports date formatting', () => {
 });
 
 test('recognises errors from every module with one MdgError', () => {
-  expect(() => numberToWords(-1)).toThrow(MdgError);
-  expect(() => formatPhoneNumber('x', 'e164')).toThrow(MdgError);
+  expect(() => spell(-1)).toThrow(MdgError);
+  expect(() => formatPhone('x', 'e164')).toThrow(MdgError);
   expect(() => formatAriary(-1)).toThrow(MdgError);
   expect(() => formatDate('2026-02-30')).toThrow(MdgError);
 });
 
 test('re-exports the non-throwing parsers', () => {
-  expect(tryParsePhoneNumber('034 12 345 67')?.e164).toBe('+261341234567');
+  expect(tryParsePhone('034 12 345 67')?.e164).toBe('+261341234567');
   expect(tryParseAriary('Ar 1 500')).toBe(SAMPLE_AMOUNT);
 });

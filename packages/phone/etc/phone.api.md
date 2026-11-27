@@ -8,10 +8,10 @@
 export type ErrorCode = 'INVALID_TYPE' | 'OUT_OF_RANGE' | 'INVALID_FORMAT' | 'UNKNOWN_OPERATOR';
 
 // @public
-export function formatPhoneNumber(input: string, format: PhoneNumberFormat): string;
+export function formatPhone(input: string, format: PhoneNumberFormat): string;
 
 // @public
-export function isValidPhoneNumber(input: unknown): boolean;
+export function isValidPhone(input: unknown): boolean;
 
 // @public
 export class MdgError extends Error {
@@ -33,7 +33,7 @@ export const OPERATOR_NAMES: {
 export type OperatorId = 'orange' | 'airtel' | 'yas' | 'blueline';
 
 // @public
-export function parsePhoneNumber(input: string): PhoneNumber;
+export function parsePhone(input: string): PhoneNumber;
 
 // @public
 export interface PhoneNumber {
@@ -47,7 +47,7 @@ export interface PhoneNumber {
 export type PhoneNumberFormat = 'e164' | 'international' | 'national';
 
 // @public
-export function safeParsePhoneNumber(input: unknown): SafeParseResult<PhoneNumber>;
+export function safeParsePhone(input: unknown): SafeParseResult<PhoneNumber>;
 
 // @public
 export type SafeParseResult<T> = {
@@ -62,7 +62,7 @@ export type SafeParseResult<T> = {
 export const SPEC_VERSION = "0.8.0";
 
 // @public
-export function tryParsePhoneNumber(input: unknown): PhoneNumber | undefined;
+export function tryParsePhone(input: unknown): PhoneNumber | undefined;
 
 // (No @packageDocumentation comment for this package)
 

@@ -25,7 +25,7 @@ export type OperatorId = 'orange' | 'airtel' | 'yas' | 'blueline';
  *
  * @example
  * ```ts
- * OPERATOR_NAMES[parsePhoneNumber('034 12 345 67').operator]; // 'Yas Madagascar'
+ * OPERATOR_NAMES[parsePhone('034 12 345 67').operator]; // 'Yas Madagascar'
  * ```
  */
 export const OPERATOR_NAMES = {

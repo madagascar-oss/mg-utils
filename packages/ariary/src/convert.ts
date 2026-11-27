@@ -1,4 +1,4 @@
-import { numberToWords, type NumberToWordsOptions } from '@mdgascar/words';
+import { spell, type SpellOptions } from '@mdgascar/words';
 import { CURRENCY_WORD, FRANC_DIVISION_FACTOR, FRANCS_PER_ARIARY } from './generated/data.ts';
 import { assertAmount, assertInRange } from './amount.ts';
 import { divideExact, multiplyExact } from './decimal.ts';
@@ -14,16 +14,16 @@ import { divideExact, multiplyExact } from './decimal.ts';
  *
  * @example
  * ```ts
- * ariaryToWords(1500); // 'dimanjato sy arivo ariary'
- * ariaryToWords(1500.5); // 'dimanjato sy arivo faingo dimy ariary'
- * ariaryToWords(30_000_000, { system: 'traditional' }); // 'telo safatsiroa ariary'
- * ariaryToWords('2000000000000000.9'); // 'roa tapitrisa lavitrisa faingo sivy ariary'
+ * spellAriary(1500); // 'dimanjato sy arivo ariary'
+ * spellAriary(1500.5); // 'dimanjato sy arivo faingo dimy ariary'
+ * spellAriary(30_000_000, { system: 'traditional' }); // 'telo safatsiroa ariary'
+ * spellAriary('2000000000000000.9'); // 'roa tapitrisa lavitrisa faingo sivy ariary'
  * ```
  */
-export function ariaryToWords(amount: number | string, options: NumberToWordsOptions = {}): string {
-  // Text is checked by numberToWords (rule 13); a number by the Ariary range.
+export function spellAriary(amount: number | string, options: SpellOptions = {}): string {
+  // Text is checked by spell (rule 13); a number by the Ariary range.
   if (typeof amount !== 'string') assertAmount(amount);
-  return `${numberToWords(amount, options)} ${CURRENCY_WORD}`;
+  return `${spell(amount, options)} ${CURRENCY_WORD}`;
 }
 
 /**
