@@ -3,12 +3,12 @@
  *
  * @packageDocumentation
  */
-export { formatPhoneNumber, type PhoneNumberFormat } from './format.ts';
+export { formatPhone, type PhoneNumberFormat } from './format.ts';
 export {
-  isValidPhoneNumber,
-  parsePhoneNumber,
-  safeParsePhoneNumber,
-  tryParsePhoneNumber,
+  isValidPhone,
+  parsePhone,
+  safeParsePhone,
+  tryParsePhone,
   type PhoneNumber,
 } from './phone-number.ts';
 export { OPERATOR_NAMES, type OperatorId } from './generated/data.ts';

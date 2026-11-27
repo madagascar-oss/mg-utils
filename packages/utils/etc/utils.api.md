@@ -11,7 +11,6 @@ import { AriaryParseOptions } from '@mdgascar/ariary';
 import { AriarySeparatorOptions } from '@mdgascar/ariary';
 import { AriarySymbolPosition } from '@mdgascar/ariary';
 import { ariaryToFmg } from '@mdgascar/ariary';
-import { ariaryToWords } from '@mdgascar/ariary';
 import { CalendarDate } from '@mdgascar/date';
 import { DateStyle } from '@mdgascar/date';
 import { ErrorCode } from '@mdgascar/phone';
@@ -19,27 +18,28 @@ import { fmgToAriary } from '@mdgascar/ariary';
 import { formatAriary } from '@mdgascar/ariary';
 import { formatDate } from '@mdgascar/date';
 import { formatFmg } from '@mdgascar/ariary';
-import { formatPhoneNumber } from '@mdgascar/phone';
-import { getMonthName } from '@mdgascar/date';
-import { getWeekdayName } from '@mdgascar/date';
-import { isValidPhoneNumber } from '@mdgascar/phone';
+import { formatPhone } from '@mdgascar/phone';
+import { isValidPhone } from '@mdgascar/phone';
 import { MdgError } from '@mdgascar/phone';
+import { monthName } from '@mdgascar/date';
 import { NameWidth } from '@mdgascar/date';
 import { NumberSystem } from '@mdgascar/words';
-import { numberToWords } from '@mdgascar/words';
-import { NumberToWordsOptions } from '@mdgascar/words';
 import { OPERATOR_NAMES } from '@mdgascar/phone';
 import { OperatorId } from '@mdgascar/phone';
 import { parseAriary } from '@mdgascar/ariary';
-import { parsePhoneNumber } from '@mdgascar/phone';
+import { parsePhone } from '@mdgascar/phone';
 import { PhoneNumber } from '@mdgascar/phone';
 import { PhoneNumberFormat } from '@mdgascar/phone';
 import { safeParseAriary } from '@mdgascar/ariary';
-import { safeParsePhoneNumber } from '@mdgascar/phone';
+import { safeParsePhone } from '@mdgascar/phone';
 import { SafeParseResult } from '@mdgascar/phone';
 import { SPEC_VERSION } from '@mdgascar/phone';
+import { spell } from '@mdgascar/words';
+import { spellAriary } from '@mdgascar/ariary';
+import { SpellOptions } from '@mdgascar/words';
 import { tryParseAriary } from '@mdgascar/ariary';
-import { tryParsePhoneNumber } from '@mdgascar/phone';
+import { tryParsePhone } from '@mdgascar/phone';
+import { weekdayName } from '@mdgascar/date';
 
 export { AriaryDecimal }
 
@@ -55,8 +55,6 @@ export { AriarySymbolPosition }
 
 export { ariaryToFmg }
 
-export { ariaryToWords }
-
 export { CalendarDate }
 
 export { DateStyle }
@@ -71,23 +69,17 @@ export { formatDate }
 
 export { formatFmg }
 
-export { formatPhoneNumber }
+export { formatPhone }
 
-export { getMonthName }
-
-export { getWeekdayName }
-
-export { isValidPhoneNumber }
+export { isValidPhone }
 
 export { MdgError }
+
+export { monthName }
 
 export { NameWidth }
 
 export { NumberSystem }
-
-export { numberToWords }
-
-export { NumberToWordsOptions }
 
 export { OPERATOR_NAMES }
 
@@ -95,7 +87,7 @@ export { OperatorId }
 
 export { parseAriary }
 
-export { parsePhoneNumber }
+export { parsePhone }
 
 export { PhoneNumber }
 
@@ -103,15 +95,23 @@ export { PhoneNumberFormat }
 
 export { safeParseAriary }
 
-export { safeParsePhoneNumber }
+export { safeParsePhone }
 
 export { SafeParseResult }
 
 export { SPEC_VERSION }
 
+export { spell }
+
+export { spellAriary }
+
+export { SpellOptions }
+
 export { tryParseAriary }
 
-export { tryParsePhoneNumber }
+export { tryParsePhone }
+
+export { weekdayName }
 
 // (No @packageDocumentation comment for this package)
 

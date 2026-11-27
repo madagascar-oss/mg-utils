@@ -1,9 +1,9 @@
 import { COUNTRY_CODE, GROUPING, TRUNK_PREFIX } from './generated/data.ts';
 import { MdgError } from './generated/errors.ts';
-import { parsePhoneNumber } from './phone-number.ts';
+import { parsePhone } from './phone-number.ts';
 
 /**
- * How {@link formatPhoneNumber} writes a number.
+ * How {@link formatPhone} writes a number.
  *
  * - `e164`: `+261341234567`
  * - `international`: `+261 34 12 345 67`
@@ -40,24 +40,24 @@ function isPhoneNumberFormat(value: unknown): value is PhoneNumberFormat {
 /**
  * Writes a Malagasy mobile number in a standard form.
  *
- * @param input - The number in any spelling accepted by {@link parsePhoneNumber}.
+ * @param input - The number in any spelling accepted by {@link parsePhone}.
  * @param format - `'e164'`, `'international'` or `'national'`.
  * @returns The formatted number.
  * @throws {@link MdgError} `INVALID_TYPE` for an unknown format, plus every error of
- *   {@link parsePhoneNumber}.
+ *   {@link parsePhone}.
  *
  * @example
  * ```ts
- * formatPhoneNumber('+261341234567', 'national'); // '034 12 345 67'
- * formatPhoneNumber('034 12 345 67', 'international'); // '+261 34 12 345 67'
+ * formatPhone('+261341234567', 'national'); // '034 12 345 67'
+ * formatPhone('034 12 345 67', 'international'); // '+261 34 12 345 67'
  * ```
  */
-export function formatPhoneNumber(input: string, format: PhoneNumberFormat): string {
+export function formatPhone(input: string, format: PhoneNumberFormat): string {
   if (!isPhoneNumberFormat(format)) {
     throw new MdgError(
       'INVALID_TYPE',
       `Format must be one of: ${PHONE_NUMBER_FORMATS.join(', ')}.`,
     );
   }
-  return FORMATTERS[format](parsePhoneNumber(input).nationalNumber);
+  return FORMATTERS[format](parsePhone(input).nationalNumber);
 }

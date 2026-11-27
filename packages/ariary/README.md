@@ -5,7 +5,7 @@ comma for decimals; other conventions opt-in), read amounts
 typed by users, write them in words, and convert old francs (FMG). Zero third-party
 dependencies, ESM + CommonJS + types.
 
-Implements spec 0.7.0.
+Implements spec 0.8.0.
 
 ```sh
 npm install @mdgascar/ariary
@@ -14,7 +14,7 @@ npm install @mdgascar/ariary
 ```ts
 import {
   ariaryToFmg,
-  ariaryToWords,
+  spellAriary,
   fmgToAriary,
   formatAriary,
   formatFmg,
@@ -36,9 +36,10 @@ parseAriary('1,500', { grouping: 'comma', decimal: 'dot' }); // 1500, for Englis
 tryParseAriary('1.5'); // undefined (never throws): a dot is not a decimal point by default
 safeParseAriary('1.5'); // { success: false, error: MdgError INVALID_FORMAT }
 
-ariaryToWords(1500); // 'dimanjato sy arivo ariary'
-ariaryToWords(1500.5); // 'dimanjato sy arivo faingo dimy ariary'
-ariaryToWords(30_000_000, { system: 'traditional' }); // 'telo safatsiroa ariary'
+spellAriary(1500); // 'dimanjato sy arivo ariary'
+spellAriary(1500.5); // 'dimanjato sy arivo faingo dimy ariary'
+spellAriary(30_000_000, { system: 'traditional' }); // 'telo safatsiroa ariary'
+spellAriary('2000000000000000.9'); // exact text: 'roa tapitrisa lavitrisa faingo sivy ariary'
 fmgToAriary(7500); // 1500
 fmgToAriary(7501); // 1500.2
 ariaryToFmg(0.07); // 0.35 (exact, never 0.35000000000000003)

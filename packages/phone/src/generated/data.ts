@@ -1,6 +1,6 @@
 // GENERATED — edit spec/ instead. Run `just codegen` to refresh.
 
-// From spec/modules/phone/data.yaml, spec 0.7.0.
+// From spec/modules/phone/data.yaml, spec 0.8.0.
 
 /** @internal */
 export const COUNTRY_CODE = '261' as const;
@@ -25,7 +25,7 @@ export type OperatorId = 'orange' | 'airtel' | 'yas' | 'blueline';
  *
  * @example
  * ```ts
- * OPERATOR_NAMES[parsePhoneNumber('034 12 345 67').operator]; // 'Yas Madagascar'
+ * OPERATOR_NAMES[parsePhone('034 12 345 67').operator]; // 'Yas Madagascar'
  * ```
  */
 export const OPERATOR_NAMES = {

@@ -21,12 +21,6 @@ export type ErrorCode = 'INVALID_TYPE' | 'OUT_OF_RANGE' | 'INVALID_FORMAT' | 'UN
 export function formatDate(date: string | CalendarDate | Date, style?: DateStyle): string;
 
 // @public
-export function getMonthName(month: number, width?: NameWidth): string;
-
-// @public
-export function getWeekdayName(isoWeekday: number, width?: NameWidth): string;
-
-// @public
 export class MdgError extends Error {
     static [Symbol.hasInstance](value: unknown): boolean;
     constructor(code: ErrorCode, message: string);
@@ -35,10 +29,16 @@ export class MdgError extends Error {
 }
 
 // @public
+export function monthName(month: number, width?: NameWidth): string;
+
+// @public
 export type NameWidth = 'wide' | 'abbreviated';
 
 // @public
-export const SPEC_VERSION = "0.7.0";
+export const SPEC_VERSION = "0.8.0";
+
+// @public
+export function weekdayName(isoWeekday: number, width?: NameWidth): string;
 
 // (No @packageDocumentation comment for this package)
 

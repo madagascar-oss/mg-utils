@@ -67,11 +67,11 @@ export function weekdayNameOf(weekday: IsoWeekday, width: NameWidth): string {
  *
  * @example
  * ```ts
- * getMonthName(6); // 'Jona'
- * getMonthName(11, 'abbreviated'); // 'Nov'
+ * monthName(6); // 'Jona'
+ * monthName(11, 'abbreviated'); // 'Nov'
  * ```
  */
-export function getMonthName(month: number, width: NameWidth = 'wide'): string {
+export function monthName(month: number, width: NameWidth = 'wide'): string {
   const checkedMonth = checkedNumber(month, MONTH_NAMES.length - 1, 'Month');
   return monthNameOf(checkedMonth as MonthNumber, checkedWidth(width));
 }
@@ -87,11 +87,11 @@ export function getMonthName(month: number, width: NameWidth = 'wide'): string {
  *
  * @example
  * ```ts
- * getWeekdayName(1); // 'Alatsinainy'
- * getWeekdayName(7, 'abbreviated'); // 'Alah'
+ * weekdayName(1); // 'Alatsinainy'
+ * weekdayName(7, 'abbreviated'); // 'Alah'
  * ```
  */
-export function getWeekdayName(isoWeekday: number, width: NameWidth = 'wide'): string {
+export function weekdayName(isoWeekday: number, width: NameWidth = 'wide'): string {
   const checkedWeekday = checkedNumber(isoWeekday, WEEKDAY_NAMES.length - 1, 'Weekday');
   return weekdayNameOf(checkedWeekday as IsoWeekday, checkedWidth(width));
 }

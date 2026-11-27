@@ -3,7 +3,7 @@
 Parse, validate and format Madagascar (+261) mobile phone numbers. Zero dependencies,
 ESM + CommonJS + types.
 
-Implements spec 0.7.0.
+Implements spec 0.8.0.
 
 ```sh
 npm install @mdgascar/phone
@@ -12,21 +12,21 @@ npm install @mdgascar/phone
 ```ts
 import {
   OPERATOR_NAMES,
-  formatPhoneNumber,
-  isValidPhoneNumber,
-  parsePhoneNumber,
-  safeParsePhoneNumber,
-  tryParsePhoneNumber,
+  formatPhone,
+  isValidPhone,
+  parsePhone,
+  safeParsePhone,
+  tryParsePhone,
 } from '@mdgascar/phone';
 
-parsePhoneNumber('034 12 345 67');
+parsePhone('034 12 345 67');
 // { e164: '+261341234567', nationalNumber: '341234567', operator: 'yas' }
 
-formatPhoneNumber('+261341234567', 'national'); // '034 12 345 67'
-isValidPhoneNumber('031 12 345 67'); // false
-tryParsePhoneNumber('031 12 345 67'); // undefined (never throws)
+formatPhone('+261341234567', 'national'); // '034 12 345 67'
+isValidPhone('031 12 345 67'); // false
+tryParsePhone('031 12 345 67'); // undefined (never throws)
 
-const result = safeParsePhoneNumber(userInput);
+const result = safeParsePhone(userInput);
 if (!result.success) console.log(result.error.code); // 'INVALID_FORMAT' | 'UNKNOWN_OPERATOR' | …
 
 OPERATOR_NAMES.yas; // 'Yas Madagascar'

@@ -1,7 +1,7 @@
 // GENERATED — edit spec/ instead. Run `just codegen` to refresh.
 
 /** Version of the shared spec this code was generated from. */
-export const SPEC_VERSION = '0.7.0';
+export const SPEC_VERSION = '0.8.0';
 
 /**
  * Error code shared by every mdg-utils language port.
@@ -18,7 +18,7 @@ export type ErrorCode = 'INVALID_TYPE' | 'OUT_OF_RANGE' | 'INVALID_FORMAT' | 'UN
  *
  * @example
  * ```ts
- * const result = safeParsePhoneNumber(input);
+ * const result = safeParsePhone(input);
  * if (result.success) console.log(result.data);
  * else console.log(result.error.code);
  * ```
@@ -33,7 +33,7 @@ export type SafeParseResult<T> =
  * @example
  * ```ts
  * try {
- *   numberToWords(-1);
+ *   spell(-1);
  * } catch (error) {
  *   if (error instanceof MdgError && error.code === 'OUT_OF_RANGE') {
  *     // handle it
