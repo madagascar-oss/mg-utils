@@ -1,6 +1,6 @@
 {
   "name": "@mdgascar/utils",
-  "version": "0.8.0",
+  "version": "0.9.0",
   "description": "Every mdg-utils module in one package: Malagasy number words, phone numbers, Ariary amounts and dates.",
   "license": "MIT",
   "author": "Mdgascar contributors",
