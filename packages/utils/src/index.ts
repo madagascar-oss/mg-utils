@@ -3,7 +3,7 @@
  *
  * @packageDocumentation
  */
-export { numberToWords } from '@mdgascar/words';
+export { numberToWords, type NumberSystem, type NumberToWordsOptions } from '@mdgascar/words';
 export {
   OPERATOR_NAMES,
   formatPhoneNumber,
