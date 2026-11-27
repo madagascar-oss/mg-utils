@@ -1,6 +1,6 @@
 // GENERATED — edit spec/ instead. Run `just codegen` to refresh.
 
-// From spec/modules/words/data.yaml, spec 0.8.0.
+// From spec/modules/words/data.yaml, spec 0.9.0.
 
 /** @internal */
 export const ZERO_WORD = 'aotra' as const;
@@ -94,5 +94,20 @@ export const JOINER_BETWEEN_GROUPS = 'sy' as const;
 /** @internal */
 export const MIN_VALUE = 0 as const;
 
+/** @internal Rule 14: the ordinal of 1. */
+export const ORDINAL_FIRST = 'voalohany' as const;
+
+/** @internal */
+export const ORDINAL_PREFIX = 'faha' as const;
+
+/** @internal */
+export const ORDINAL_PREFIX_BEFORE_VOWEL = 'fah' as const;
+
+/** @internal Letters that take the short ordinal prefix. */
+export const VOWELS = ['a', 'e', 'i', 'o', 'y'] as const;
+
 /** @internal Longest decimal text read (rule 13). */
 export const MAX_TEXT_LENGTH = 100 as const;
+
+/** @internal Longest words text read by parseWords. */
+export const MAX_WORDS_LENGTH = 4096 as const;

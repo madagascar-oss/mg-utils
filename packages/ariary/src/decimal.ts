@@ -1,11 +1,12 @@
-// Exact decimal helpers. Amounts are number values, but money must never show binary rounding
-// artefacts (0.07 × 5 is 0.35000000000000003 in floating point), so these work on the decimal
-// digits of the value's shortest exact form.
+// Exact decimal helpers. Money must never show binary rounding artefacts (0.07 × 5 is
+// 0.35000000000000003 in floating point), so these work on decimal digits only.
 
 const DECIMAL_POINT = '.';
 const ZERO = '0';
 // String(value) of a small number, e.g. '1e-7' or '1.5e-10'.
 const NEGATIVE_EXPONENT = /^(\d)(?:\.(\d+))?e-(\d+)$/;
+const LEADING_ZEROS = /^0+(?=\d)/;
+const TRAILING_DECIMAL_ZEROS = /\.?0+$/;
 
 /**
  * @internal The shortest exact decimal form of a number, never in exponent notation.
@@ -28,38 +29,41 @@ interface Scaled {
   readonly places: number;
 }
 
-function toScaled(value: number): Scaled {
-  const [whole = '', decimals = ''] = plainDecimal(value).split(DECIMAL_POINT);
+function toScaled(digits: string): Scaled {
+  const [whole = '', decimals = ''] = digits.split(DECIMAL_POINT);
   return { units: BigInt(`${whole}${decimals}`), places: decimals.length };
 }
 
-function toNumber({ units, places }: Scaled): number {
+// Canonical decimal text: no leading zeros, no trailing decimal zeros.
+function toDigits({ units, places }: Scaled): string {
   const digits = units.toString().padStart(places + 1, ZERO);
   const point = digits.length - places;
-  return Number(`${digits.slice(0, point)}${DECIMAL_POINT}${digits.slice(point)}`);
+  const whole = digits.slice(0, point).replace(LEADING_ZEROS, '');
+  if (places === 0) return whole;
+  return `${whole}${DECIMAL_POINT}${digits.slice(point)}`.replace(TRAILING_DECIMAL_ZEROS, '');
 }
 
 /**
- * @internal Multiplies exactly in decimal, then reads the result as the nearest number.
+ * @internal Multiplies decimal text exactly.
  *
- * @param value - A non-negative finite number.
+ * @param digits - Canonical decimal text.
  * @param factor - A whole multiplier.
- * @returns `value × factor`: `0.07 × 5` → `0.35`.
+ * @returns `digits × factor`: `'0.07' × 5` → `'0.35'`.
  */
-export function multiplyExact(value: number, factor: number): number {
-  const { units, places } = toScaled(value);
-  return toNumber({ units: units * BigInt(factor), places });
+export function multiplyExact(digits: string, factor: number): string {
+  const { units, places } = toScaled(digits);
+  return toDigits({ units: units * BigInt(factor), places });
 }
 
 /**
- * @internal Divides exactly by a divisor of 10: multiplies by `10 ÷ divisor`, then moves the
- * point one place left.
+ * @internal Divides decimal text exactly by a divisor of 10: multiplies by `10 ÷ divisor`,
+ * then moves the point one place left.
  *
- * @param value - A non-negative finite number.
+ * @param digits - Canonical decimal text.
  * @param divisionFactor - `10 ÷ divisor` (2 to divide by 5).
- * @returns `value ÷ divisor`: `7501 ÷ 5` → `1500.2`.
+ * @returns `digits ÷ divisor`: `'7501' ÷ 5` → `'1500.2'`.
  */
-export function divideExact(value: number, divisionFactor: number): number {
-  const { units, places } = toScaled(value);
-  return toNumber({ units: units * BigInt(divisionFactor), places: places + 1 });
+export function divideExact(digits: string, divisionFactor: number): string {
+  const { units, places } = toScaled(digits);
+  return toDigits({ units: units * BigInt(divisionFactor), places: places + 1 });
 }

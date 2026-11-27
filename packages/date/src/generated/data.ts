@@ -1,6 +1,6 @@
 // GENERATED — edit spec/ instead. Run `just codegen` to refresh.
 
-// From spec/modules/date/data.yaml, spec 0.8.0.
+// From spec/modules/date/data.yaml, spec 0.9.0.
 
 /** @internal Index = month number; index 0 is unused. */
 export const MONTH_NAMES = [
@@ -77,6 +77,9 @@ export const DEFAULT_STYLE = 'long' as const;
 
 /** @internal */
 export const MIN_YEAR = 1 as const;
+
+/** @internal Longest text parseDate reads. */
+export const MAX_READ_LENGTH = 64 as const;
 
 /** @internal */
 export const MAX_YEAR = 9999 as const;

@@ -1,9 +1,9 @@
 # @mdgascar/phone
 
-Parse, validate and format Madagascar (+261) mobile phone numbers. Zero dependencies,
+Parse, validate and format Madagascar (+261) phone numbers, mobile and fixed. Zero dependencies,
 ESM + CommonJS + types.
 
-Implements spec 0.8.0.
+Implements spec 0.9.0.
 
 ```sh
 npm install @mdgascar/phone
@@ -20,7 +20,8 @@ import {
 } from '@mdgascar/phone';
 
 parsePhone('034 12 345 67');
-// { e164: '+261341234567', nationalNumber: '341234567', operator: 'yas' }
+// { e164: '+261341234567', nationalNumber: '341234567', operator: 'yas', type: 'mobile', area: null }
+parsePhone('020 22 421 19').area; // { name: 'Antananarivo', province: 'Antananarivo' }
 
 formatPhone('+261341234567', 'national'); // '034 12 345 67'
 isValidPhone('031 12 345 67'); // false

@@ -1,45 +1,45 @@
 # @mdgascar/words
 
-Write numbers in Malagasy words. Zero dependencies, ESM + CommonJS + types.
+Malagasy number words: write numbers in words, ordinals, and read words back into numbers.
+Zero dependencies, ESM + CommonJS + types.
 
-Implements spec 0.8.0.
+Implements spec 0.9.0.
 
 ```sh
 npm install @mdgascar/words
 ```
 
 ```ts
-import { spell } from '@mdgascar/words';
+import { parseWords, spell, spellOrdinal, tryParseWords } from '@mdgascar/words';
 
 spell(21); // 'iraika amby roapolo'
 spell(2026); // 'enina amby roapolo sy roa arivo'
-spell(280000); // 'valo alina sy roa hetsy'
-spell(3.14); // "telo faingo efatra ambin'ny folo"
-spell(0.008); // 'aotra faingo aotra aotra valo'
+spell(3.5); // 'telo faingo dimy'
+
+spellOrdinal(1); // 'voalohany'
+spellOrdinal(3); // 'fahatelo'
+
+parseWords('roa arivo'); // 2000
 ```
 
-Takes any number from 0 to `Number.MAX_SAFE_INTEGER` (9 007 199 254 740 991), whole or decimal.
-Other input throws `MdgError` with code `INVALID_TYPE` or `OUT_OF_RANGE`.
+`spell` takes any number from 0 to `Number.MAX_SAFE_INTEGER`, whole or decimal. Bad input
+throws `MdgError` with a code such as `INVALID_TYPE` or `OUT_OF_RANGE`.
 
-## Exact digits: decimal text
+## Reading words back
 
-A JavaScript number keeps about 15–17 significant digits, so `2_000_000_000_000_000.9` is
-already `2000000000000001` before any function sees it. Pass the digits as text to read them
-exactly, at any size:
+`parseWords` reads the words `spell` writes, in any case and spacing. It never rounds: a value
+a number cannot hold exactly throws `PRECISION_LOSS`, and `{ as: 'text' }` gives the exact
+digits instead. `safeParseWords` returns the error instead of throwing; `tryParseWords` returns
+`undefined`.
 
 ```ts
-spell(2_000_000_000_000_000.9); // 'iray sy roa tapitrisa lavitrisa' (the float)
-spell('2000000000000000.9'); // 'roa tapitrisa lavitrisa faingo sivy'
+parseWords('Iraika amby roapolo'); // 21
+tryParseWords('twenty'); // undefined
 ```
-
-Text is digits with an optional `.` and decimals, at most 100 characters; anything else
-(`'1 500'`, `'-1'`, `'1e5'`) throws `INVALID_FORMAT`.
 
 ## Traditional system
 
-Malagasy also has a name for every power of ten (`safatsiroa` 10⁷, `tsitamboisa` 10⁸,
-`lavitrisa` 10⁹, `alinkisa` 10¹⁰, …), not used in everyday writing. Ask for it with
-`system: 'traditional'`; the default is `'standard'`:
+Malagasy also has a name for every power of ten, not used in everyday writing:
 
 ```ts
 spell(30_000_000); // 'telopolo tapitrisa'

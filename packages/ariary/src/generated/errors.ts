@@ -1,7 +1,7 @@
 // GENERATED — edit spec/ instead. Run `just codegen` to refresh.
 
 /** Version of the shared spec this code was generated from. */
-export const SPEC_VERSION = '0.8.0';
+export const SPEC_VERSION = '0.9.0';
 
 /**
  * Error code shared by every mdg-utils language port.
@@ -9,9 +9,17 @@ export const SPEC_VERSION = '0.8.0';
  * - `INVALID_TYPE`: The input is not of the accepted type (for example a string or a non-integer where an integer is expected).
  * - `OUT_OF_RANGE`: The input has the right type but lies outside the supported range.
  * - `INVALID_FORMAT`: The input text cannot be read as a value of this module (wrong characters or wrong length).
- * - `UNKNOWN_OPERATOR`: The phone number is well formed but its operator code is not assigned to a mobile operator.
+ * - `UNKNOWN_OPERATOR`: The phone number is well formed but its operator code is not assigned to an operator.
+ * - `PRECISION_LOSS`: The value is exact in the text but the port's number type cannot hold it exactly; ask for the exact text instead.
+ * - `AMBIGUOUS`: The text reads as more than one value, so none is chosen.
  */
-export type ErrorCode = 'INVALID_TYPE' | 'OUT_OF_RANGE' | 'INVALID_FORMAT' | 'UNKNOWN_OPERATOR';
+export type ErrorCode =
+  | 'INVALID_TYPE'
+  | 'OUT_OF_RANGE'
+  | 'INVALID_FORMAT'
+  | 'UNKNOWN_OPERATOR'
+  | 'PRECISION_LOSS'
+  | 'AMBIGUOUS';
 
 /**
  * Outcome of a `safeParse…` function: the value, or the error that would have been thrown.

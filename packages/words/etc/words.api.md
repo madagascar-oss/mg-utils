@@ -5,7 +5,7 @@
 ```ts
 
 // @public
-export type ErrorCode = 'INVALID_TYPE' | 'OUT_OF_RANGE' | 'INVALID_FORMAT' | 'UNKNOWN_OPERATOR';
+export type ErrorCode = 'INVALID_TYPE' | 'OUT_OF_RANGE' | 'INVALID_FORMAT' | 'UNKNOWN_OPERATOR' | 'PRECISION_LOSS' | 'AMBIGUOUS';
 
 // @public
 export class MdgError extends Error {
@@ -19,7 +19,35 @@ export class MdgError extends Error {
 export type NumberSystem = 'standard' | 'traditional';
 
 // @public
-export const SPEC_VERSION = "0.8.0";
+export type ParsedValue<Kind extends ParseResultKind> = Kind extends 'text' ? string : number;
+
+// @public
+export type ParseResultKind = 'number' | 'text';
+
+// @public
+export function parseWords<Kind extends ParseResultKind = 'number'>(text: string, options?: {
+    readonly as?: Kind;
+}): ParsedValue<Kind>;
+
+// @public
+export interface ParseWordsOptions {
+    readonly as?: ParseResultKind;
+}
+
+// @public
+export type SafeParseResult<T> = {
+    readonly success: true;
+    readonly data: T;
+} | {
+    readonly success: false;
+    readonly error: MdgError;
+};
+
+// @public
+export function safeParseWords(text: unknown, options?: ParseWordsOptions): SafeParseResult<number | string>;
+
+// @public
+export const SPEC_VERSION = "0.9.0";
 
 // @public
 export function spell(value: number | string, options?: SpellOptions): string;
@@ -28,6 +56,12 @@ export function spell(value: number | string, options?: SpellOptions): string;
 export interface SpellOptions {
     readonly system?: NumberSystem;
 }
+
+// @public
+export function spellOrdinal(value: number | string, options?: SpellOptions): string;
+
+// @public
+export function tryParseWords(text: unknown, options?: ParseWordsOptions): number | string | undefined;
 
 // (No @packageDocumentation comment for this package)
 

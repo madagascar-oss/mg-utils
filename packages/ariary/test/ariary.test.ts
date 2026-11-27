@@ -3,6 +3,7 @@ import { describe, expect, test } from 'vitest';
 import {
   MdgError,
   ariaryToFmg,
+  fmgToAriary,
   formatAriary,
   parseAriary,
   safeParseAriary,
@@ -71,15 +72,23 @@ describe('formatAriary and parseAriary', () => {
 });
 
 describe('limits', () => {
-  test('parseAriary throws OUT_OF_RANGE above Number.MAX_SAFE_INTEGER', () => {
+  test('parseAriary throws PRECISION_LOSS above Number.MAX_SAFE_INTEGER, never rounding', () => {
     expect(() => parseAriary(FIRST_UNSAFE_AMOUNT_TEXT)).toThrow(
-      expect.objectContaining({ code: 'OUT_OF_RANGE' }),
+      expect.objectContaining({ code: 'PRECISION_LOSS' }),
     );
   });
 
-  test('ariaryToFmg throws OUT_OF_RANGE when the francs would not be exact', () => {
+  test('ariaryToFmg throws PRECISION_LOSS when the francs would not be exact', () => {
     expect(() => ariaryToFmg(FIRST_AMOUNT_TOO_LARGE_IN_FRANCS)).toThrow(
-      expect.objectContaining({ code: 'OUT_OF_RANGE' }),
+      expect.objectContaining({ code: 'PRECISION_LOSS' }),
+    );
+  });
+});
+
+describe('result options', () => {
+  test('conversions reject options that are not an object', () => {
+    expect(() => fmgToAriary(SAMPLE_AMOUNT, null as never)).toThrow(
+      expect.objectContaining({ code: 'INVALID_TYPE' }),
     );
   });
 });
