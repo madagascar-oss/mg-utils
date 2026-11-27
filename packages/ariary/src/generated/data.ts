@@ -62,3 +62,9 @@ export const FRANC_DIVISION_FACTOR = 2 as const;
 
 /** @internal */
 export const MIN_AMOUNT = 0 as const;
+
+/** @internal Longest decimal text taken as an amount. */
+export const MAX_TEXT_LENGTH = 100 as const;
+
+/** @internal Longest text the parsers read. */
+export const MAX_READ_LENGTH = 329 as const;
