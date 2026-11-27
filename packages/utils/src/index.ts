@@ -3,7 +3,18 @@
  *
  * @packageDocumentation
  */
-export { spell, type NumberSystem, type SpellOptions } from '@mdgascar/words';
+export {
+  parseWords,
+  safeParseWords,
+  spell,
+  spellOrdinal,
+  tryParseWords,
+  type NumberSystem,
+  type ParseResultKind,
+  type ParseWordsOptions,
+  type ParsedValue,
+  type SpellOptions,
+} from '@mdgascar/words';
 export {
   OPERATOR_NAMES,
   formatPhone,
@@ -12,6 +23,8 @@ export {
   safeParsePhone,
   tryParsePhone,
   type OperatorId,
+  type PhoneArea,
+  type PhoneLineType,
   type PhoneNumber,
   type PhoneNumberFormat,
 } from '@mdgascar/phone';
@@ -24,6 +37,9 @@ export {
   parseAriary,
   safeParseAriary,
   tryParseAriary,
+  type AmountResultKind,
+  type AmountResultOptions,
+  type AmountValue,
   type AriaryDecimal,
   type AriaryFormatOptions,
   type AriaryGrouping,
@@ -34,6 +50,9 @@ export {
 export {
   formatDate,
   monthName,
+  parseDate,
+  safeParseDate,
+  tryParseDate,
   weekdayName,
   type CalendarDate,
   type DateStyle,

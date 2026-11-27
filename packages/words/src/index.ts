@@ -11,6 +11,7 @@ export {
   safeParseWords,
   tryParseWords,
   type ParseResultKind,
+  type ParsedValue,
   type ParseWordsOptions,
 } from './parse.ts';
 export {

@@ -1,4 +1,4 @@
-import { canonical, exactNumber, type AmountResultKind } from './amount.ts';
+import { canonical, exactNumber, type AmountResultKind, type AmountValue } from './amount.ts';
 import { MAX_READ_LENGTH } from './generated/data.ts';
 import { MdgError, type ErrorCode, type SafeParseResult } from './generated/errors.ts';
 import { readableGrouping, readDigits, type ReadSeparators } from './read-digits.ts';
@@ -107,18 +107,13 @@ export function safeParseAriary(
  * parseAriary('1,500.50', { grouping: 'comma', decimal: 'dot' }); // 1500.5
  * ```
  */
-export function parseAriary(
+export function parseAriary<Kind extends AmountResultKind = 'number'>(
   text: string,
-  options?: AriarySeparatorOptions & { readonly as?: 'number' },
-): number;
-export function parseAriary(
-  text: string,
-  options: AriarySeparatorOptions & { readonly as: 'text' },
-): string;
-export function parseAriary(text: string, options: AriaryParseOptions = {}): number | string {
+  options: AriarySeparatorOptions & { readonly as?: Kind } = {},
+): AmountValue<Kind> {
   const result = safeParseAriary(text, options);
   if (!result.success) throw result.error;
-  return result.data;
+  return result.data as AmountValue<Kind>;
 }
 
 /**

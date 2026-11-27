@@ -6,7 +6,7 @@ import {
   amountResult,
   resultKind,
   type AmountResultKind,
-  type AmountResultOptions,
+  type AmountValue,
 } from './amount.ts';
 import { divideExact, multiplyExact } from './decimal.ts';
 
@@ -53,14 +53,15 @@ function kindFor(options: unknown): AmountResultKind {
  * fmgToAriary(7501); // 1500.2
  * ```
  */
-export function fmgToAriary(francs: number | string, options?: { readonly as?: 'number' }): number;
-export function fmgToAriary(francs: number | string, options: { readonly as: 'text' }): string;
-export function fmgToAriary(
+export function fmgToAriary<Kind extends AmountResultKind = 'number'>(
   francs: number | string,
-  options: AmountResultOptions = {},
-): number | string {
+  options: { readonly as?: Kind } = {},
+): AmountValue<Kind> {
   const digits = amountDigits(francs);
-  return amountResult(divideExact(digits, FRANC_DIVISION_FACTOR), kindFor(options));
+  return amountResult(
+    divideExact(digits, FRANC_DIVISION_FACTOR),
+    kindFor(options),
+  ) as AmountValue<Kind>;
 }
 
 /**
@@ -76,12 +77,13 @@ export function fmgToAriary(
  * ariaryToFmg(1500); // 7500
  * ```
  */
-export function ariaryToFmg(amount: number | string, options?: { readonly as?: 'number' }): number;
-export function ariaryToFmg(amount: number | string, options: { readonly as: 'text' }): string;
-export function ariaryToFmg(
+export function ariaryToFmg<Kind extends AmountResultKind = 'number'>(
   amount: number | string,
-  options: AmountResultOptions = {},
-): number | string {
+  options: { readonly as?: Kind } = {},
+): AmountValue<Kind> {
   const digits = amountDigits(amount);
-  return amountResult(multiplyExact(digits, FRANCS_PER_ARIARY), kindFor(options));
+  return amountResult(
+    multiplyExact(digits, FRANCS_PER_ARIARY),
+    kindFor(options),
+  ) as AmountValue<Kind>;
 }

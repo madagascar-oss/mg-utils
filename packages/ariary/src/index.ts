@@ -13,7 +13,7 @@ export {
 } from './format.ts';
 export { parseAriary, safeParseAriary, tryParseAriary, type AriaryParseOptions } from './parse.ts';
 export type { AriarySeparatorOptions } from './separators.ts';
-export type { AmountResultKind, AmountResultOptions } from './amount.ts';
+export type { AmountResultKind, AmountResultOptions, AmountValue } from './amount.ts';
 export type { AriaryDecimal, AriaryGrouping } from './generated/data.ts';
 export type { NumberSystem, SpellOptions } from '@mdgascar/words';
 export {

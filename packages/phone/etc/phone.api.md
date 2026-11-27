@@ -5,7 +5,7 @@
 ```ts
 
 // @public
-export type ErrorCode = 'INVALID_TYPE' | 'OUT_OF_RANGE' | 'INVALID_FORMAT' | 'UNKNOWN_OPERATOR';
+export type ErrorCode = 'INVALID_TYPE' | 'OUT_OF_RANGE' | 'INVALID_FORMAT' | 'UNKNOWN_OPERATOR' | 'PRECISION_LOSS' | 'AMBIGUOUS';
 
 // @public
 export function formatPhone(input: string, format: PhoneNumberFormat): string;
@@ -27,20 +27,32 @@ export const OPERATOR_NAMES: {
     readonly airtel: "Airtel Madagascar";
     readonly yas: "Yas Madagascar";
     readonly blueline: "Blueline";
+    readonly gulfsat: "Gulfsat Madagascar";
 };
 
 // @public
-export type OperatorId = 'orange' | 'airtel' | 'yas' | 'blueline';
+export type OperatorId = 'orange' | 'airtel' | 'yas' | 'blueline' | 'gulfsat';
 
 // @public
 export function parsePhone(input: string): PhoneNumber;
 
 // @public
+export interface PhoneArea {
+    readonly name: string;
+    readonly province: string;
+}
+
+// @public
+export type PhoneLineType = 'mobile' | 'fixed';
+
+// @public
 export interface PhoneNumber {
     readonly [phoneNumberBrand]: true;
+    readonly area: PhoneArea | null;
     readonly e164: string;
     readonly nationalNumber: string;
     readonly operator: OperatorId;
+    readonly type: PhoneLineType;
 }
 
 // @public
@@ -59,7 +71,7 @@ export type SafeParseResult<T> = {
 };
 
 // @public
-export const SPEC_VERSION = "0.8.0";
+export const SPEC_VERSION = "0.9.0";
 
 // @public
 export function tryParsePhone(input: unknown): PhoneNumber | undefined;

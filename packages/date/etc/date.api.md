@@ -15,7 +15,7 @@ export interface CalendarDate {
 export type DateStyle = 'long' | 'full' | 'medium' | 'short' | 'numeric';
 
 // @public
-export type ErrorCode = 'INVALID_TYPE' | 'OUT_OF_RANGE' | 'INVALID_FORMAT' | 'UNKNOWN_OPERATOR';
+export type ErrorCode = 'INVALID_TYPE' | 'OUT_OF_RANGE' | 'INVALID_FORMAT' | 'UNKNOWN_OPERATOR' | 'PRECISION_LOSS' | 'AMBIGUOUS';
 
 // @public
 export function formatDate(date: string | CalendarDate | Date, style?: DateStyle): string;
@@ -35,7 +35,25 @@ export function monthName(month: number, width?: NameWidth): string;
 export type NameWidth = 'wide' | 'abbreviated';
 
 // @public
-export const SPEC_VERSION = "0.8.0";
+export function parseDate(text: string, style?: DateStyle): CalendarDate;
+
+// @public
+export function safeParseDate(text: unknown, style?: DateStyle): SafeParseResult<CalendarDate>;
+
+// @public
+export type SafeParseResult<T> = {
+    readonly success: true;
+    readonly data: T;
+} | {
+    readonly success: false;
+    readonly error: MdgError;
+};
+
+// @public
+export const SPEC_VERSION = "0.9.0";
+
+// @public
+export function tryParseDate(text: unknown, style?: DateStyle): CalendarDate | undefined;
 
 // @public
 export function weekdayName(isoWeekday: number, width?: NameWidth): string;

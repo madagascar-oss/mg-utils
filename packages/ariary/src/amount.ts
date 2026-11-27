@@ -31,6 +31,17 @@ export interface AmountResultOptions {
   readonly as?: AmountResultKind;
 }
 
+/**
+ * The value an amount function gives back for an {@link AmountResultKind}: `string` for `text`,
+ * otherwise `number`.
+ *
+ * @example
+ * ```ts
+ * const digits: AmountValue<'text'> = '1500.5';
+ * ```
+ */
+export type AmountValue<Kind extends AmountResultKind> = Kind extends 'text' ? string : number;
+
 const RESULT_KINDS: ReadonlySet<unknown> = new Set<AmountResultKind>(['number', 'text']);
 // Words rule 13: ASCII digits, then optionally a point and more digits. Nothing else.
 const DECIMAL_TEXT = /^[0-9]+(?:\.[0-9]+)?$/;

@@ -28,6 +28,17 @@ export interface ParseWordsOptions {
   readonly as?: ParseResultKind;
 }
 
+/**
+ * The value a reader gives back for a {@link ParseResultKind}: `string` for `text`, otherwise
+ * `number`.
+ *
+ * @example
+ * ```ts
+ * const digits: ParsedValue<'text'> = '2000';
+ * ```
+ */
+export type ParsedValue<Kind extends ParseResultKind> = Kind extends 'text' ? string : number;
+
 const RESULT_KINDS: ReadonlySet<unknown> = new Set<ParseResultKind>(['number', 'text']);
 const OPTION_KEYS: ReadonlySet<string> = new Set(['as']);
 const APOSTROPHES = /[‘’ʼ`´]/g;
@@ -144,12 +155,13 @@ export function safeParseWords(
  * parseWords('iray lavitrisa lavitrisa', { as: 'text' }); // '1000000000000000000'
  * ```
  */
-export function parseWords(text: string, options?: { readonly as?: 'number' }): number;
-export function parseWords(text: string, options: { readonly as: 'text' }): string;
-export function parseWords(text: string, options: ParseWordsOptions = {}): number | string {
+export function parseWords<Kind extends ParseResultKind = 'number'>(
+  text: string,
+  options: { readonly as?: Kind } = {},
+): ParsedValue<Kind> {
   const result = safeParseWords(text, options);
   if (!result.success) throw result.error;
-  return result.data;
+  return result.data as ParsedValue<Kind>;
 }
 
 /**

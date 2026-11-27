@@ -8,6 +8,17 @@ import { NumberSystem } from '@mdgascar/words';
 import { SpellOptions } from '@mdgascar/words';
 
 // @public
+export type AmountResultKind = 'number' | 'text';
+
+// @public
+export interface AmountResultOptions {
+    readonly as?: AmountResultKind;
+}
+
+// @public
+export type AmountValue<Kind extends AmountResultKind> = Kind extends 'text' ? string : number;
+
+// @public
 export type AriaryDecimal = 'comma' | 'dot';
 
 // @public
@@ -19,7 +30,9 @@ export interface AriaryFormatOptions extends AriarySeparatorOptions {
 export type AriaryGrouping = 'space' | 'dot' | 'comma';
 
 // @public
-export type AriaryParseOptions = AriarySeparatorOptions;
+export interface AriaryParseOptions extends AriarySeparatorOptions {
+    readonly as?: AmountResultKind;
+}
 
 // @public
 export interface AriarySeparatorOptions {
@@ -31,19 +44,23 @@ export interface AriarySeparatorOptions {
 export type AriarySymbolPosition = 'before' | 'after';
 
 // @public
-export function ariaryToFmg(amount: number): number;
+export function ariaryToFmg<Kind extends AmountResultKind = 'number'>(amount: number | string, options?: {
+    readonly as?: Kind;
+}): AmountValue<Kind>;
 
 // @public
-export type ErrorCode = 'INVALID_TYPE' | 'OUT_OF_RANGE' | 'INVALID_FORMAT' | 'UNKNOWN_OPERATOR';
+export type ErrorCode = 'INVALID_TYPE' | 'OUT_OF_RANGE' | 'INVALID_FORMAT' | 'UNKNOWN_OPERATOR' | 'PRECISION_LOSS' | 'AMBIGUOUS';
 
 // @public
-export function fmgToAriary(francs: number): number;
+export function fmgToAriary<Kind extends AmountResultKind = 'number'>(francs: number | string, options?: {
+    readonly as?: Kind;
+}): AmountValue<Kind>;
 
 // @public
-export function formatAriary(amount: number, options?: AriaryFormatOptions): string;
+export function formatAriary(amount: number | string, options?: AriaryFormatOptions): string;
 
 // @public
-export function formatFmg(francs: number, options?: AriaryFormatOptions): string;
+export function formatFmg(francs: number | string, options?: AriaryFormatOptions): string;
 
 // @public
 export class MdgError extends Error {
@@ -56,10 +73,12 @@ export class MdgError extends Error {
 export { NumberSystem }
 
 // @public
-export function parseAriary(text: string, options?: AriaryParseOptions): number;
+export function parseAriary<Kind extends AmountResultKind = 'number'>(text: string, options?: AriarySeparatorOptions & {
+    readonly as?: Kind;
+}): AmountValue<Kind>;
 
 // @public
-export function safeParseAriary(text: unknown, options?: AriaryParseOptions): SafeParseResult<number>;
+export function safeParseAriary(text: unknown, options?: AriaryParseOptions): SafeParseResult<number | string>;
 
 // @public
 export type SafeParseResult<T> = {
@@ -71,7 +90,7 @@ export type SafeParseResult<T> = {
 };
 
 // @public
-export const SPEC_VERSION = "0.8.0";
+export const SPEC_VERSION = "0.9.0";
 
 // @public
 export function spellAriary(amount: number | string, options?: SpellOptions): string;
@@ -79,7 +98,7 @@ export function spellAriary(amount: number | string, options?: SpellOptions): st
 export { SpellOptions }
 
 // @public
-export function tryParseAriary(text: unknown, options?: AriaryParseOptions): number | undefined;
+export function tryParseAriary(text: unknown, options?: AriaryParseOptions): number | string | undefined;
 
 // (No @packageDocumentation comment for this package)
 
