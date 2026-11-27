@@ -1,4 +1,4 @@
-import { numberToWords } from '@mdgascar/words';
+import { numberToWords, type NumberToWordsOptions } from '@mdgascar/words';
 import { CURRENCY_WORD, FRANC_DIVISION_FACTOR, FRANCS_PER_ARIARY } from './generated/data.ts';
 import { assertAmount, assertInRange } from './amount.ts';
 import { divideExact, multiplyExact } from './decimal.ts';
@@ -7,6 +7,7 @@ import { divideExact, multiplyExact } from './decimal.ts';
  * Writes an Ariary amount in Malagasy words.
  *
  * @param amount - Ariary from 0 to `Number.MAX_SAFE_INTEGER`, whole or decimal.
+ * @param options - The words `system`: `standard` (default) or `traditional`.
  * @returns The amount in words followed by `ariary`; decimals follow `faingo`.
  * @throws {@link MdgError} `INVALID_TYPE` or `OUT_OF_RANGE`.
  *
@@ -14,11 +15,12 @@ import { divideExact, multiplyExact } from './decimal.ts';
  * ```ts
  * ariaryToWords(1500); // 'dimanjato sy arivo ariary'
  * ariaryToWords(1500.5); // 'dimanjato sy arivo faingo dimy ariary'
+ * ariaryToWords(30_000_000, { system: 'traditional' }); // 'telo safatsiroa ariary'
  * ```
  */
-export function ariaryToWords(amount: number): string {
+export function ariaryToWords(amount: number, options: NumberToWordsOptions = {}): string {
   assertAmount(amount);
-  return `${numberToWords(amount)} ${CURRENCY_WORD}`;
+  return `${numberToWords(amount, options)} ${CURRENCY_WORD}`;
 }
 
 /**

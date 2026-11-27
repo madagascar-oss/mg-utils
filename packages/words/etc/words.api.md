@@ -16,10 +16,18 @@ export class MdgError extends Error {
 }
 
 // @public
-export function numberToWords(value: number): string;
+export type NumberSystem = 'standard' | 'traditional';
 
 // @public
-export const SPEC_VERSION = "0.6.0";
+export function numberToWords(value: number, options?: NumberToWordsOptions): string;
+
+// @public
+export interface NumberToWordsOptions {
+    readonly system?: NumberSystem;
+}
+
+// @public
+export const SPEC_VERSION = "0.7.0";
 
 // (No @packageDocumentation comment for this package)
 

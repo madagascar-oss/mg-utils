@@ -25,7 +25,9 @@ import { getWeekdayName } from '@mdgascar/date';
 import { isValidPhoneNumber } from '@mdgascar/phone';
 import { MdgError } from '@mdgascar/phone';
 import { NameWidth } from '@mdgascar/date';
+import { NumberSystem } from '@mdgascar/words';
 import { numberToWords } from '@mdgascar/words';
+import { NumberToWordsOptions } from '@mdgascar/words';
 import { OPERATOR_NAMES } from '@mdgascar/phone';
 import { OperatorId } from '@mdgascar/phone';
 import { parseAriary } from '@mdgascar/ariary';
@@ -81,7 +83,11 @@ export { MdgError }
 
 export { NameWidth }
 
+export { NumberSystem }
+
 export { numberToWords }
+
+export { NumberToWordsOptions }
 
 export { OPERATOR_NAMES }
 

@@ -9,6 +9,7 @@ interface WordsData {
   readonly tens: readonly Valued[];
   readonly hundreds: readonly Valued[];
   readonly scales: readonly (Valued & { readonly maxCount?: number })[];
+  readonly traditionalScales: readonly Valued[];
   readonly decimalSeparator: Worded;
   readonly joiners: Readonly<Record<'unitsBeforeTen' | 'belowThousand' | 'betweenGroups', Worded>>;
   readonly limits: { readonly min: number };
@@ -21,6 +22,7 @@ interface WordsTables {
   readonly tenWords: readonly string[];
   readonly hundredWords: readonly string[];
   readonly scales: readonly Scale[];
+  readonly traditionalScales: readonly Scale[];
   readonly decimalSeparator: string;
   readonly joinerUnitsBeforeTen: string;
   readonly joinerBelowThousand: string;
@@ -71,6 +73,25 @@ function scaleTable(scales: WordsData['scales']): Scale[] {
   });
 }
 
+/**
+ * Turns the traditional scales (rule 12) into the same shape: one digit per power of ten, each
+ * the next power up, and the largest taking every digit left (no port reaches past it).
+ */
+function traditionalScaleTable(scales: WordsData['traditionalScales']): Scale[] {
+  const sorted = [...scales].sort((left, right) => left.value - right.value);
+  return sorted.map(({ value, word }, index) => {
+    const digits = String(value);
+    if (!POWER_OF_TEN.test(digits))
+      throw new Error(`traditional scale ${word}: not a power of ten`);
+    const next = sorted[index + 1];
+    if (next === undefined) return { word, exponent: digits.length - 1, countDigits: null };
+    if (value * DECIMAL_BASE !== next.value) {
+      throw new Error(`traditional scale ${word}: the next name is not 10 times larger`);
+    }
+    return { word, exponent: digits.length - 1, countDigits: 1 };
+  });
+}
+
 /** Words indexed by digit (index 0 is ''), checked for gaps against the spec values. */
 function indexedWords(entries: readonly Valued[], step: number): string[] {
   return ['', ...entries.map((entry) => entry.word)].map((word, digit) => {
@@ -89,6 +110,7 @@ function wordsTables(data: WordsData): WordsTables {
     tenWords: indexedWords(data.tens, TEN_STEP),
     hundredWords: indexedWords(data.hundreds, HUNDRED_STEP),
     scales: scaleTable(data.scales),
+    traditionalScales: traditionalScaleTable(data.traditionalScales),
     decimalSeparator: data.decimalSeparator.word,
     joinerUnitsBeforeTen: data.joiners.unitsBeforeTen.word,
     joinerBelowThousand: data.joiners.belowThousand.word,
@@ -106,6 +128,11 @@ export function emit(data: WordsData): string[] {
     constant('TEN_WORDS', tables.tenWords, 'Index = tens digit.'),
     constant('HUNDRED_WORDS', tables.hundredWords, 'Index = hundreds digit.'),
     constant('SCALES', tables.scales, 'Ascending; countDigits null = no limit.'),
+    constant(
+      'TRADITIONAL_SCALES',
+      tables.traditionalScales,
+      'Rule 12: one name per power of ten, ascending; countDigits null = no limit.',
+    ),
     constant('DECIMAL_SEPARATOR', tables.decimalSeparator),
     constant('JOINER_UNITS_BEFORE_TEN', tables.joinerUnitsBeforeTen),
     constant('JOINER_BELOW_THOUSAND', tables.joinerBelowThousand),

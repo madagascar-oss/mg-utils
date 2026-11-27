@@ -38,7 +38,7 @@ export class MdgError extends Error {
 export type NameWidth = 'wide' | 'abbreviated';
 
 // @public
-export const SPEC_VERSION = "0.6.0";
+export const SPEC_VERSION = "0.7.0";
 
 // (No @packageDocumentation comment for this package)
 

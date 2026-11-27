@@ -59,7 +59,7 @@ export type SafeParseResult<T> = {
 };
 
 // @public
-export const SPEC_VERSION = "0.6.0";
+export const SPEC_VERSION = "0.7.0";
 
 // @public
 export function tryParsePhoneNumber(input: unknown): PhoneNumber | undefined;

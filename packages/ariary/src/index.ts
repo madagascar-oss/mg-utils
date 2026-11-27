@@ -14,6 +14,7 @@ export {
 export { parseAriary, safeParseAriary, tryParseAriary, type AriaryParseOptions } from './parse.ts';
 export type { AriarySeparatorOptions } from './separators.ts';
 export type { AriaryDecimal, AriaryGrouping } from './generated/data.ts';
+export type { NumberSystem, NumberToWordsOptions } from '@mdgascar/words';
 export {
   MdgError,
   SPEC_VERSION,
