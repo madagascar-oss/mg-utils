@@ -1,5 +1,32 @@
 # @mdgascar/ariary
 
+## 0.9.0
+
+### Minor Changes
+
+- [#49](https://github.com/mdgascar/mdg-utils-js/pull/49) [`2d31dfa`](https://github.com/mdgascar/mdg-utils-js/commit/2d31dfa3a927d1bc0ce62e3de6fd8491586b9959) Thanks [@johan-mickael](https://github.com/johan-mickael)! - **Breaking:** the public API now uses the domain's words (spec 0.8.0). Rename your calls:
+  
+  | Was                                                               | Now                                             |
+  | ----------------------------------------------------------------- | ----------------------------------------------- |
+  | `numberToWords`                                                   | `spell`                                         |
+  | `ariaryToWords`                                                   | `spellAriary`                                   |
+  | `parsePhoneNumber`, `safeParsePhoneNumber`, `tryParsePhoneNumber` | `parsePhone`, `safeParsePhone`, `tryParsePhone` |
+  | `isValidPhoneNumber`, `formatPhoneNumber`                         | `isValidPhone`, `formatPhone`                   |
+  | `getMonthName`, `getWeekdayName`                                  | `monthName`, `weekdayName`                      |
+  
+  The options type `NumberToWordsOptions` is now `SpellOptions`. Behaviour is unchanged; the other types keep their names (`PhoneNumber`, `NumberSystem`, …).
+
+- [#47](https://github.com/mdgascar/mdg-utils-js/pull/47) [`4c29b12`](https://github.com/mdgascar/mdg-utils-js/commit/4c29b12f81806119c5edf9c8c07ff214d7448e47) Thanks [@johan-mickael](https://github.com/johan-mickael)! - Implement spec 0.8.0: `spell` and `spellAriary` also take plain decimal text, read
+  exactly with no floating-point rounding: `spell('2000000000000000.9')` →
+  `roa tapitrisa lavitrisa faingo sivy`. Text that is not plain decimal throws `INVALID_FORMAT`.
+  In the traditional system, a number of 10¹⁹ or more (text only) is written in the standard
+  system.
+
+### Patch Changes
+
+- Updated dependencies [[`2d31dfa`](https://github.com/mdgascar/mdg-utils-js/commit/2d31dfa3a927d1bc0ce62e3de6fd8491586b9959), [`4c29b12`](https://github.com/mdgascar/mdg-utils-js/commit/4c29b12f81806119c5edf9c8c07ff214d7448e47)]:
+  - @mdgascar/words@0.9.0
+
 ## 0.8.0
 
 ### Minor Changes
