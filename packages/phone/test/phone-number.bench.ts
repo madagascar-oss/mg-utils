@@ -1,13 +1,13 @@
 import { test } from 'vitest';
-import { formatPhoneNumber, parsePhoneNumber } from '../src/index.ts';
+import { formatPhone, parsePhone } from '../src/index.ts';
 
 test('phone throughput', async ({ bench }) => {
   await bench.compare(
-    bench('parsePhoneNumber national with spaces', () => {
-      parsePhoneNumber('034 12 345 67');
+    bench('parsePhone national with spaces', () => {
+      parsePhone('034 12 345 67');
     }),
-    bench('formatPhoneNumber international', () => {
-      formatPhoneNumber('+261341234567', 'international');
+    bench('formatPhone international', () => {
+      formatPhone('+261341234567', 'international');
     }),
   );
 });

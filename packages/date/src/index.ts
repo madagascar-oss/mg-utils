@@ -6,6 +6,6 @@
  */
 export type { CalendarDate } from './calendar.ts';
 export { formatDate } from './format.ts';
-export { getMonthName, getWeekdayName, type NameWidth } from './names.ts';
+export { monthName, weekdayName, type NameWidth } from './names.ts';
 export type { DateStyle } from './generated/data.ts';
 export { MdgError, SPEC_VERSION, type ErrorCode } from './generated/errors.ts';

@@ -22,10 +22,10 @@ Implements [spec](https://github.com/mdgascar/mdg-utils-spec) **0.8.0** · [Docs
 `CHANGELOG.md`, written by Changesets on release.
 
 ```ts
-import { formatPhoneNumber, numberToWords } from '@mdgascar/utils';
+import { formatPhone, spell } from '@mdgascar/utils';
 
-numberToWords(2026); // 'enina amby roapolo sy roa arivo'
-formatPhoneNumber('0341234567', 'international'); // '+261 34 12 345 67'
+spell(2026); // 'enina amby roapolo sy roa arivo'
+formatPhone('0341234567', 'international'); // '+261 34 12 345 67'
 ```
 
 ## How it works

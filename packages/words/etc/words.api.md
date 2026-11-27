@@ -19,15 +19,15 @@ export class MdgError extends Error {
 export type NumberSystem = 'standard' | 'traditional';
 
 // @public
-export function numberToWords(value: number | string, options?: NumberToWordsOptions): string;
+export const SPEC_VERSION = "0.8.0";
 
 // @public
-export interface NumberToWordsOptions {
+export function spell(value: number | string, options?: SpellOptions): string;
+
+// @public
+export interface SpellOptions {
     readonly system?: NumberSystem;
 }
-
-// @public
-export const SPEC_VERSION = "0.8.0";
 
 // (No @packageDocumentation comment for this package)
 

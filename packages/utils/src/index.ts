@@ -3,21 +3,21 @@
  *
  * @packageDocumentation
  */
-export { numberToWords, type NumberSystem, type NumberToWordsOptions } from '@mdgascar/words';
+export { spell, type NumberSystem, type SpellOptions } from '@mdgascar/words';
 export {
   OPERATOR_NAMES,
-  formatPhoneNumber,
-  isValidPhoneNumber,
-  parsePhoneNumber,
-  safeParsePhoneNumber,
-  tryParsePhoneNumber,
+  formatPhone,
+  isValidPhone,
+  parsePhone,
+  safeParsePhone,
+  tryParsePhone,
   type OperatorId,
   type PhoneNumber,
   type PhoneNumberFormat,
 } from '@mdgascar/phone';
 export {
   ariaryToFmg,
-  ariaryToWords,
+  spellAriary,
   fmgToAriary,
   formatAriary,
   formatFmg,
@@ -33,8 +33,8 @@ export {
 } from '@mdgascar/ariary';
 export {
   formatDate,
-  getMonthName,
-  getWeekdayName,
+  monthName,
+  weekdayName,
   type CalendarDate,
   type DateStyle,
   type NameWidth,
