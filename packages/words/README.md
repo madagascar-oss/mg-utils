@@ -22,7 +22,7 @@ Takes any number from 0 to `Number.MAX_SAFE_INTEGER` (9 007 199 254 740 991), wh
 Only number values are accepted: strings are not parsed. Other input throws `MdgError` with code
 `INVALID_TYPE` or `OUT_OF_RANGE`.
 
-### Traditional system
+## Traditional system
 
 Malagasy also has a name for every power of ten (`safatsiroa` 10⁷, `tsitamboisa` 10⁸,
 `lavitrisa` 10⁹, `alinkisa` 10¹⁰, …), not used in everyday writing. Ask for it with
