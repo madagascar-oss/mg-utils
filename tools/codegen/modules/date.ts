@@ -13,7 +13,12 @@ interface DateData {
     readonly abbreviation: string;
   }[];
   readonly styles: readonly { readonly id: string; readonly pattern: string }[];
-  readonly limits: { readonly minYear: number; readonly maxYear: number };
+  readonly limits: {
+    readonly minYear: number;
+    readonly maxReadLength: number;
+    readonly maxYear: number;
+    readonly maxReadLength: number;
+  };
 }
 
 interface DateTables {
@@ -51,6 +56,7 @@ function dateTables(data: DateData): DateTables {
     weekdayAbbreviations: byNumber(data.weekdays, weekdayNumber, (weekday) => weekday.abbreviation),
     styles: data.styles.map(({ id, pattern }) => [id, pattern] as const),
     minYear: data.limits.minYear,
+    maxReadLength: data.limits.maxReadLength,
     maxYear: data.limits.maxYear,
   };
 }
@@ -71,6 +77,7 @@ export function emit(data: DateData): string[] {
     `/** @internal Style → CLDR pattern; the first entry is the default. */\nexport const STYLE_PATTERNS: ReadonlyMap<DateStyle, string> = new Map<DateStyle, string>(${literal(tables.styles)});`,
     constant('DEFAULT_STYLE', tables.styles[0]?.[0] ?? ''),
     constant('MIN_YEAR', tables.minYear),
+    constant('MAX_READ_LENGTH', tables.maxReadLength, 'Longest text parseDate reads.'),
     constant('MAX_YEAR', tables.maxYear),
   ];
 }

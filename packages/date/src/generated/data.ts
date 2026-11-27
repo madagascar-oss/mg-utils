@@ -78,5 +78,8 @@ export const DEFAULT_STYLE = 'long' as const;
 /** @internal */
 export const MIN_YEAR = 1 as const;
 
+/** @internal Longest text parseDate reads. */
+export const MAX_READ_LENGTH = 64 as const;
+
 /** @internal */
 export const MAX_YEAR = 9999 as const;
