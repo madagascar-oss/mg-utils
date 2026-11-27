@@ -13,10 +13,23 @@ interface DateData {
     readonly abbreviation: string;
   }[];
   readonly styles: readonly { readonly id: string; readonly pattern: string }[];
+  readonly time: {
+    readonly prefix: string;
+    readonly after: string;
+    readonly before: string;
+    readonly more: string;
+  };
+  readonly fractions: readonly { readonly minutes: number; readonly word: string }[];
+  readonly dayParts: readonly {
+    readonly from: number;
+    readonly to: number;
+    readonly word: string;
+  }[];
   readonly limits: {
     readonly minYear: number;
     readonly maxYear: number;
     readonly maxReadLength: number;
+    readonly maxTimeReadLength: number;
   };
 }
 
@@ -32,6 +45,10 @@ interface DateTables {
   readonly minYear: number;
   readonly maxYear: number;
   readonly maxReadLength: number;
+  readonly maxTimeReadLength: number;
+  readonly time: DateData['time'];
+  readonly fractions: readonly (readonly [number, string])[];
+  readonly dayParts: readonly string[];
 }
 
 function byNumber<T>(
@@ -58,7 +75,23 @@ function dateTables(data: DateData): DateTables {
     minYear: data.limits.minYear,
     maxReadLength: data.limits.maxReadLength,
     maxYear: data.limits.maxYear,
+    maxTimeReadLength: data.limits.maxTimeReadLength,
+    time: data.time,
+    fractions: data.fractions.map(({ minutes, word }) => [minutes, word] as const),
+    dayParts: dayPartByHour(data.dayParts),
   };
+}
+
+const HOURS_PER_DAY = 24;
+
+/** The part of the day of each hour 0–23, checking the ranges cover every hour exactly once. */
+function dayPartByHour(parts: DateData['dayParts']): string[] {
+  return Array.from({ length: HOURS_PER_DAY }, (_, hour) => {
+    const matches = parts.filter(({ from, to }) => hour >= from && hour <= to);
+    if (matches.length !== 1)
+      throw new Error(`day parts: hour ${String(hour)} is not covered once`);
+    return matches[0]?.word ?? '';
+  });
 }
 
 export function emit(data: DateData): string[] {
@@ -79,5 +112,9 @@ export function emit(data: DateData): string[] {
     constant('MIN_YEAR', tables.minYear),
     constant('MAX_READ_LENGTH', tables.maxReadLength, 'Longest text parseDate reads.'),
     constant('MAX_YEAR', tables.maxYear),
+    constant('TIME_WORDS', tables.time, 'Rule 7: the words around the hour.'),
+    constant('TIME_FRACTIONS', tables.fractions, 'Minutes with a word of their own.'),
+    constant('DAY_PARTS', tables.dayParts, 'Index = hour 0–23 → part of the day.'),
+    constant('MAX_TIME_READ_LENGTH', tables.maxTimeReadLength, 'Longest text parseTime reads.'),
   ];
 }

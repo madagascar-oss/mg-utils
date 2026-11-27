@@ -77,7 +77,11 @@ importers:
         specifier: workspace:^
         version: link:../words
 
-  packages/date: {}
+  packages/date:
+    dependencies:
+      '@mdgascar/words':
+        specifier: workspace:^
+        version: link:../words
 
   packages/phone: {}
 

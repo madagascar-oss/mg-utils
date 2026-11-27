@@ -3,7 +3,7 @@
 Malagasy number words: write numbers in words, ordinals, and read words back into numbers.
 Zero dependencies, ESM + CommonJS + types.
 
-Implements spec 0.9.0.
+Implements spec 0.10.0.
 
 ```sh
 npm install @mdgascar/words

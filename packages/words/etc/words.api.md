@@ -47,7 +47,7 @@ export type SafeParseResult<T> = {
 export function safeParseWords(text: unknown, options?: ParseWordsOptions): SafeParseResult<number | string>;
 
 // @public
-export const SPEC_VERSION = "0.9.0";
+export const SPEC_VERSION = "0.10.0";
 
 // @public
 export function spell(value: number | string, options?: SpellOptions): string;
