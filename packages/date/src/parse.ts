@@ -140,11 +140,30 @@ export function safeParseDate(text: unknown, style?: DateStyle): SafeParseResult
   if (text.length > MAX_READ_LENGTH) {
     return failure('INVALID_FORMAT', `Dates are at most ${String(MAX_READ_LENGTH)} characters.`);
   }
-  const fields = readers.map((reader) => readStyle(trimmed, reader)).find(Boolean);
-  if (fields === undefined) {
+  const [first, ...others] = readers.flatMap((reader) => readStyle(trimmed, reader) ?? []);
+  if (first === undefined) {
     return failure('INVALID_FORMAT', 'Expected a date such as 23 Novambra 2026 or 23/11/2026.');
   }
-  return checkedFields(fields);
+  return oneDate(checkedFields(first), others.map(checkedFields));
+}
+
+function dateKey({ year, month, day }: CalendarDate): string {
+  return [year, month, day].join('-');
+}
+
+// A text two styles read as different dates ('5 Mey 12': May is 'Mey' in both) is ambiguous.
+function oneDate(
+  first: SafeParseResult<CalendarDate>,
+  others: readonly SafeParseResult<CalendarDate>[],
+): SafeParseResult<CalendarDate> {
+  const [date, ...rest] = [first, ...others].flatMap((result) =>
+    result.success ? [result.data] : [],
+  );
+  if (date === undefined) return first;
+  if (rest.some((other) => dateKey(other) !== dateKey(date))) {
+    return failure('AMBIGUOUS', 'This text reads as more than one date; pass the style.');
+  }
+  return { success: true, data: date };
 }
 
 /**
@@ -157,7 +176,8 @@ export function safeParseDate(text: unknown, style?: DateStyle): SafeParseResult
  * @returns The calendar date.
  * @throws {@link MdgError} `INVALID_TYPE` for non-strings or an unknown style,
  *   `INVALID_FORMAT` for text in no style, a day that does not exist or a wrong weekday,
- *   `OUT_OF_RANGE` for a year outside 1–9999.
+ *   `OUT_OF_RANGE` for a year outside 1–9999, `AMBIGUOUS` when two styles read different dates
+ *   (only for years up to 31, such as `5 Mey 12`; pass the style).
  *
  * @example
  * ```ts

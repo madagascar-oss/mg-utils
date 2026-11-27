@@ -15,7 +15,6 @@ interface DateData {
   readonly styles: readonly { readonly id: string; readonly pattern: string }[];
   readonly limits: {
     readonly minYear: number;
-    readonly maxReadLength: number;
     readonly maxYear: number;
     readonly maxReadLength: number;
   };
@@ -32,6 +31,7 @@ interface DateTables {
   readonly styles: readonly (readonly [string, string])[];
   readonly minYear: number;
   readonly maxYear: number;
+  readonly maxReadLength: number;
 }
 
 function byNumber<T>(
