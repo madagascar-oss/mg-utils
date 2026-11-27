@@ -7,6 +7,7 @@ import {
   MIN_VALUE,
   SCALES,
   TEN_WORDS,
+  TRADITIONAL_SCALES,
   UNIT_ONE_IN_COMPOUND,
   UNIT_WORDS,
   ZERO_WORD,
@@ -14,7 +15,39 @@ import {
 import { MdgError } from './generated/errors.ts';
 
 type Digit = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9;
-type Scale = (typeof SCALES)[number];
+type Scale = (typeof SCALES)[number] | (typeof TRADITIONAL_SCALES)[number];
+type ScaleTable = readonly Scale[];
+
+/**
+ * How large numbers are named: `standard` (default; `telopolo tapitrisa` for 30 000 000) or
+ * `traditional`, with one name per power of ten (`telo safatsiroa`).
+ *
+ * @example
+ * ```ts
+ * const system: NumberSystem = 'traditional';
+ * ```
+ */
+export type NumberSystem = 'standard' | 'traditional';
+
+/**
+ * Options for {@link numberToWords}.
+ *
+ * @example
+ * ```ts
+ * const options: NumberToWordsOptions = { system: 'traditional' };
+ * ```
+ */
+export interface NumberToWordsOptions {
+  /** `standard` (default) or `traditional`. */
+  readonly system?: NumberSystem;
+}
+
+const SCALES_BY_SYSTEM: Readonly<Record<NumberSystem, ScaleTable>> = {
+  standard: SCALES,
+  traditional: TRADITIONAL_SCALES,
+};
+const SYSTEMS: ReadonlySet<unknown> = new Set(Object.keys(SCALES_BY_SYSTEM));
+const DEFAULT_SYSTEM: NumberSystem = 'standard';
 
 const BASE = 10;
 const HUNDRED = BASE * BASE;
@@ -64,29 +97,29 @@ function scaleCount(digits: string, scale: Scale): string {
 
 // A count of one is bare only for the first group: "arivo", but "iray alina", "iray tapitrisa".
 // Counts are read with every rule, so 1000 lavitrisa is "arivo lavitrisa".
-function scaleWords(digits: string, scale: Scale): string {
+function scaleWords(digits: string, scale: Scale, scales: ScaleTable): string {
   const count = scaleCount(digits, scale);
   if (count === '') return '';
   if (count === ONE && scale.exponent === FIRST_SCALE_EXPONENT) return scale.word;
-  return `${wholeWords(count)} ${scale.word}`;
+  return `${wholeWords(count, scales)} ${scale.word}`;
 }
 
 // Works on decimal digits, not arithmetic, so counts and decimals of any length stay exact.
-function wholeWords(digits: string): string {
+function wholeWords(digits: string, scales: ScaleTable): string {
   const significant = digits.replace(LEADING_ZEROS, '');
   if (significant === '') return ZERO_WORD;
   const groups = [
     belowThousandWords(Number(significant.slice(-BELOW_THOUSAND_DIGITS))),
-    ...SCALES.map((scale) => scaleWords(significant, scale)),
+    ...scales.map((scale) => scaleWords(significant, scale, scales)),
   ];
   return groups.filter(isNotEmpty).join(` ${JOINER_BETWEEN_GROUPS} `);
 }
 
 // Each leading zero after the point is "aotra"; the rest reads as a whole number.
-function decimalWords(digits: string): string {
+function decimalWords(digits: string, scales: ScaleTable): string {
   const significant = digits.replace(LEADING_ZEROS, '');
   const zeros = Array.from({ length: digits.length - significant.length }, () => ZERO_WORD);
-  return [...zeros, wholeWords(significant)].join(' ');
+  return [...zeros, wholeWords(significant, scales)].join(' ');
 }
 
 // The shortest exact decimal form of the value, never in exponent notation.
@@ -110,24 +143,39 @@ function assertSupportedNumber(value: unknown): asserts value is number {
   }
 }
 
+function scalesFor(options: unknown): ScaleTable {
+  if (typeof options !== 'object' || options === null) {
+    throw new MdgError('INVALID_TYPE', 'numberToWords options must be an object.');
+  }
+  const { system = DEFAULT_SYSTEM } = options as NumberToWordsOptions;
+  if (!SYSTEMS.has(system)) {
+    throw new MdgError('INVALID_TYPE', 'system is standard or traditional.');
+  }
+  return SCALES_BY_SYSTEM[system];
+}
+
 /**
  * Writes a number in Malagasy words, smallest part first, with `faingo` before the decimals.
  *
  * @param value - A number from 0 to `Number.MAX_SAFE_INTEGER`, whole or decimal.
+ * @param options - Optional `system`: `standard` (default) or `traditional`, which names every
+ *   power of ten (`telo safatsiroa` for 30 000 000).
  * @returns The number in Malagasy words.
- * @throws {@link MdgError} `INVALID_TYPE` if `value` is not a finite number,
- *   `OUT_OF_RANGE` if it is negative or above `Number.MAX_SAFE_INTEGER`.
+ * @throws {@link MdgError} `INVALID_TYPE` if `value` is not a finite number or the options are
+ *   unknown, `OUT_OF_RANGE` if it is negative or above `Number.MAX_SAFE_INTEGER`.
  *
  * @example
  * ```ts
  * numberToWords(21); // 'iraika amby roapolo'
  * numberToWords(2026); // 'enina amby roapolo sy roa arivo'
  * numberToWords(3.14); // "telo faingo efatra ambin'ny folo"
+ * numberToWords(30_000_000, { system: 'traditional' }); // 'telo safatsiroa'
  * ```
  */
-export function numberToWords(value: number): string {
+export function numberToWords(value: number, options: NumberToWordsOptions = {}): string {
   assertSupportedNumber(value);
+  const scales = scalesFor(options);
   const [whole = '', decimals] = plainDecimal(value).split('.');
-  if (decimals === undefined) return wholeWords(whole);
-  return `${wholeWords(whole)} ${DECIMAL_SEPARATOR} ${decimalWords(decimals)}`;
+  if (decimals === undefined) return wholeWords(whole, scales);
+  return `${wholeWords(whole, scales)} ${DECIMAL_SEPARATOR} ${decimalWords(decimals, scales)}`;
 }

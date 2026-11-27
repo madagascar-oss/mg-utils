@@ -1,6 +1,6 @@
 {
   "name": "@mdgascar/ariary",
-  "version": "0.7.0",
+  "version": "0.8.0",
   "description": "Malagasy Ariary amounts: format (Ar 1 500), parse, words and franc (FMG) conversion.",
   "license": "MIT",
   "author": "Mdgascar contributors",

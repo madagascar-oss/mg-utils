@@ -1,5 +1,19 @@
 # @mdgascar/ariary
 
+## 0.8.0
+
+### Minor Changes
+
+- [#43](https://github.com/mdgascar/mdg-utils-js/pull/43) [`29d0754`](https://github.com/mdgascar/mdg-utils-js/commit/29d0754175927bab231542b57751dcd7d862dc08) Thanks [@johan-mickael](https://github.com/johan-mickael)! - Implement spec 0.7.0: `numberToWords(value, { system: 'traditional' })` and
+  `ariaryToWords(amount, { system: 'traditional' })` name every power of ten
+  (`30 000 000` → `telo safatsiroa`). The standard system stays the default and its output is
+  unchanged. New types `NumberSystem` and `NumberToWordsOptions`.
+
+### Patch Changes
+
+- Updated dependencies [[`29d0754`](https://github.com/mdgascar/mdg-utils-js/commit/29d0754175927bab231542b57751dcd7d862dc08)]:
+  - @mdgascar/words@0.8.0
+
 ## 0.7.0
 
 ### Patch Changes

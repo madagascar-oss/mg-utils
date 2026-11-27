@@ -9,6 +9,14 @@ const WORDS_ONLY = /^[a-z' ]+$/;
 const BROKEN_JOIN = / {2}|\b(sy|amby|faingo) \1\b|^ | $/;
 const DECIMAL_SEPARATOR = 'faingo';
 
+const TRADITIONAL = { system: 'traditional' } as const;
+// Below 10 000 both systems write the same words (spec rule 12).
+const FIRST_DIFFERENT_POWER = 10_000;
+const TRADITIONAL_NAMES =
+  /(alina|hetsy|tapitrisa|safatsiroa|tsitamboisa|lavitrisa|alinkisa|tsipesimpesenina|tsitokotsiforohana|tsihitanoanoa)(faharoa)?$/;
+// A tens or hundreds word right before a name: a count above 9, which rule 12 never writes.
+const COUNT_ABOVE_NINE = /(polo|folo|zato|jato|arivo) \S+$/;
+
 const supportedIntegers = fc.integer({ min: 0, max: Number.MAX_SAFE_INTEGER });
 const supportedNumbers = fc.oneof(
   supportedIntegers,
@@ -48,6 +56,41 @@ describe('numberToWords', () => {
 
   test('throws INVALID_TYPE for a bigint, because only numbers are accepted', () => {
     expect(() => numberToWords(BIGINT_INPUT as unknown as number)).toThrow(
+      expect.objectContaining({ code: 'INVALID_TYPE' }),
+    );
+  });
+
+  test('in the traditional system, returns words for every supported number', () => {
+    fc.assert(
+      fc.property(supportedNumbers, (value) => {
+        const words = numberToWords(value, TRADITIONAL);
+        expect(words).toMatch(WORDS_ONLY);
+        expect(words).not.toMatch(BROKEN_JOIN);
+      }),
+    );
+  });
+
+  test('both systems write the same words below 10 000', () => {
+    fc.assert(
+      fc.property(fc.integer({ min: 0, max: FIRST_DIFFERENT_POWER - 1 }), (value) => {
+        expect(numberToWords(value, TRADITIONAL)).toBe(numberToWords(value));
+      }),
+    );
+  });
+
+  test('in the traditional system, every power of ten takes a single digit', () => {
+    fc.assert(
+      fc.property(supportedIntegers, (value) => {
+        const groups = numberToWords(value, TRADITIONAL).split(' sy ');
+        for (const group of groups.filter((part) => TRADITIONAL_NAMES.test(part))) {
+          expect(group).not.toMatch(COUNT_ABOVE_NINE);
+        }
+      }),
+    );
+  });
+
+  test('throws INVALID_TYPE when the options are not an object', () => {
+    expect(() => numberToWords(1, null as unknown as object)).toThrow(
       expect.objectContaining({ code: 'INVALID_TYPE' }),
     );
   });
