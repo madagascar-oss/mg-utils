@@ -12,6 +12,12 @@ export interface CalendarDate {
 }
 
 // @public
+export interface ClockTime {
+    readonly hour: number;
+    readonly minute: number;
+}
+
+// @public
 export type DateStyle = 'long' | 'full' | 'medium' | 'short' | 'numeric';
 
 // @public
@@ -38,6 +44,9 @@ export type NameWidth = 'wide' | 'abbreviated';
 export function parseDate(text: string, style?: DateStyle): CalendarDate;
 
 // @public
+export function parseTime(text: string): ClockTime;
+
+// @public
 export function safeParseDate(text: unknown, style?: DateStyle): SafeParseResult<CalendarDate>;
 
 // @public
@@ -50,10 +59,19 @@ export type SafeParseResult<T> = {
 };
 
 // @public
-export const SPEC_VERSION = "0.9.0";
+export function safeParseTime(text: unknown): SafeParseResult<ClockTime>;
+
+// @public
+export const SPEC_VERSION = "0.10.0";
+
+// @public
+export function spellTime(time: string | ClockTime | Date): string;
 
 // @public
 export function tryParseDate(text: unknown, style?: DateStyle): CalendarDate | undefined;
+
+// @public
+export function tryParseTime(text: unknown): ClockTime | undefined;
 
 // @public
 export function weekdayName(isoWeekday: number, width?: NameWidth): string;

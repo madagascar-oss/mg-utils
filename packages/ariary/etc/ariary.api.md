@@ -19,10 +19,14 @@ export interface AmountResultOptions {
 export type AmountValue<Kind extends AmountResultKind> = Kind extends 'text' ? string : number;
 
 // @public
+export type AriaryCurrencyDisplay = 'symbol' | 'code';
+
+// @public
 export type AriaryDecimal = 'comma' | 'dot';
 
 // @public
 export interface AriaryFormatOptions extends AriarySeparatorOptions {
+    readonly currencyDisplay?: AriaryCurrencyDisplay;
     readonly symbolPosition?: AriarySymbolPosition;
 }
 
@@ -90,7 +94,7 @@ export type SafeParseResult<T> = {
 };
 
 // @public
-export const SPEC_VERSION = "0.9.0";
+export const SPEC_VERSION = "0.10.0";
 
 // @public
 export function spellAriary(amount: number | string, options?: SpellOptions): string;

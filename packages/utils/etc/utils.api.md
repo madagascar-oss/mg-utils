@@ -7,6 +7,7 @@
 import { AmountResultKind } from '@mdgascar/ariary';
 import { AmountResultOptions } from '@mdgascar/ariary';
 import { AmountValue } from '@mdgascar/ariary';
+import { AriaryCurrencyDisplay } from '@mdgascar/ariary';
 import { AriaryDecimal } from '@mdgascar/ariary';
 import { AriaryFormatOptions } from '@mdgascar/ariary';
 import { AriaryGrouping } from '@mdgascar/ariary';
@@ -15,6 +16,7 @@ import { AriarySeparatorOptions } from '@mdgascar/ariary';
 import { AriarySymbolPosition } from '@mdgascar/ariary';
 import { ariaryToFmg } from '@mdgascar/ariary';
 import { CalendarDate } from '@mdgascar/date';
+import { ClockTime } from '@mdgascar/date';
 import { DateStyle } from '@mdgascar/date';
 import { ErrorCode } from '@mdgascar/phone';
 import { fmgToAriary } from '@mdgascar/ariary';
@@ -34,6 +36,7 @@ import { parseDate } from '@mdgascar/date';
 import { ParsedValue } from '@mdgascar/words';
 import { parsePhone } from '@mdgascar/phone';
 import { ParseResultKind } from '@mdgascar/words';
+import { parseTime } from '@mdgascar/date';
 import { parseWords } from '@mdgascar/words';
 import { ParseWordsOptions } from '@mdgascar/words';
 import { PhoneArea } from '@mdgascar/phone';
@@ -44,15 +47,18 @@ import { safeParseAriary } from '@mdgascar/ariary';
 import { safeParseDate } from '@mdgascar/date';
 import { safeParsePhone } from '@mdgascar/phone';
 import { SafeParseResult } from '@mdgascar/phone';
+import { safeParseTime } from '@mdgascar/date';
 import { safeParseWords } from '@mdgascar/words';
 import { SPEC_VERSION } from '@mdgascar/phone';
 import { spell } from '@mdgascar/words';
 import { spellAriary } from '@mdgascar/ariary';
 import { SpellOptions } from '@mdgascar/words';
 import { spellOrdinal } from '@mdgascar/words';
+import { spellTime } from '@mdgascar/date';
 import { tryParseAriary } from '@mdgascar/ariary';
 import { tryParseDate } from '@mdgascar/date';
 import { tryParsePhone } from '@mdgascar/phone';
+import { tryParseTime } from '@mdgascar/date';
 import { tryParseWords } from '@mdgascar/words';
 import { weekdayName } from '@mdgascar/date';
 
@@ -61,6 +67,8 @@ export { AmountResultKind }
 export { AmountResultOptions }
 
 export { AmountValue }
+
+export { AriaryCurrencyDisplay }
 
 export { AriaryDecimal }
 
@@ -77,6 +85,8 @@ export { AriarySymbolPosition }
 export { ariaryToFmg }
 
 export { CalendarDate }
+
+export { ClockTime }
 
 export { DateStyle }
 
@@ -116,6 +126,8 @@ export { parsePhone }
 
 export { ParseResultKind }
 
+export { parseTime }
+
 export { parseWords }
 
 export { ParseWordsOptions }
@@ -136,6 +148,8 @@ export { safeParsePhone }
 
 export { SafeParseResult }
 
+export { safeParseTime }
+
 export { safeParseWords }
 
 export { SPEC_VERSION }
@@ -148,11 +162,15 @@ export { SpellOptions }
 
 export { spellOrdinal }
 
+export { spellTime }
+
 export { tryParseAriary }
 
 export { tryParseDate }
 
 export { tryParsePhone }
+
+export { tryParseTime }
 
 export { tryParseWords }
 

@@ -1,6 +1,6 @@
 // GENERATED — edit spec/ instead. Run `just codegen` to refresh.
 
-// From spec/modules/date/data.yaml, spec 0.9.0.
+// From spec/modules/date/data.yaml, spec 0.10.0.
 
 /** @internal Index = month number; index 0 is unused. */
 export const MONTH_NAMES = [
@@ -83,3 +83,49 @@ export const MAX_READ_LENGTH = 64 as const;
 
 /** @internal */
 export const MAX_YEAR = 9999 as const;
+
+/** @internal Rule 7: the words around the hour. */
+export const TIME_WORDS = {
+  prefix: "amin'ny",
+  after: 'sy',
+  before: 'latsaka',
+  more: 'mahery',
+} as const;
+
+/** @internal Minutes with a word of their own. */
+export const TIME_FRACTIONS = [
+  [15, 'fahefany'],
+  [20, 'fahatelony'],
+  [30, 'sasany'],
+] as const;
+
+/** @internal Index = hour 0–23 → part of the day. */
+export const DAY_PARTS = [
+  'alina',
+  'maraina',
+  'maraina',
+  'maraina',
+  'maraina',
+  'maraina',
+  'maraina',
+  'maraina',
+  'maraina',
+  'maraina',
+  'maraina',
+  'maraina',
+  'atoandro',
+  'tolakandro',
+  'tolakandro',
+  'tolakandro',
+  'tolakandro',
+  'tolakandro',
+  'hariva',
+  'hariva',
+  'hariva',
+  'hariva',
+  'hariva',
+  'hariva',
+] as const;
+
+/** @internal Longest text parseTime reads. */
+export const MAX_TIME_READ_LENGTH = 128 as const;

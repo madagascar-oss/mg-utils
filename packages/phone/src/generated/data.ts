@@ -1,6 +1,6 @@
 // GENERATED — edit spec/ instead. Run `just codegen` to refresh.
 
-// From spec/modules/phone/data.yaml, spec 0.9.0.
+// From spec/modules/phone/data.yaml, spec 0.10.0.
 
 /** @internal */
 export const COUNTRY_CODE = '261' as const;

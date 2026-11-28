@@ -51,5 +51,8 @@
   "scripts": {
     "build": "tsup",
     "api": "api-extractor run --local"
+  },
+  "dependencies": {
+    "@mdgascar/words": "workspace:^"
   }
 }

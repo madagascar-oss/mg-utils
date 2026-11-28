@@ -8,6 +8,7 @@ export { ariaryToFmg, spellAriary, fmgToAriary } from './convert.ts';
 export {
   formatAriary,
   formatFmg,
+  type AriaryCurrencyDisplay,
   type AriaryFormatOptions,
   type AriarySymbolPosition,
 } from './format.ts';
