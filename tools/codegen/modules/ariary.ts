@@ -10,7 +10,11 @@ interface AriaryData {
   readonly groupSeparators: readonly { readonly id: string; readonly value: string }[];
   readonly readableSeparators: Sourced<string>;
   readonly currencyTokens: Sourced<string>;
-  readonly legacyFranc: { readonly symbol: string; readonly francsPerAriary: number };
+  readonly legacyFranc: {
+    readonly code: string;
+    readonly symbol: string;
+    readonly francsPerAriary: number;
+  };
   readonly limits: {
     readonly min: number;
     readonly maxTextLength: number;
@@ -20,6 +24,8 @@ interface AriaryData {
 
 interface AriaryTables {
   readonly currencySymbol: string;
+  readonly currencyCode: string;
+  readonly francCode: string;
   readonly currencyWord: string;
   readonly symbolSeparator: string;
   /** Decimal option id → character; the first entry is the default. */
@@ -52,6 +58,8 @@ function divisionFactor(francsPerAriary: number): number {
 function ariaryTables(data: AriaryData): AriaryTables {
   return {
     currencySymbol: data.currency.symbol,
+    currencyCode: data.currency.code,
+    francCode: data.legacyFranc.code,
     currencyWord: data.currency.word,
     symbolSeparator: data.symbolSeparator.value,
     decimalSeparators: data.decimalSeparators.map(({ id, value }) => [id, value] as const),
@@ -76,6 +84,8 @@ export function emit(data: AriaryData): string[] {
   const decimalUnion = tables.decimalSeparators.map(([id]) => literal(id)).join(' | ');
   return [
     constant('CURRENCY_SYMBOL', tables.currencySymbol),
+    constant('CURRENCY_CODE', tables.currencyCode, 'ISO 4217 code, for currencyDisplay code.'),
+    constant('FRANC_CODE', tables.francCode, 'ISO 4217 code of the old franc.'),
     constant('CURRENCY_WORD', tables.currencyWord),
     constant('SYMBOL_SEPARATOR', tables.symbolSeparator),
     constant('GROUP_SIZE', tables.groupSize),

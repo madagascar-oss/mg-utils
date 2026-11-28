@@ -1,9 +1,15 @@
 // GENERATED — edit spec/ instead. Run `just codegen` to refresh.
 
-// From spec/modules/ariary/data.yaml, spec 0.9.0.
+// From spec/modules/ariary/data.yaml, spec 0.10.0.
 
 /** @internal */
 export const CURRENCY_SYMBOL = 'Ar' as const;
+
+/** @internal ISO 4217 code, for currencyDisplay code. */
+export const CURRENCY_CODE = 'MGA' as const;
+
+/** @internal ISO 4217 code of the old franc. */
+export const FRANC_CODE = 'MGF' as const;
 
 /** @internal */
 export const CURRENCY_WORD = 'ariary' as const;

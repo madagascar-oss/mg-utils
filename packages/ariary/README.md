@@ -5,7 +5,7 @@ comma for decimals; other conventions opt-in), read amounts
 typed by users, write them in words, and convert old francs (FMG). Zero third-party
 dependencies, ESM + CommonJS + types.
 
-Implements spec 0.9.0.
+Implements spec 0.10.0.
 
 ```sh
 npm install @mdgascar/ariary
@@ -27,6 +27,7 @@ formatAriary(1500); // 'Ar 1 500' (no-break spaces)
 formatAriary(1500.5); // 'Ar 1 500,5' (decimal comma)
 formatAriary(1500, { grouping: 'dot' }); // 'Ar 1.500'
 formatAriary(1500, { symbolPosition: 'after' }); // '1 500 Ar'
+formatAriary(1500, { currencyDisplay: 'code' }); // 'MGA 1 500'
 formatAriary(1500.5, { grouping: 'comma', decimal: 'dot' }); // 'Ar 1,500.5' (opt-in)
 
 parseAriary('1.500 Ar'); // 1500
