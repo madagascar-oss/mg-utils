@@ -1,5 +1,22 @@
 # @mdgascar/ariary
 
+## 0.11.0
+
+### Minor Changes
+
+- [#56](https://github.com/mdgascar/mdg-utils-js/pull/56) [`5d51fdf`](https://github.com/mdgascar/mdg-utils-js/commit/5d51fdf5c87836fa4def16030137f98d12833206) Thanks [@johan-mickael](https://github.com/johan-mickael)! - Spec 0.10.0.
+  
+  - **date**: `spellTime` says the time of day in Malagasy: `spellTime('14:30')` →
+    `amin'ny roa sy sasany tolakandro`, `spellTime('17:45')` → `amin'ny enina latsaka fahefany hariva`.
+    `parseTime` / `safeParseTime` / `tryParseTime` read it back.
+  - **ariary**: `currencyDisplay: 'code'` writes the ISO code: `formatAriary(1500, { currencyDisplay: 'code' })`
+    → `MGA 1 500` (`MGF` for old francs).
+
+### Patch Changes
+
+- Updated dependencies [[`5d51fdf`](https://github.com/mdgascar/mdg-utils-js/commit/5d51fdf5c87836fa4def16030137f98d12833206)]:
+  - @mdgascar/words@0.11.0
+
 ## 0.10.0
 
 ### Minor Changes

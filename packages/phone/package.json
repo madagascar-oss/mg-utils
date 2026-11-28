@@ -1,6 +1,6 @@
 {
   "name": "@mdgascar/phone",
-  "version": "0.10.0",
+  "version": "0.11.0",
   "description": "Parse, validate and format Madagascar (+261) mobile phone numbers.",
   "license": "MIT",
   "author": "Mdgascar contributors",
